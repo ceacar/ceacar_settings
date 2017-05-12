@@ -1,0 +1,129 @@
+#!/bin/bash
+function cl() {
+  cd "$@" && ls;
+}
+
+function newdir(){
+  local dir_name=$1
+  mkdir $dir_name
+  cd $dir_name
+}
+
+
+function append_to_history(){
+   h=$(history 1 | sed 's/[ ]*[0-9]*[ ]*//')
+   t=$(tty)
+   d=$(date '+%Y%m%d %H:%M:%S')
+   { [ "$LAST_HISTORY_LINE" = "$h" ] || echo $t $d $h;} | awk 'length($0)<1000{print}' >> ~/.persistent_history
+   LAST_HISTORY_LINE=$h
+}
+
+export PROMPT_COMMAND=append_to_history
+
+function breakToLines(){
+  local everyXCharacters=$1
+  sed -e "s/.\{$everyXCharacters\}/&\n/g"
+}
+
+function killZombies(){
+  kill $(ps -A -ostat,ppid | awk '/[zZ]/{print $2}')
+}
+
+function psSerialKiller(){
+  signature=$1
+  if [ "$signature" == "-t" ]
+  then
+    ps aux|grep "$2"
+  else
+    echo "killing these process"
+    ps aux |grep "$signature"
+    kill $(ps aux |grep "$signature" |awk '{print $2}')
+  fi
+}
+
+
+#!/bin/bash
+
+function error(){
+  echo $1
+  return 1
+}
+
+function executeRemoteCmd(){
+  [[ "$1" == "-h" ]] && { echo "$FUNCNAME [ip] [user_name]";return 1; }
+  local ip=${1:?ip not set in $FUNCNAME}
+  local user_name=${2:?user_name not set in $FUNCNAME}
+  local cmd=${3:?cmd not set in $FUNCNAME}
+  ssh -o ConnectTimeout=2 $user_name@$ip $cmd
+}
+
+function shipMyProjects(){
+  local ip=${1:?ip not set in $FUNCNAME}
+  local user_name=${2:?user_name not set in $FUNCNAME}
+  local path="/home/xiazi"
+  local config_path="config"
+  local taq_path="taq"
+  local fbd_path="fbd-professional-services"
+  local shared_path="shared_with_subhost"
+  for path_temp in $config_path $taq_path $fbd_path $shared_path;do
+    executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
+    rsync -az $path/$path_temp/ $user_name@$ip:/$user_name/$path_temp/
+    echo "rsync -az $path/$path_temp/ $user_name@$ip:/$user_name/$path_temp/"
+  done
+}
+
+function deploy_instance(){(
+  set -fueo pipefail
+  local ip=${1:?ip not set in $FUNCNAME}
+  local user_name=${2:?user_name not set in $FUNCNAME}
+  shipMyProjects $ip $user_name
+  echo "source code copied"
+  echo "copying config files"
+  executeRemoteCmd $ip $user_name "sudo chmod 770 ~/config/xiazi/init_xiazi_host"
+  executeRemoteCmd $ip $user_name "sudo ~/config/xiazi/init_xiazi_host"
+  echo "host config files copied"
+  executeRemoteCmd $ip $user_name "sudo chmod 770 ~/config/xiazi/aws_toolkit/*" || error "aws toolkit copy failed"
+  echo "aws toolkit ready"
+  executeRemoteCmd $ip $user_name "sudo apt-get install pypy -y" >/dev/null 2>&1 || error "pypy installation failed"
+  echo "installing pypy"
+  executeRemoteCmd $ip $user_name "sudo apt-get install parallel -y" >/dev/null 2>&1 || error "pypy install failed"
+  echo "installing git"
+  executeRemoteCmd $ip $user_name "sudo apt-get install git -y" >/dev/null 2>&1 || error "pypy install failed"
+  echo "making pypy symbolic links"
+  executeRemoteCmd $ip $user_name "sudo ls /opt/bin || sudo mkdir /opt/bin/" >/dev/null 2>&1 || error "/opt/bin failed"
+  echo "/opt/bin dir created"
+  executeRemoteCmd $ip $user_name "ls /$user_name/temp || mkdir /$user_name/temp/" >/dev/null 2>&1 || error "/$user_name/temp creation failed"
+  echo "copying /opt/bin"
+  rsync -rLz /opt/bin/ $user_name@$ip:/$user_name/temp/
+  echo "copied"
+  executeRemoteCmd $ip $user_name "rm /$user_name/temp/pypy" >/dev/null 2>&1 || error "external pypy remove failed"
+  executeRemoteCmd $ip $user_name "sudo cp -R /$user_name/temp/* /opt/bin/" >/dev/null 2>&1 || error "content moving to /opt/bin failed"
+  echo "/opt/bin ready"
+  executeRemoteCmd $ip $user_name "sudo rm -rf /opt/bin/pypy || sudo ln -s /usr/bin/pypy /opt/bin/pypy" >/dev/null 2>&1 || error "pypy symbolic link failed"
+  echo "pypy ready"
+  executeRemoteCmd $ip $user_name "sudo ls /usr/bin/expect || sudo apt-get install expect -y" >/dev/null 2>&1 || error "expect installation failed"
+  echo "expect ready"
+  #install vundle
+  echo "installing vundle"
+  executeRemoteCmd $ip $user_name "ls ~/.vim/bundle/Vundle.vim || git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim" >/dev/null 2>&1 || error "vundle installation failed"
+  #echo "vundle doing PluginInstall"
+  #executeRemoteCmd $ip $user_name "sudo vim -c 'PluginInstall' -c 'qa!'" >/dev/null 2>&1 || error "vundle installation failed"
+  echo "increase file upper limit" && executeRemoteCmd $ip $user_name "sudo ~/config/xiazi/aws_toolkit/increase_file_upper_limit" >/dev/null
+  executeRemoteCmd $ip $user_name "sudo reboot" && echo "rebooting host"
+  secs=90
+  echo "waiting $secs seconds for host to reboot"
+  while [ $secs -gt 0 ]; do
+    echo -ne "$secs\033[0K\r"
+    sleep 1
+    : $((secs--))
+  done
+  echo "initializing host"
+  executeRemoteCmd $ip $user_name "sudo ~/config/xiazi/aws_toolkit/init_host" >/dev/null
+  executeRemoteCmd $ip $user_name "sudo chown -R ubuntu:ubuntu /scratch" >/dev/null
+  echo "/scratch attached"
+  echo "host ready"
+)}
+
+
+
+
