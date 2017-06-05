@@ -1,0 +1,20 @@
+#reload tmux config
+:source-file ~/.tmux.conf
+
+#recover lost tmux session
+#This quickest way to determine if you can recover is:
+#
+killall -10 tmux
+#That will send the signal to recreate all socket files for any running tmux processes. If you're not root, no problem it will only signal your tmux process anyway.
+#
+#Long story short, if tmux is not running (ps xu | grep tmux), you're screwed :(
+
+#also try this is you can find tmux pid
+#kill -USR1 [PID]
+
+#share a session
+tmux -S /scratch/shareds new -s shared
+chmod 777 /scratch/shareds
+
+#attach to the shared session
+tmux -S /scratch/shareds attach -t shared
