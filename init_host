@@ -1,5 +1,14 @@
 #!/bin/bash
+
+
 #better sudo it
+#backing up old files
+mkdir bak
+cp ~/.bashrc $PWD/bak/bashrc
+cp ~/.vimrc $PWD/bak/vimrc
+cp ~/.tmux.conf $PWD/bak/tmux.conf
+cp ~/.screenrc $PWD/bak/.screenrc
+cp ~/notes $PWD/bak/notes
 ln -s $PWD/bashrc ~/.bashrc
 ln -s $PWD/bash_aliases ~/.bash_aliases
 ln -s $PWD/bash_home_brew_script ~/.bash_home_brew_script
@@ -7,6 +16,7 @@ ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/screenrc ~/.screenrc
 ln -s $PWD/notes ~/notes
+
 sudo apt-get install build-essential cmake
 sudo apt-get install python-dev python3-dev python-pip
 sudo apt-get install python-dev libxml2-dev libxslt-dev
