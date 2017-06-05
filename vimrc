@@ -165,7 +165,9 @@ let python_highlight_all=1
 set backspace=indent,eol,start
 
 syntax on
+colorscheme xedit 
 highlight Comment ctermfg=darkgreen
+
 "highlight Comment guifg=darkgreen
 highlight BadWhitespace ctermbg=red guibg=darkred
 
