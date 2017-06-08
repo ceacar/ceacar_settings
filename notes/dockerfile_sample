@@ -1,0 +1,12 @@
+FROM image_name
+
+#any_cmd will run at build time
+RUN any_cmd
+
+ADD file_from file_to
+
+EXPOSE any_port
+
+#any_cmd will run after image is built
+CMD any_cmd
+
