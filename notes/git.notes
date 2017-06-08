@@ -1,0 +1,43 @@
+#git clone repo
+  git clone git@twxgit:fbd-professional-services
+
+
+#git show all branches
+  git show-branch
+
+
+#git pull --rebase by default
+  git config --global pull.rebase true
+
+
+#add a missing file to last unpush commit
+  edited file-that-i-remember.txt
+  git add file-that-i-remember.txt
+  git commit
+  # realize you forgot a file
+  git add file-that-i-forgot.txt
+  git commit --amend --no-edit
+
+
+#reset to last commit
+  git reset --soft HEAD^
+
+
+#git df commit_old comit_new, it will print old the change
+git df specific_old_commit HEAD
+
+
+#git bisect
+1. git bisect start
+2. git bisect bad commit_sha_of_not_working_commit
+3. git bisect good commit_sha_of_a_working_one
+4.git will perform a binary search of commit sha
+5. each try, manually verify if the code runs correctly, if correct, type git bisect good, if not, type git bisect bad, git will automatically jump to next mid point
+
+
+#git alias
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+git config --global alias.df diff
