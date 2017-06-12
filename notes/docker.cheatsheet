@@ -7,6 +7,7 @@ docker run -p 8080:80 #map the local host port 8080 to the docker's port 80
 docker --name container_name #name the container
 docker -d #run as daemon(background service)
 docker build -t tag1 . #tag current image file as tag1
+docker-compose -f ./compose.base.pyapi-ws.yml up -p project_name #put this config in different project name, if multiple container trying to use same port in same project, the latter will kill the previous one
 
 
 
