@@ -4,24 +4,25 @@
 #better sudo it
 #backing up old files
 mkdir bak
-cp ~/.bashrc $PWD/bak/bashrc
-cp ~/.vimrc $PWD/bak/vimrc
-cp ~/.tmux.conf $PWD/bak/tmux.conf
-cp ~/.screenrc $PWD/bak/.screenrc
-cp ~/notes $PWD/bak/notes
+mv ~/.bashrc $PWD/bak/bashrc
+mv ~/.vimrc $PWD/bak/vimrc
+mv ~/.tmux.conf $PWD/bak/tmux.conf
+mv ~/.screenrc $PWD/bak/.screenrc
 ln -s $PWD/bashrc ~/.bashrc
 ln -s $PWD/bash_aliases ~/.bash_aliases
 ln -s $PWD/bash_home_brew_script ~/.bash_home_brew_script
 ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/screenrc ~/.screenrc
-ln -s $PWD/notes ~/notes
 
+ln -s $PWD/notes ~/notes
+mv ~/notes $PWD/bak/notes
 sudo apt-get install build-essential cmake
 sudo apt-get install python-dev python3-dev python-pip
 sudo apt-get install python-dev libxml2-dev libxslt-dev
 sudo pip install --upgrade virtualenv
 sudo pip install --upgrade pip 
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #go into vim and type :PluginInstall
 #after than run following
 #cd ~/.vim/bundle/YouCompleteMe
