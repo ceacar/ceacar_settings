@@ -1,0 +1,15 @@
+#tutorial available at https://docs.docker.com/get-started/part3/#your-first-docker-composeyml-file
+version: "1"
+services:
+  SERVICE_NAME:
+    image: IMAGE_NAME
+    ports:
+      - "HOST_PORT:CONTAINER_PORT"
+    links:
+      - CONTAINER_NAME_YOU_WANT_TO_LINK
+    environment:
+      - ENV_VAR=VALUE
+  SERVICE_NAME2:
+    image: IMAGE_NAME
+    #this PORT if not specified if it's gonna be exposed to HOST, it will be handled by docker itself, it will link SERVICE_NAME and SERVICE_NAME2
+    ports: [PORT_NUMBER]
