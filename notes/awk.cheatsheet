@@ -14,3 +14,25 @@ split($3,exchangeSymbolsTemp,"|")
 awk -v OFS="," 'scripts' #this will print out files in deliminited format as specified
 
 out=out OFS $i #this is the variables concatenated as a string
+
+
+
+#elegant removing scientific of awk
+#!/usr/bin/awk -f
+BEGIN {
+    d = "[[:digit:]]"
+    OFS = FS = ","
+}
+{
+    delim = ""
+    for (i = 1; i <= NF; i++) {
+        if ($i ~ d "e+" d d d "$") {
+            printf "%s%.41f", delim, $i
+        }
+        else {
+            printf "%s%s", delim, $i
+        }
+        delim = OFS
+    }
+    printf "\n"
+}
