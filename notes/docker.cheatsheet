@@ -13,6 +13,7 @@ docker-compose -p project_name -f ./compose.base.pyapi-ws.yml up #put this confi
 docker run -t -i image_name #run the docker image in interactive mode
 docker attach [CONTAINER_ID|CONTAINER_NAMES] #attched to terminal which is being used in the container specified
 docker exec -i -t [CONTAINER_ID|CONTAINER_NAMES] /bin/bash #open a new terminal in the CONTAINER specified
+docker run -it fbd-jenkins /bin/bash #run fbd-jenkins and open the interactive mode, if it is killed, container is killed
 
 
 #docker without sudo
@@ -31,3 +32,6 @@ docker run hello-world
 #cmd example
 docker-compose -p $PROJECT_NAME -f COMPOSE_FILE_PATH1 -F COMPOSE_FILE_PATH2 up --abort-on-container-exit
 docker build -f $PWD/dockerfile -t tag_name .
+
+
+

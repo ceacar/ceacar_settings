@@ -1,0 +1,14 @@
+#jenkins main page -> credentials -> global key xxxx --> add domain xxx ;
+#you should be able to see adding key
+
+
+#obtain jenkins crumb
+CRUMB=$(curl -s 'http://YOUR_ACC_NAME:YOUR_ADMIN_PASSWORD@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+curl -X POST -H "$CRUMB" http://YOUR_ACC_NAME:YOUR_ADMIN_PASSWORD@localhost:8080
+
+
+#install jenkins plugin
+http://blog.pu-gh.com/2014/05/11/scripting-jenkins-configuration/
+
+#jenkins file structure
+https://wiki.jenkins.io/plugins/servlet/mobile#content/view/753705
