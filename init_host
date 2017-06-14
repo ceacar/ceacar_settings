@@ -14,6 +14,7 @@ ln -s $PWD/bash_home_brew_script ~/.bash_home_brew_script
 ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/screenrc ~/.screenrc
+ln -s $PWD/vim_colors ~/.vim/colors
 
 ln -s $PWD/notes ~/notes
 mv ~/notes $PWD/bak/notes

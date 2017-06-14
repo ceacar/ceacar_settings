@@ -9,6 +9,7 @@ services:
       - CONTAINER_NAME_YOU_WANT_TO_LINK
     environment:
       - ENV_VAR=VALUE
+    volumes: ["HOST_PATH:IMAGE_DIR_PATH_the_image_path_which_is_where_host_path_will_be_mapped_to"]
   SERVICE_NAME2:
     image: IMAGE_NAME
     #this PORT if not specified if it's gonna be exposed to HOST, it will be handled by docker itself, it will link SERVICE_NAME and SERVICE_NAME2
