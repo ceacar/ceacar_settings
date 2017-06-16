@@ -35,3 +35,56 @@ docker build -f $PWD/dockerfile -t tag_name .
 
 
 
+#curling to update job in jenkins
+#get the crumb which is used for authenticating 
+ADMIN_PSWD=123124156gfjkglksdjthfks
+CRUMB=$(curl -s 'http://admin:$ADMIN_PSWD@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+#test the connectivity
+curl -X POST -H "$CRUMB" http://admin:$ADMIN_PSWD@localhost:8080
+#get the job config
+curl -X GET http://admin:$ADMIN_PSWD@localhost:8080/job/test1/config.xml -o mylocalconfig.xml
+#use the job config to create a new job
+curl -s -XPOST -H "$CRUMB" 'http://admin:$ADMIN_PSWD@localhost:8080/createItem?name=yourJobName' --data-binary @mylocalconfig.xml -H "Content-Type:text/xml"
+#start to build the job
+curl --user dbacher:$MY_API_TOKEN http://jenkins:8080/job/my%20job/build [ returns nothing and the build starts ]
+
+
+#how to add credential to jenkins
+#THIS CAN ALSO DONE BY JUST COPYING credentials.xml to $JENKINS_HOME 
+curl -H $CRUMB -X POST 'http://user:token@jenkins_server:8080/credentials/store/system/domain/_/createCredentials' \
+--data-urlencode 'json={
+  "": "0",
+  "credentials": {
+    "scope": "GLOBAL",
+    "id": "identification",
+    "username": "manu",
+    "password": "bar",
+    "description": "linda",
+    "$class": "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"
+  }
+}'
+
+
+#jenkins cli
+#download the cli jar file
+curl -O http://localhost:8080/jnlpJars/jenkins-cli.jar
+#login as admin
+java -jar "./jenkins-cli.jar" -s http://localhost:8080 who-am-i --username admin --password $ADMIN_PSWD
+#help
+java -jar jenkins-cli.jar -s http://localhost:8080 help --username admin --password $ADMIN_PSWD
+
+
+
+
+
+
+
+#misc
+curl -u user:pass \
+	-X POST \
+	-H "Accept: application/json" \
+	-H "Content-Type: application/json" \
+	http://stash.server/rest/keys/1.0/projects/PROJECT/ssh \
+	-d '{"key": { "text": "ssh-rsa ...." }, "permission": "PROJECT_READ"}'
+
+

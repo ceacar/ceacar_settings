@@ -110,7 +110,7 @@ nnoremap <F3> :call NumberToggle()<cr>
 
 set invnumber nornu
 
-nnoremap <F4> :set invnumber nornu<cr>
+nnoremap <F5> :set invnumber nornu<cr>
 
 
 " enable the folding plugin
