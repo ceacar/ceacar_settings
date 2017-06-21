@@ -16,6 +16,8 @@ docker exec -i -t [CONTAINER_ID|CONTAINER_NAMES] /bin/bash #open a new terminal 
 docker run -it fbd-jenkins /bin/bash #run fbd-jenkins and open the interactive mode, if it is killed, container is killed
 
 
+
+
 #docker without sudo
 sudo groupadd docker
 sudo gpasswd -a $USER docker
@@ -32,6 +34,13 @@ docker run hello-world
 #cmd example
 docker-compose -p $PROJECT_NAME -f COMPOSE_FILE_PATH1 -F COMPOSE_FILE_PATH2 up --abort-on-container-exit
 docker build -f $PWD/dockerfile -t tag_name .
+#remove all exited docker container
+docker rm $(docker ps -q -f status=exited)
+#wipe out all the docker container
+docker rm $(docker ps -a -q)
+#remove all dangling docker images, dangling is a state where docker image is not used in anywhere
+docker rmi $(docker images -f "dangling=true" -q)
+
 
 
 

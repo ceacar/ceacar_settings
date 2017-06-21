@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#get script name
+script_name=`basename "$0"`
+
