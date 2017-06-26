@@ -18,9 +18,9 @@ ln -s $PWD/vim_colors ~/.vim/colors
 
 ln -s $PWD/notes ~/notes
 mv ~/notes $PWD/bak/notes
-sudo apt-get install build-essential cmake
-sudo apt-get install python-dev python3-dev python-pip
-sudo apt-get install python-dev libxml2-dev libxslt-dev
+sudo apt-get -y install build-essential cmake
+sudo apt-get -y install python-dev python3-dev python-pip
+sudo apt-get -y install python-dev libxml2-dev libxslt-dev
 sudo pip install --upgrade virtualenv
 sudo pip install --upgrade pip 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -28,3 +28,5 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #after than run following
 #cd ~/.vim/bundle/YouCompleteMe
 #./install.py --clang-completer
+
+ln -s $PWD/vim_colors ~/.vim/colors
