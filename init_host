@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -fueo pipefail
 
 #better sudo it
 #backing up old files
@@ -8,6 +8,7 @@ mv ~/.bashrc $PWD/bak/bashrc
 mv ~/.vimrc $PWD/bak/vimrc
 mv ~/.tmux.conf $PWD/bak/tmux.conf
 mv ~/.screenrc $PWD/bak/.screenrc
+mkdir -p ~/.vim/
 ln -s $PWD/bashrc ~/.bashrc
 ln -s $PWD/bash_aliases ~/.bash_aliases
 ln -s $PWD/bash_home_brew_script ~/.bash_home_brew_script
@@ -15,18 +16,41 @@ ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/screenrc ~/.screenrc
 ln -s $PWD/vim_colors ~/.vim/colors
-
 ln -s $PWD/notes ~/notes
 mv ~/notes $PWD/bak/notes
+#clone git repo frequently used
+git clone git@github.com:ceacar/utility.git $PWD/utility
+git clone git@github.com:ceacar/albert_practice.git $PWD/albert_practice
+
+#some essential dev env
 sudo apt-get -y install build-essential cmake
 sudo apt-get -y install python-dev python3-dev python-pip
 sudo apt-get -y install python-dev libxml2-dev libxslt-dev
 sudo pip install --upgrade virtualenv
 sudo pip install --upgrade pip 
+
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+#change permission of the directory so vim could install everything when other user need it
+chmod -R ~/.vim
 #go into vim and type :PluginInstall
 #after than run following
 #cd ~/.vim/bundle/YouCompleteMe
 #./install.py --clang-completer
 
-ln -s $PWD/vim_colors ~/.vim/colors
+
+
+
+#git alias
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+git config --global alias.df diff
+git config --global alias.pr 'pull --rebase'
+
+#git 
+git config --global user.email "alex.yonder@yahoo.com"
+git config --global user.name "ceacar"
+
+#install for vim
+vim -c 'PluginInstall' -c 'qa!'
