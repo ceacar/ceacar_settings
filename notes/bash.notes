@@ -3,3 +3,24 @@
 #get script name
 script_name=`basename "$0"`
 
+#get all argument except the last
+length=$(($#-1))
+array=${@:1:$length}
+
+#split argument for first n-1 and last 1
+function run_and_memo(){
+  local length=$(($#-1))
+  local array=${@:1:$length}
+  local cmd_to_run=$(echo $array)
+  local cmd2="${@: -1}"
+  #echo "$cmd_to_run"
+  $cmd_to_run
+  $cmd2
+}
+
+ #file descriptor as a output file
+exec 3>> output.txt
+echo "f1"
+echo >&2 "f2"
+echo "f3" >&3
+echo "f4" >&3
