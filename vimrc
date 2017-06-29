@@ -23,6 +23,9 @@ set softtabstop=2
 
 " make "tab" insert indents instead of tabs at the beginning of a line
 set smarttab
+" if you search with 'Mykeyword', it will search with case sensitive, if with
+" " 'mykeyword', it will search with case insensitive
+set smartcase
 
 "another color scheme
 "Plugin 'jnurmine/Zenburn'
