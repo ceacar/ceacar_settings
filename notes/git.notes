@@ -47,3 +47,5 @@ git config --global alias.pr 'pull --rebase'
 #git 
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
+#make git to use vim on commit
+git config --global core.editor "vim"
