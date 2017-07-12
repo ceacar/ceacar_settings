@@ -4,3 +4,12 @@ git clone https://github.com/vim/vim.git
 cd vim/src
 make
 alias vim='path_to_your_own_vim'
+
+
+
+#vimdiff
+#disable color
+:diffoff!
+#enable color
+:windo diffthis
+
