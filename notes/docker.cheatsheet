@@ -9,12 +9,13 @@ docker --name container_name #name the container
 docker -d #run as daemon(background service)
 docker build -t tag1 . #tag current image file as tag1
 docker build -f file_path #it will build the docker with the config file at file_path
+docker build -f file_path -t tag1 #tag the file specified as tag1
 docker-compose -p project_name -f ./compose.base.pyapi-ws.yml up #put this config in different project name, if multiple container trying to use same port in same project, the latter will kill the previous one
 docker run -t -i image_name #run the docker image in interactive mode
 docker attach [CONTAINER_ID|CONTAINER_NAMES] #attched to terminal which is being used in the container specified
 docker exec -i -t [CONTAINER_ID|CONTAINER_NAMES] /bin/bash #open a new terminal in the CONTAINER specified
 docker run -it fbd-jenkins /bin/bash #run fbd-jenkins and open the interactive mode, if it is killed, container is killed
-
+docker run -rm -ti tag_name /bin/bash #automatically remove the container tag_name upon exit
 
 
 

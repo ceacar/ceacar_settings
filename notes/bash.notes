@@ -24,3 +24,8 @@ echo "f1"
 echo >&2 "f2"
 echo "f3" >&3
 echo "f4" >&3
+
+
+
+#run cmd under other user
+su -l -s /bin/sh fbd -c 'pwd'
