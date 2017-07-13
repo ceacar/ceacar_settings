@@ -1,0 +1,49 @@
+#functional programming
+from functools import partial
+from operator import add
+def add1(x):
+  return add(1,x)
+#above function can be written as below
+add1=partial(add,1)
+
+
+#lazy evaluation trick
+
+#iterators
+iter(x)
+#calls next
+next(x)
+
+#this will only evaluate when it is called(in some sequence)
+def lazy_integers(n=0):
+  while True:
+    yield n
+  n+1
+xs=lazy_integers()
+[next(xs) for _ in range(10)]
+
+#generator comprehensions
+squares=(x**2 for x in lazy_integers())
+next(squares)
+
+
+
+#itertools
+
+#count lazy eval
+from itertools import count
+count([start=0,[step=1]) #start, start+step, start+2*step, ...
+#islice is a lazy eval of returning a part of a list
+from itertools improt islice
+islice(seq, [start=0], stop, [ste=1])
+#copies a iterator
+tee(it,[n=2])
+#repeat
+repeat(it,[n=forever])
+#cycle = repeat forever
+cycle(p)
+#chain
+chain(a,b,...)
+#accumulate, similar to reduce in scala
+from itertools import accumulate
+accumulate(p,[func=add])
