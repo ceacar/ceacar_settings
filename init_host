@@ -26,6 +26,11 @@ git clone git@github.com:ceacar/albert_practice.git $PWD/albert_practice
 sudo apt-get -y install build-essential cmake
 sudo apt-get -y install python-dev python3-dev python-pip
 sudo apt-get -y install python-dev libxml2-dev libxslt-dev
+#you complete me prerequisite
+sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
+    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+    python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
 sudo pip install --upgrade virtualenv
 sudo pip install --upgrade pip 
 
@@ -54,3 +59,10 @@ git config --global user.name "ceacar"
 
 #install for vim
 vim -c 'PluginInstall' -c 'qa!'
+
+#compile you completeme
+cd ~/.vim/bundle/YouCompleteMe
+./install.py --clang-completer
+
+
+
