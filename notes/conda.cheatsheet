@@ -1,0 +1,86 @@
+#!/bin/bash
+
+#if it's miniconda,following is needed for it to work
+
+#example of building with pypi
+conda install conda-build
+conda skeleton pypi mypackage
+conda build mypackage
+#conda stores file in tar file
+
+
+conda install
+conda install --use-local mypackage #install package from local package
+conda install $FILE_PATH #install conda package from a local file
+conda search
+conda create -n env_name python=3.5 #install python virtual env with python 3.5 and name this env to be env_name
+conda env list #list all conda env list
+source activate env_name #use the environment named env_name
+package list #list all packages installed currently
+conda build --python=3.4 mypackage #install mypackage for python version 3.4
+conda convert --platform all ./xxxxx.tar.bz2 -o outputdir/ #convert conda to other platform
+
+#install conda on alpine
+apk --no-cache add ca-certificates openssl
+wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
+wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk
+apk add glibc-2.25-r0.apk
+bash ./Miniconda3-latest-Linux-x86_64.sh  -bp /miniconda3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#conda has following files:
+  #1.meta.yml
+  #2.build.sh
+  #3.setup.py
+
+
+#meta.yaml file example
+#package:
+#  name: pyinstrument
+#  version: "0.13.1"
+#
+#source:
+#  git_rev: v0.13.1
+#  git_url: https://github.com/joerick/pyinstrument.git
+#
+#requirements:
+#  build:
+#    - python
+#    - setuptools
+#  run:
+#    - python
+#
+#test:
+#  imports:
+#    - pyinstrument
+#
+#about:
+#  home: https://github.com/joerick/pyinstrument
+#  license: BSD
+#  license_file: LICENSE
+
+
+
+
+
+
+
+
+
+
+
