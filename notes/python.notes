@@ -4,8 +4,7 @@ from operator import add
 def add1(x):
   return add(1,x)
 #above function can be written as below
-add1=partial(add,1)
-
+add1=partial(add,1) 
 
 #lazy evaluation trick
 
@@ -47,3 +46,58 @@ chain(a,b,...)
 #accumulate, similar to reduce in scala
 from itertools import accumulate
 accumulate(p,[func=add])
+
+
+
+
+
+
+
+
+################TOOLZ###############################
+#http://toolz.readthedocs.io/en/latest/api.html#toolz.functoolz.compose
+#compose n functions
+import toolz
+>>> inc = lambda i: i + 1
+import toolz.functoolz.compose(str, inc)(3)
+'4'
+
+#this is the same as f(g(h(x, y)))
+toolz.functoolz.compose(f, g, h)(x, y)
+
+
+#equivalent of h(g(f(data)))
+toolz.functoolz.pipe(data, f, g, h)
+
+#function that converts binary output to true or false
+toolz.functoolz.complement(function_of_binary_output)
+
+#converts any function to composable function
+#toolz.functoolz.do(func, x)
+>>> from toolz import compose
+>>> from toolz.curried import do
+>>> log = []
+>>> inc = lambda x: x + 1
+>>> inc = compose(inc, do(log.append))
+>>> inc(1)
+2
+>>> inc(11)
+12
+>>> log
+[1, 11]
+
+
+  #manual implementation:
+  #import functools
+  #def compose(*functions):
+  #    def compose2(f, g):
+  #        return lambda x: f(g(x))
+  #    #applies compose2 to each functions and initial value is lambda x:x  which is anonymous function of returning original
+  #    return functools.reduce(compose2, functions, lambda x: x)
+  ##the order the from right to left since it's a reduce function
+  #composed_func = compose(str,lambda x: x*x, lambda x:x*2)
+  #print composed_func(10)
+
+
+
+
