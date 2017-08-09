@@ -33,3 +33,6 @@ su -l -s /bin/sh fbd -c 'pwd'
 
 #get dates
 date +%Y%m%d -d "-1 days"
+
+#parallel syntax
+parallel --retries 5 -j $(nproc) --halt=2 --block $your_chunk_size --pipe $cmd
