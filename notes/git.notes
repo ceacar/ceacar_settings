@@ -42,6 +42,7 @@ git config --global alias.ci commit
 git config --global alias.st status
 git config --global alias.df diff
 git config --global alias.pr 'pull --rebase'
+git config --global alias.lgb "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches"
 
 
 #git 
@@ -49,3 +50,5 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 #make git to use vim on commit
 git config --global core.editor "vim"
+
+git reflog#records all git activity and commmit sha

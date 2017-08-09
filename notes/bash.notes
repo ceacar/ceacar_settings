@@ -8,8 +8,7 @@ length=$(($#-1))
 array=${@:1:$length}
 
 #split argument for first n-1 and last 1
-function run_and_memo(){
-  local length=$(($#-1))
+function run_and_memo(){ local length=$(($#-1))
   local array=${@:1:$length}
   local cmd_to_run=$(echo $array)
   local cmd2="${@: -1}"
@@ -29,3 +28,8 @@ echo "f4" >&3
 
 #run cmd under other user
 su -l -s /bin/sh fbd -c 'pwd'
+
+
+
+#get dates
+date +%Y%m%d -d "-1 days"
