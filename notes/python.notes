@@ -47,13 +47,6 @@ chain(a,b,...)
 from itertools import accumulate
 accumulate(p,[func=add])
 
-
-
-
-
-
-
-
 ################TOOLZ###############################
 #http://toolz.readthedocs.io/en/latest/api.html#toolz.functoolz.compose
 #compose n functions
@@ -101,3 +94,5 @@ toolz.functoolz.complement(function_of_binary_output)
 
 
 
+#install specific version of dependency
+pip install django_modeltranslation==0.4.0-beta2

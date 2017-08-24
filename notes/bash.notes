@@ -30,9 +30,11 @@ echo "f4" >&3
 su -l -s /bin/sh fbd -c 'pwd'
 
 
-
 #get dates
 date +%Y%m%d -d "-1 days"
 
 #parallel syntax
 parallel --retries 5 -j $(nproc) --halt=2 --block $your_chunk_size --pipe $cmd
+#trap
+trap 'echo "job error"' ERR #will echo when job errored
+trap 'echo "job error"' EXIT #will echo regardless what is the exit status

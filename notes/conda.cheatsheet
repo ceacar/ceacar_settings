@@ -83,4 +83,7 @@ bash ./Miniconda3-latest-Linux-x86_64.sh  -bp /miniconda3
 
 
 
-
+#how to install
+curl -O https://repo.continuum.io/archive/Anaconda3-4.4.0-Linux-x86_64.sh
+bash ./Anaconda3-4.4.0-Linux-x86_64.sh -b -p /opt/anaconda3
+source /opt/anaconda3/bin/activate
