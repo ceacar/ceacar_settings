@@ -96,3 +96,6 @@ toolz.functoolz.complement(function_of_binary_output)
 
 #install specific version of dependency
 pip install django_modeltranslation==0.4.0-beta2
+
+#merge two json, or update one json with another json
+c = {key: value for (key, value) in (a.items() + b.items())}

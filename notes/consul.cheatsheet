@@ -1,0 +1,142 @@
+#starts service
+service consul start
+
+#start cmd is below 
+#dns-port overwrites the dns port which in response of answering queries
+consul agent -dev -config-dir=/etc/consul.d/web.json -dns-port 10000
+
+#example consul config file
+#file lcoated at /etc/consule.d/config.json
+{
+  "datacenter": "east-aws",
+  "data_dir": "/opt/consul",
+  "log_level": "INFO",
+  "node_name": "foobar",
+  "server": true,
+  "watches": [
+    {
+        "type": "checks",
+        "handler": "/usr/bin/health-check-handler.sh"
+    }
+  ],
+  "telemetry": {
+     "statsite_address": "127.0.0.1:2180"
+  }
+}
+
+
+#consul monitor logs
+consule monitor
+
+#tell consule to check certain service
+dig @127.0.0.1 -p 8600 mysql.service.consul SRV +short
+
+#check all running agent in consul
+consul members
+
+#discovers the service at localhost
+#the "${service_name}.service.consul" is where it identifies which service it queries
+dig @127.0.0.1 -p 8600 web.service.consul
+#use the curl to retrieve config
+curl http://localhost:8500/v1/catalog/service/web
+#respond is like follows
+[
+    {
+        "ID": "4344599d-c1cc-79c1-038c-64eded72b3d3",
+        "Node": "87761da82175",
+        "Address": "127.0.0.1",
+        "Datacenter": "dc1",
+        "TaggedAddresses": {
+            "lan": "127.0.0.1",
+            "wan": "127.0.0.1"
+        },
+        "NodeMeta": {},
+        "ServiceID": "web",
+        "ServiceName": "web",
+        "ServiceTags": [
+            "rails"
+        ],
+        "ServiceAddress": "",
+        "ServicePort": 80,
+        "ServiceEnableTagOverride": false,
+        "CreateIndex": 6,
+        "ModifyIndex": 6
+    }
+]
+
+
+
+#multiple agent config
+#see https://www.consul.io/intro/getting-started/join.html
+
+#health check
+vagrant@n2:~$ echo '{"check": {"name": "ping",
+  "script": "ping -c1 google.com >/dev/null", "interval": "30s"}}' \
+  >/etc/consul.d/ping.json
+
+vagrant@n2:~$ echo '{"service": {"name": "web", "tags": ["rails"], "port": 80,
+  "check": {"script": "curl localhost >/dev/null 2>&1", "interval": "10s"}}}' \
+  >/etc/consul.d/web.json
+
+#save value by key, in this case, key is "consul kv delete -recurse redis"
+consul kv put redis/config/minconns 1
+#retrieve value by key
+consul kv get redis/config/minconns
+#retrieve detailed value by key
+consul kv get -detailed redis/config/minconns
+#retrieve all key,values?
+consul kv get -recurse
+#delete key
+consul kv delete redis/config/minconns
+#delete keys starts with redis
+consul kv delete -recurse redis
+#update key foo with value bar
+consul kv put -cas -modify-index=123 foo bar
+
+
+#http api
+#retrieve value of key foo
+curl http://localhost:8500/v1/kv/foo
+#respond example:
+[
+    {
+        "LockIndex": 0,
+        "Key": "redis/config/minconns",
+        "Flags": 0,
+        "Value": "MQ==",
+        "CreateIndex": 32,
+        "ModifyIndex": 32
+    }
+]
+
+#delete value of key 'my-key'
+curl \
+    --request DELETE \
+    https://consul.rocks/v1/kv/my-key
+
+#save value to consul
+curl \
+    --request PUT \
+    --data @contents \
+    https://consul.rocks/v1/kv/my-key
+
+
+#consul data file example
+[        {
+                "key": "europe",
+                "flags": 0,
+                "value": "NzQzLjE="
+        },
+        {
+                "key": "europe/france",
+                "flags": 0,
+                "value": "NjYuOQ=="
+        },
+        {
+                "key": "europe/germany",
+                "flags": 0,
+                "value": "ODIuNjc="
+        }
+]
+#consul load key value pairs from file
+consul kv import @/etc/consul.d/kv.json

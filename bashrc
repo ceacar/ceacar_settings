@@ -84,5 +84,6 @@ PATH=$PATH:/usr/local/spark/bin
 export PATH
 export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$PATHONPATH
 export ceacar_setting='/home/ceacar/projects/ceacar_settings'
+export notes=$ceacar_setting/notes
 
 
