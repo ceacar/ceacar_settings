@@ -99,3 +99,19 @@ curl -u user:pass \
 
 
 #
+
+
+
+#######################docker compose#########################
+
+#mapping port, Either specify both ports (HOST:CONTAINER), or just the container port (a random host port will be chosen).
+mysql:
+  image: mysql:5.7
+  ports:
+    - "33030:10000"
+
+#Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+mysql:
+  image: mysql:5.7
+  expose:
+    - "3306"

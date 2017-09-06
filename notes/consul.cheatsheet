@@ -140,3 +140,8 @@ curl \
 ]
 #consul load key value pairs from file
 consul kv import @/etc/consul.d/kv.json
+
+
+
+#registering a external service
+https://www.consul.io/docs/guides/external.html
