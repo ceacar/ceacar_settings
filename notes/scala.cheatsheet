@@ -1,0 +1,14 @@
+//helloworld code
+object HelloWorld {
+  def main(args: Array[String]) {
+    println("Hello, world!")
+    println("waht is this")
+
+  }
+}
+
+//read from file
+val file_source = fromFile("temp.txt").getLines;
+for(line <- file_source){
+  println(line)
+}

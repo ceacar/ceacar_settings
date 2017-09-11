@@ -38,3 +38,19 @@ parallel --retries 5 -j $(nproc) --halt=2 --block $your_chunk_size --pipe $cmd
 #trap
 trap 'echo "job error"' ERR #will echo when job errored
 trap 'echo "job error"' EXIT #will echo regardless what is the exit status
+
+
+#find ip address of host
+hostname -I
+
+#fix the issue tmux not connected to the old same agent when reconnect
+create ~/.ssh/rc if it doesn't exist yet, and add the following content:
+#!/bin/bash
+
+# Fix SSH auth socket location so agent forwarding works with tmux
+if test "$SSH_AUTH_SOCK" ; then
+  ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+fi
+Make it work in tmux, add this to your ~/.tmux.conf:
+# fix ssh agent when tmux is detached
+setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock

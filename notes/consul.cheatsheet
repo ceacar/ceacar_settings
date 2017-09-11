@@ -145,3 +145,10 @@ consul kv import @/etc/consul.d/kv.json
 
 #registering a external service
 https://www.consul.io/docs/guides/external.html
+
+#open the consul server to outer
+#192.168.0.2 is the server ip address of the host which is running consul
+consul agent -dev -client=192.168.0.2
+
+#get the value with the key with specifying the ip address is 172.20.2:8500, this address has to be added because of above setup(-client=...)
+consul kv get -http-addr=192.168.0.2:8500 pyapi-ws

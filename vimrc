@@ -53,6 +53,9 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
+" let Vundle manage Plugin 'derekwyatt/vim-scala'
+" this plugin seems doesn't do anything
+" Plugin 'derekwyatt/vim-scala'
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -130,6 +133,11 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix |
 
 au BufNewFile,BufRead *.js,*.html,*.css,*.yml
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+
+au BufNewFile,BufRead *.scala
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
