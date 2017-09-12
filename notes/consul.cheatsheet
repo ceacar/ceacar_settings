@@ -152,3 +152,24 @@ consul agent -dev -client=192.168.0.2
 
 #get the value with the key with specifying the ip address is 172.20.2:8500, this address has to be added because of above setup(-client=...)
 consul kv get -http-addr=192.168.0.2:8500 pyapi-ws
+=======
+#getting keys from specified ip
+consul kv get -http-addr=127.0.0.1:38112 pyapi-ws
+
+
+
+
+#python consul
+#
+import consul
+
+c = consul.Consul()
+
+# poll a key for updates
+index = None
+while True:
+    index, data = c.kv.get('foo', index=index)
+    print data['Value']
+
+# in another process
+c.kv.put('foo', 'bar')

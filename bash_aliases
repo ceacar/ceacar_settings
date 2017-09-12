@@ -21,3 +21,6 @@ alias lssize="du -sh *"
 alias peekrawtaq="pypy ~/Documents/code/raw_taq_peek.py"
 alias lsdir="ls -d */"
 alias refreshbashrc='source ~/.bashrc'
+alias dockerkillall='docker kill $(docker ps -q)'
+alias vimnoplugin='vim -u NONE'
+alias vimwithoutycm="vim --cmd 'set rtp^='~/.vimrd''"

@@ -99,3 +99,5 @@ pip install django_modeltranslation==0.4.0-beta2
 
 #merge two json, or update one json with another json
 c = {key: value for (key, value) in (a.items() + b.items())}
+#loads json string to json
+obj = json.loads(json_string) 

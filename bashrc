@@ -81,6 +81,7 @@ LS_COLORS=$LS_COLORS:'di=36:' ; export LS_COLORS
 
 PATH=$PATH:~/Documents/code
 PATH=$PATH:/usr/local/spark/bin
+PATH=$PATH:/usr/local/go/bin
 export PATH
 export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$PATHONPATH
 export ceacar_setting='/home/ceacar/projects/ceacar_settings'
