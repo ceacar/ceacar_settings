@@ -1,0 +1,200 @@
+#check elk health
+curl -XGET 'localhost:9200/_cat/master?help&pretty'
+#check node specific column
+curl -XGET 'localhost:9200/_cat/nodes?h=ip,port,heapPercent,name&pretty'
+#list all sizes
+curl '192.168.56.10:9200/_cat/indices?bytes=b' | sort -rnk8
+#create an index
+curl -XPUT 'localhost:9200/customer?pretty&pretty'
+
+#add data to elk file
+curl -XPUT 'localhost:9200/customer/external/1?pretty&pretty' -H 'Content-Type: application/json' -d'{ "name": "John Doe" }'
+#retrieve the document just created
+curl -XGET 'localhost:9200/customer/external/1?pretty&pretty'
+#delete an index
+curl -XDELETE 'localhost:9200/customer?pretty&pretty'
+curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+#write dat without a specific document id(the document_id will be randomly assigned)
+curl -XPOST 'localhost:9200/customer/external?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Jane Doe"
+}
+'
+#update customer document 1
+curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "doc": { "name": "Jane Doe" }
+}
+'
+
+#script usage
+curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "doc": { "name": "Jane Doe", "age": 20 }
+}
+'
+  #now let's use script to add 5 to age
+  curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+  {
+    "script" : "ctx._source.age += 5"
+  }
+  '
+#delete a document
+curl -XDELETE 'localhost:9200/customer/external/2?pretty&pretty'
+
+#bulk operation
+#this inserts two record
+curl -XPOST 'localhost:9200/customer/external/_bulk?pretty&pretty' -H 'Content-Type: application/json' -d'
+{"index":{"_id":"1"}}
+{"name": "John Doe" }
+{"index":{"_id":"2"}}
+{"name": "Jane Doe" }
+'
+curl -XPOST 'localhost:9200/customer/external/_bulk?pretty&pretty' -H 'Content-Type: application/json' -d'
+{"update":{"_id":"1"}}
+{"doc": { "name": "John Doe becomes Jane Doe" } }
+{"delete":{"_id":"2"}}
+'
+
+
+#load files
+curl -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/account/_bulk?pretty&refresh' --data-binary "@accounts.json"
+curl 'localhost:9200/_cat/indices?v'
+
+#searching url
+curl -XGET 'localhost:9200/bank/_search?q=*&sort=account_number:asc&pretty&pretty'
+
+#searching with body
+#match_all means search all documents
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} }
+}
+'
+#return only one result
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "size": 1
+}
+'
+
+#return certain part of records, in this case is from the 10th, retrieve 10 records
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 10
+}
+'
+#sort in desc
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "sort": { "balance": { "order": "desc" } }
+}
+'
+#search for account_number 20
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match": { "account_number": 20 } }
+}
+'
+#search for address contains mill or lane
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match": { "address": "mill" } }
+}
+'
+#search for address contains "mill lane"
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_phrase": { "address": "mill lane" } }
+}
+'
+#query composition, bool in here is just a compose flag
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+'
+
+#not matching example
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+'
+
+#range return all records with balance in certain range
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": { "match_all": {} },
+      "filter": {
+        "range": {
+          "balance": {
+            "gte": 20000,
+            "lte": 30000
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+#groups records by state and return count of them
+#query equals to below
+#SELECT state, COUNT(*) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+'
+#aggregate_blance is average of field balance
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+
+

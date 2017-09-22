@@ -117,7 +117,9 @@ nnoremap <F3> :call NumberToggle()<cr>
 set invnumber nornu
 
 nnoremap <F5> :set invnumber nornu<cr>
-
+" toggle ignore case
+nnoremap <F6> :set ic!<cr>
+"nmap <F9> :set ignorecase! ignorecase?
 
 " enable the folding plugin
 "Plugin 'tmhedberg/SimpylFold'
