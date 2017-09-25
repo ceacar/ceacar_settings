@@ -115,3 +115,16 @@ mysql:
   image: mysql:5.7
   expose:
     - "3306"
+
+
+
+
+
+#hack everything by mounting the volume as docker volume
+docker run -v /var/lib/docker:/opt/docker -it ubuntu bash
+
+
+#Know issue
+  #docker and openvpn has conflicts
+  #use sudo service openvpn stop
+  #and then run docker compose

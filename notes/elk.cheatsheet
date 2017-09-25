@@ -1,3 +1,27 @@
+#start elk with config
+./bin/elasticsearch -Epath.conf=/path/to/my/config/
+#config file is yaml
+#config.yml
+#format shoudl like this
+path:
+  data: /var/lib/elasticsearch
+  logs: /var/lib/elasticsearch
+
+node:
+  name: ${HOSTNAME}
+
+cluster.name: logging_prod
+
+#enable memory lock, so elk memory won't get swapped to harddisk
+bootstrap.memory_lock: true
+
+#add popups on the terminal for input
+node:
+  name: ${prompt.text}
+
+
+
+
 #check elk health
 curl -XGET 'localhost:9200/_cat/master?help&pretty'
 #check node specific column
@@ -196,5 +220,51 @@ curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/js
 }
 '
 
+#group by age brackets (ages 20-29, 30-39, and 40-49), then by gender, and then finally get the average account balance, per age bracket, per gender
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_age": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "from": 20,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 40
+          },
+          {
+            "from": 40,
+            "to": 50
+          }
+        ]
+      },
+      "aggs": {
+        "group_by_gender": {
+          "terms": {
+            "field": "gender.keyword"
+          },
+          "aggs": {
+            "average_balance": {
+              "avg": {
+                "field": "balance"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'
 
 
+
+#beat this is tools for shipping log to elastic server
+#metricbeat, sends cpu info and possbile everything lese
+#packetbeat, logs every network traffic
+#filebeat
