@@ -128,3 +128,6 @@ docker run -v /var/lib/docker:/opt/docker -it ubuntu bash
   #docker and openvpn has conflicts
   #use sudo service openvpn stop
   #and then run docker compose
+
+#in docker image run script as other user:
+setuser other_user_name any_cmd_or_script
