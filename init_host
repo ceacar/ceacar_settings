@@ -17,6 +17,8 @@ ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/screenrc ~/.screenrc
 ln -s $PWD/vim_colors ~/.vim/colors
 ln -s $PWD/notes ~/notes
+ln -s $PWD/tmux_lunch ~/.tmux_lunch
+chmod +x ~/.tmux_lunch
 mv ~/notes $PWD/bak/notes
 #clone git repo frequently used
 git clone git@github.com:ceacar/utility.git $PWD/utility
