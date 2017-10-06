@@ -124,6 +124,10 @@ function deploy_instance(){(
   echo "host ready"
 )}
 
+function tmuxlunch(){
+  ~/.tmux_lunch
+}
 
-
-
+function tmuxkillall(){
+  tmux kill-session
+}
