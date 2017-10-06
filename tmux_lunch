@@ -1,0 +1,32 @@
+#/bin/bash
+tmux new-session -d -s t1
+#rename window code1
+tmux rename-window 'code1'
+#tmux split-window -v 'ipython'
+tmux split-window -h
+#create window code2
+tmux new-window -n 'code2'
+tmux split-window -h
+#create window code3
+tmux new-window -n 'code3'
+tmux split-window -h
+#create window any
+tmux new-window -n 'any'
+tmux split-window -h
+#create window run
+tmux new-window -n 'run'
+tmux split-window -h
+#create window any2
+tmux new-window -n 'any2'
+tmux split-window -h
+#create window any3
+tmux new-window -n 'any3'
+tmux split-window -h
+#create window any4
+tmux new-window -n 'any4'
+tmux split-window -h
+#create window note
+tmux new-window -n 'note'
+tmux split-window -h
+
+tmux -2 attach-session -t t1
