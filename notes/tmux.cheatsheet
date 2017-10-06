@@ -18,3 +18,36 @@ chmod 777 /scratch/shareds
 
 #attach to the shared session
 tmux -S /scratch/shareds attach -t shared
+
+
+
+
+
+
+#tmux lunch script example
+tmux new-session -d 'vim'
+tmux split-window -v 'ipython'
+tmux split-window -h
+tmux new-window 'vim'
+tmux -2 attach-session -d
+
+
+
+
+
+#another exmaple
+tmux new-session \; \
+  send-keys 'tail -f /var/log/monitor.log' C-m \; \
+  split-window -v \; \
+  split-window -h \; \
+  send-keys 'top' C-m \; 
+
+#another example
+tmux new-session -d -s foo 'exec pfoo "bundle exec thin start"'
+#rename window
+tmux rename-window 'Foo'
+tmux select-window -t foo:0
+tmux split-window -h 'exec pfoo "bundle exec compass watch"'
+tmux split-window -v -t 0 'exec pfoo "rake ts:start"'
+tmux split-window -v -t 1 'exec pfoo'
+tmux -2 attach-session -t foo
