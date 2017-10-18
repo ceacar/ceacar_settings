@@ -1,7 +1,10 @@
 #!/bin/bash
 set -fueo pipefail
-if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
+#disable interactive mode 
+#so some confirmation won't bug you
+export DEBIAN_FRONTEND=noninteractive
 #need sudo access
 #backing up old files
 mkdir -p bak
@@ -30,7 +33,7 @@ apt-get -y install build-essential cmake
 apt-get -y install python-dev python3-dev python-pip
 apt-get -y install python-dev libxml2-dev libxslt-dev
 #you complete me prerequisite
-apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
+apt-get -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
     libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
     libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
     python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
@@ -39,7 +42,7 @@ pip install --upgrade pip
 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #change permission of the directory so vim could install everything when other user need it
-chmod -R ~/.vim
+chmod -R 755 ~/.vim
 #go into vim and type :PluginInstall
 #after than run following
 #cd ~/.vim/bundle/YouCompleteMe
