@@ -42,14 +42,6 @@ pip install --upgrade pip
 
 ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #change permission of the directory so vim could install everything when other user need it
-chmod -R 755 ~/.vim
-#go into vim and type :PluginInstall
-#after than run following
-#cd ~/.vim/bundle/YouCompleteMe
-#./install.py --clang-completer
-
-
-
 
 #git alias
 git config --global alias.co checkout
@@ -76,6 +68,7 @@ vim -c 'PluginInstall' -c 'qa!'
 #compile you completeme
 cd ~/.vim/bundle/YouCompleteMe
 ./install.py --clang-completer
-
-
+#overwrite the default vim
+ln -snf $PWD/vim /usr/local/bin/vim
+chmod -R 755 ~/.vim
 
