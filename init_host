@@ -8,10 +8,10 @@ export DEBIAN_FRONTEND=noninteractive
 #need sudo access
 #backing up old files
 mkdir -p bak
-ls ~/.bashrc && mv ~/.bashrc $PWD/bak/bashrc
-ls ~/.vimrc && mv ~/.vimrc $PWD/bak/vimrc
-ls ~/.tmux.conf && mv ~/.tmux.conf $PWD/bak/tmux.conf
-ls ~/.screenrc && mv ~/.screenrc $PWD/bak/.screenrc
+ls ~/.bashrc 2>/dev/null && mv ~/.bashrc $PWD/bak/bashrc
+ls ~/.vimrc 2>/dev/null && mv ~/.vimrc $PWD/bak/vimrc
+ls ~/.tmux.conf 2>/dev/null && mv ~/.tmux.conf $PWD/bak/tmux.conf
+ls ~/.screenrc 2>/dev/null && mv ~/.screenrc $PWD/bak/.screenrc
 mkdir -p ~/.vim/
 ln -snf $PWD/bashrc ~/.bashrc
 ln -snf $PWD/bash_aliases ~/.bash_aliases
@@ -25,8 +25,8 @@ ln -snf $PWD/tmux_lunch ~/.tmux_lunch
 chmod +x ~/.tmux_lunch
 mv ~/notes $PWD/bak/notes
 #clone git repo frequently used
-git clone https://github.com/ceacar/utility.git $PWD/utility
-git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
+ls $PWD/utility 2>/dev/null || git clone https://github.com/ceacar/utility.git $PWD/utility
+ls $PWD/albert_practice 2>/dev/null || git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
 
 #some essential dev env
 apt-get -y install build-essential cmake
@@ -62,9 +62,10 @@ git config --global alias.pr 'pull --rebase'
 #git 
 git config --global user.email "alex.yonder@yahoo.com"
 git config --global user.name "ceacar"
-
+mkdir -p ~/projects/
 cd ~/projects/
-git clone https://github.com/vim/vim.git
+ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
+cd vim
 ./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.5/config --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --prefix=/usr
 make install
 
