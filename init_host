@@ -40,7 +40,7 @@ apt-get -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
 pip install --upgrade virtualenv
 pip install --upgrade pip 
 
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #change permission of the directory so vim could install everything when other user need it
 chmod -R 755 ~/.vim
 #go into vim and type :PluginInstall
