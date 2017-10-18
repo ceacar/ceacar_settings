@@ -4,10 +4,10 @@ set -fueo pipefail
 #better sudo it
 #backing up old files
 mkdir bak
-mv ~/.bashrc $PWD/bak/bashrc
-mv ~/.vimrc $PWD/bak/vimrc
-mv ~/.tmux.conf $PWD/bak/tmux.conf
-mv ~/.screenrc $PWD/bak/.screenrc
+ls ~/.bashrc && mv ~/.bashrc $PWD/bak/bashrc
+ls ~/.vimrc && mv ~/.vimrc $PWD/bak/vimrc
+ls ~/.tmux.conf && mv ~/.tmux.conf $PWD/bak/tmux.conf
+ls ~/.screenrc && mv ~/.screenrc $PWD/bak/.screenrc
 mkdir -p ~/.vim/
 ln -s $PWD/bashrc ~/.bashrc
 ln -s $PWD/bash_aliases ~/.bash_aliases
