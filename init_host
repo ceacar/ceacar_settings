@@ -10,15 +10,15 @@ ls ~/.vimrc && mv ~/.vimrc $PWD/bak/vimrc
 ls ~/.tmux.conf && mv ~/.tmux.conf $PWD/bak/tmux.conf
 ls ~/.screenrc && mv ~/.screenrc $PWD/bak/.screenrc
 mkdir -p ~/.vim/
-ln -s $PWD/bashrc ~/.bashrc
-ln -s $PWD/bash_aliases ~/.bash_aliases
-ln -s $PWD/bash_home_brew_script ~/.bash_home_brew_script
-ln -s $PWD/vimrc ~/.vimrc
-ln -s $PWD/tmux.conf ~/.tmux.conf
-ln -s $PWD/screenrc ~/.screenrc
-ln -s $PWD/vim_colors ~/.vim/colors
-ln -s $PWD/notes ~/notes
-ln -s $PWD/tmux_lunch ~/.tmux_lunch
+ln -snf $PWD/bashrc ~/.bashrc
+ln -snf $PWD/bash_aliases ~/.bash_aliases
+ln -snf $PWD/bash_home_brew_script ~/.bash_home_brew_script
+ln -snf $PWD/vimrc ~/.vimrc
+ln -snf $PWD/tmux.conf ~/.tmux.conf
+ln -snf $PWD/screenrc ~/.screenrc
+ln -snf $PWD/vim_colors ~/.vim/colors
+ln -snf $PWD/notes ~/notes
+ln -snf $PWD/tmux_lunch ~/.tmux_lunch
 chmod +x ~/.tmux_lunch
 mv ~/notes $PWD/bak/notes
 #clone git repo frequently used
