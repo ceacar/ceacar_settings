@@ -101,3 +101,13 @@ pip install django_modeltranslation==0.4.0-beta2
 c = {key: value for (key, value) in (a.items() + b.items())}
 #loads json string to json
 obj = json.loads(json_string) 
+
+
+
+#python timeit example
+import timeit
+def strcmp():
+    if "093050201114" in "093050201114000":
+        return True
+
+print timeit.timeit(stmt = 'strcmp()',setup="from __main__ import strcmp", number=100000)
