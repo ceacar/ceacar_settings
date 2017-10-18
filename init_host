@@ -22,8 +22,8 @@ ln -s $PWD/tmux_lunch ~/.tmux_lunch
 chmod +x ~/.tmux_lunch
 mv ~/notes $PWD/bak/notes
 #clone git repo frequently used
-git clone git@github.com:ceacar/utility.git $PWD/utility
-git clone git@github.com:ceacar/albert_practice.git $PWD/albert_practice
+git clone https://github.com/ceacar/utility.git $PWD/utility
+git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
 
 #some essential dev env
 apt-get -y install build-essential cmake
