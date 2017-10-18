@@ -4,7 +4,7 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 #need sudo access
 #backing up old files
-mkdir bak
+mkdir -p bak
 ls ~/.bashrc && mv ~/.bashrc $PWD/bak/bashrc
 ls ~/.vimrc && mv ~/.vimrc $PWD/bak/vimrc
 ls ~/.tmux.conf && mv ~/.tmux.conf $PWD/bak/tmux.conf
