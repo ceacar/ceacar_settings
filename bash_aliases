@@ -24,3 +24,4 @@ alias refreshbashrc='source ~/.bashrc'
 alias dockerkillall='docker kill $(docker ps -q)'
 alias vimnoplugin='vim -u NONE'
 alias vimwithoutycm="vim --cmd 'set rtp^='~/.vimrd''"
+alias vim="vim.nox"
