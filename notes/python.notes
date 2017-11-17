@@ -111,3 +111,16 @@ def strcmp():
         return True
 
 print timeit.timeit(stmt = 'strcmp()',setup="from __main__ import strcmp", number=100000)
+
+
+
+#call bash script
+subprocess.check_output(["echo", "Hello World!"])
+'Hello World!\n'
+
+subprocess.check_output("exit 1", shell=True)
+Traceback (most recent call last):
+   ...
+subprocess.CalledProcessError: Command 'exit 1' returned non-zero exit status 1
+
+
