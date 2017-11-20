@@ -28,6 +28,9 @@ mv ~/notes $PWD/bak/notes
 ls $PWD/utility 2>/dev/null || git clone https://github.com/ceacar/utility.git $PWD/utility
 ls $PWD/albert_practice 2>/dev/null || git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
 
+#disable interactive apt-get confirmation
+sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
+
 #some essential dev env
 apt-get -y install build-essential cmake
 apt-get -y install python-dev python3-dev python-pip
@@ -57,12 +60,25 @@ git config --global user.email "alex.yonder@yahoo.com"
 git config --global user.name "ceacar"
 mkdir -p ~/projects/
 cd ~/projects/
-#install vim-nox which has already python supports
-sudo apt-get install vim-nox
-#ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
-#cd vim
+#sudo apt-get -y install vim-nox
+ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
+cd vim
+
+#new vim cannot work with python 2 and python 3, so picking python 3
+./configure \
+  --with-features=huge \
+  --enable-multibyte\
+  --enable-rubyinterp=yes\
+  --enable-python3interp=yes\
+  --with-python3-config-dir=/usr/lib/$(ls -al /usr/lib/ |grep python3.[1-9]|awk '{print $9}')/config\
+  --enable-perlinterp=yes\
+  --enable-luainterp=yes\
+  --enable-gui=gtk2\
+  --enable-cscope\
+  --prefix=/usr/local\
+
 #./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.5/config --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --prefix=/usr
-#make install
+make install
 
 
 #install for vim
@@ -71,7 +87,7 @@ vim -c 'PluginInstall' -c 'qa!'
 #compile you completeme
 cd ~/.vim/bundle/YouCompleteMe
 ./install.py --clang-completer
-#overwrite the default vim
-ln -snf $PWD/vim /usr/local/bin/vim
+#overwrite the default vim to vim.nox
+#ln -snf $(which vim.nox) /usr/local/bin/vim
 chmod -R 755 ~/.vim
 
