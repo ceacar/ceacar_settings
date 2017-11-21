@@ -29,7 +29,7 @@ ls $PWD/utility 2>/dev/null || git clone https://github.com/ceacar/utility.git $
 ls $PWD/albert_practice 2>/dev/null || git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
 
 #disable interactive apt-get confirmation
-sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
+ls /etc/apt/listchanges.conf 2>/dev/null || sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
 
 #some essential dev env
 apt-get -y install build-essential cmake
