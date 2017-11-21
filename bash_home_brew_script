@@ -131,3 +131,12 @@ function tmuxlunch(){
 function tmuxkillall(){
   tmux kill-session
 }
+
+function make_partition_aws_instance(){
+  mkfs.ext4 -m 0 /dev/xvdd
+  mkdir /scratch
+  mount -t ext4 /dev/xvdd /scratch
+  chmod 1777 /scratch
+  apt-get install -y pypy lzop
+  ln -snf $(which pypy) /opt/bin/pypy
+}
