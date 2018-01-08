@@ -57,3 +57,6 @@ git reflog#records all git activity and commmit sha
 #git tags
 git tag -a v1.4 -m "my version 1.4"
 git push origin v1.4
+
+#git skip all action that produces error
+git mv -k * ./subDir
