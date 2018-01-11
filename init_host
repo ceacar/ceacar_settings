@@ -95,7 +95,7 @@ virtualenv ~/my_python_venv/
 source ~/my_python_venv/bin/activate
 pip install coverage funcsigs mock numpy pandas pbr py \
 pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
-pdbpp
+pdbpp boto flask cloudpickle
 
 #create ipython profile dir in ~/.ipython
 ipython profile create
