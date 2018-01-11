@@ -36,3 +36,8 @@ BEGIN {
     }
     printf "\n"
 }
+
+
+#awk way of exiting
+exit 0
+exit 1
