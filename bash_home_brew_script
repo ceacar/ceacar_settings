@@ -155,4 +155,5 @@ function digtunnel(){
 
 function sourcepython(){
     source ~/my_python_venv/bin/activate
+    export PYTHONPATH=$PYTHONPATH:~/projects/sunfish
 }

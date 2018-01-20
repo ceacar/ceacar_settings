@@ -48,16 +48,10 @@ ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVi
 #change permission of the directory so vim could install everything when other user need it
 
 #git alias
-git config --global alias.co checkout
-git config --global alias.br branch
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.df diff
-git config --global alias.pr 'pull --rebase'
-
+./git_alias
 #git 
-git config --global user.email "alex.yonder@yahoo.com"
-git config --global user.name "ceacar"
+./git_username
+
 mkdir -p ~/projects/
 cd ~/projects/
 #sudo apt-get -y install vim-nox
