@@ -1,0 +1,7 @@
+1.download command line anaconda which is about 500 MB
+2.bash ~/Downloads/Ana*.sh
+3.specify path for the anaconda to install like ~/projects/anaconda3/
+4.source ~/projects/anaconda3/bin/activate
+#below will activate anaconda's tensorflow venv
+5.source activate tensorflow
+6.conda install -c conda-forge tensorflow
