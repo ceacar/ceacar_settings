@@ -155,5 +155,9 @@ function digtunnel(){
 
 function sourcepython(){
     source ~/my_python_venv/bin/activate
-    export PYTHONPATH=$PYTHONPATH:~/projects/sunfish
+    export PYTHONPATH="$PYTHONPATH:/Users/ceacar/projects/sunfish:"
+}
+
+function sourcepython3(){
+    source ~/my_python_venv3/bin/activate
 }
