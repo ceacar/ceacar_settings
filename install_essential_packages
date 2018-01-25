@@ -1,0 +1,35 @@
+#!/bin/bash
+set -fueo pipefail
+apt-get -y install build-essential cmake
+apt-get -y install python-dev python3-dev python-pip
+apt-get -y install python-dev libxml2-dev libxslt-dev
+#you complete me prerequisite
+apt-get -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
+    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+    python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
+pip install --upgrade virtualenv
+pip install --upgrade pip 
+
+ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+#change permission of the directory so vim could install everything when other user need it
+
+#git alias
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+git config --global alias.df diff
+git config --global alias.pr 'pull --rebase'
+
+#git 
+git config --global user.email "alex.yonder@yahoo.com"
+git config --global user.name "ceacar"
+source ~/my_python_venv/bin/activate
+pip install coverage funcsigs mock numpy pandas pbr py \
+pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
+pdbpp boto flask cloudpickle
+ipython profile create
+echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> ~/.ipython/profile_default/ipython_config.py
+
