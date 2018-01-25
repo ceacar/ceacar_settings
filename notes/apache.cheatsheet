@@ -1,0 +1,13 @@
+#install apache2
+apt-get update
+apt-get install apache2
+
+#check if apache syntax is correct
+apache2ctl configtest
+
+
+#restart apache
+systemctl restart apache2
+
+#if in some other os different from ubuntu
+service apache2 restart
