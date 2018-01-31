@@ -51,7 +51,7 @@ hostname -I
 if test "$SSH_AUTH_SOCK" ; then
   ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
-Make it work in tmux, add this to your ~/.tmux.conf:
+#Make it work in tmux, add this to your ~/.tmux.conf:
 # fix ssh agent when tmux is detached
 setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
 
@@ -71,3 +71,16 @@ curl --form "fileupload=@my-file.txt;filename=desired-filename.txt" --form param
 curl --data '' https://example.com/resource.cgi
 curl -X POST https://example.com/resource.cgi
 curl --request POST https://example.com/resource.cgi
+
+
+#operators
+[[ -n str_input ]] #checking string input is not null
+
+
+
+#netcat
+docker inspect [docker container NAME] 
+nc.traditional -l "38003" -c "nc.tradditional 172.19.0.16 8080" #nc listens to the port 38003 and it writes what it heard through port 38003 to the host at 172.19.0.16.8080 
+
+
+nc -l port1 | nc host port # this will listen to port1 then write the content it heard through the port 1 to the port of the host 
