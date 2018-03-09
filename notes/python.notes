@@ -130,3 +130,13 @@ parser.add_argument("var1", help = "var1 is the first argument here", type = int
 parser.add_argument("-rf","--random_flag", help = "--random_flag is the demo for flag argument", action = "store_true") # set -rf and --random_flag argument. will convert this args.random_flag to true if it is set
 args = parser.parser_args()
 print(args.var1)
+
+#install pip inside python script
+def install(package):
+    pip.main(['install',package])
+packages = [boto==2.48.0,
+for package in packages:
+    install(package)
+
+#python3
+line_arr = line.decode('cp1252').split('|')
