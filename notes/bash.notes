@@ -84,3 +84,24 @@ nc.traditional -l "38003" -c "nc.tradditional 172.19.0.16 8080" #nc listens to t
 
 
 nc -l port1 | nc host port # this will listen to port1 then write the content it heard through the port 1 to the port of the host 
+
+
+
+#ssh tunneling notes
+#Introduction
+#local: -L Specifies that the given port on the local (client) host is to be forwarded to the given host and port on the remote side.
+#
+ssh -L sourcePort:forwardToHost:onPort connectToHost means: connect with ssh to connectToHost, and forward all connection attempts to the local sourcePort to port onPort on the machine called forwardToHost, which can be reached from the connectToHost machine.
+#
+#remote: -R Specifies that the given port on the remote (server) host is to be forwarded to the given host and port on the local side.
+#
+ssh -R sourcePort:forwardToHost:onPort connectToHost means: connect with ssh to connectToHost, and forward all connection attempts to the remote sourcePort to port onPort on the machine called forwardToHost, which can be reached from your local machine.
+#
+#Additional options
+#-f tells ssh to background itself after it authenticates, so you don't have to sit around running something on the remote server for the tunnel to remain alive.
+#-N says that you want an SSH connection, but you don't actually want to run any remote commands. If all you're creating is a tunnel, then including this option saves resources.
+#-T disables pseudo-tty allocation, which is appropriate because you're not trying to create an interactive shell.
+
+
+
+
