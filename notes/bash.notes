@@ -102,6 +102,13 @@ ssh -R sourcePort:forwardToHost:onPort connectToHost means: connect with ssh to 
 #-N says that you want an SSH connection, but you don't actually want to run any remote commands. If all you're creating is a tunnel, then including this option saves resources.
 #-T disables pseudo-tty allocation, which is appropriate because you're not trying to create an interactive shell.
 
-
-
+#generalized format of ssh tunneling
+#-L is read from left to right
+#-R is read from right to left, like from intermediatehost tunnel the port host_of_receiving:port to the localhost with port host_of_initiation_port
+ssh -L host_of_initiation_port:host_of_receiving:port intermediatehost
+ssh -R host_of_initiation_port:host_of_receiving:port intermediatehost
+#assume you want to map a local port 123 to remote server's port 456
+ssh -L 123:remote_host:456 remotehost
+#assume you want to map a remote server's port 456 to localhost's port 123
+ssh -R 456:localhost:123 remote_host
 
