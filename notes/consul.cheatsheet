@@ -120,6 +120,7 @@ curl \
     --data @contents \
     https://consul.rocks/v1/kv/my-key
 
+curl --request PUT --data "172.30.1.156" localhost:20002/v1/kv/KEY_NAME
 
 #consul data file example
 [        {
