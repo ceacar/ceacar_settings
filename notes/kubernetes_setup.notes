@@ -1,0 +1,18 @@
+kubeadam init
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+#cmds
+kubectl version
+kubectl get nodes
+kubectl get deployments
+#proxy will make inside kube cluster address available
+kubectl proxy
+
+#forward port 1111 on the localhost to the port 2222 of redis-master
+kubectl port-forward redis-master 1111:2222
+kubectl get service
+kubectl delete service service-name
