@@ -16,3 +16,8 @@ kubectl proxy
 kubectl port-forward redis-master 1111:2222
 kubectl get service
 kubectl delete service service-name
+
+
+
+#in yaml file, below line will make it pull from local images
+imagePullPolicy: IfNotPresent
