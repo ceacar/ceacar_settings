@@ -1,0 +1,1 @@
+--only-show-errors: this tag for aws cmd will have only emit progress bar and only print error if there is some
