@@ -140,3 +140,6 @@ for package in packages:
 
 #python3
 line_arr = line.decode('cp1252').split('|')
+
+#force reinstall pip package
+pip install --upgrade --force-reinstall
