@@ -143,3 +143,17 @@ line_arr = line.decode('cp1252').split('|')
 
 #force reinstall pip package
 pip install --upgrade --force-reinstall
+
+#disable ssl authenticate on urllib2
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+with contextlib.closing(urllib2.urlopen(url, context = ctx)) as urlret:
+  query = urlret.read()
+
+
+
+#use python3 for py.test
+#make sure you are in python3 venv
+python3 -m py.test ./utest_split_by_ticker.py
