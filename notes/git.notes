@@ -60,3 +60,6 @@ git push origin v1.4
 
 #git skip all action that produces error
 git mv -k * ./subDir
+
+#rebase local branch on remote master
+git pull --rebase origin master
