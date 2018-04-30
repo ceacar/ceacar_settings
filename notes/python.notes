@@ -41,11 +41,34 @@ tee(it,[n=2])
 repeat(it,[n=forever])
 #cycle = repeat forever
 cycle(p)
-#chain
+#chain, chain up two or more lists
 chain(a,b,...)
 #accumulate, similar to reduce in scala
 from itertools import accumulate
 accumulate(p,[func=add])
+
+#compress, filter based on true/false value in select_pattern
+itertools.compress(input, select_pattern)
+
+#dropwhile, drop elements when func return is true, it will break upon first unmatch, use this with sorted list
+dropwhile(func, data)
+#takewhile, take elements when func return is true, it will break upon first unmatch value, use this with sorted list
+takewhile(func,data)
+#groupby, group data by key, sort input before use groupby
+#returns key and list
+groupby(data, key = lambda x: x['key_value'])
+#starmap, will iterate through data and use the operator provided to run accumulate against the unpaced data
+startmap(operator.mul, data)
+#tee(input), make deep copy of input
+a,b = tee(input)
+#zip_longest(input1,input2,fillvalue=None), this will zip input1 with input2 as index, and fill the empty element with fillvalue
+#combinations(input, n), return a list of unique every n combination
+#combinations_with_replacement(), same above but will add pair with itself
+#product(input1,input2), similar to mysql inner join, returns cascadian product
+#permutations(iterable, r=None), return r length of permutations of elements in the iterable, if r is none, it will return full-length permuataions
+
+
+
 
 ################TOOLZ###############################
 #http://toolz.readthedocs.io/en/latest/api.html#toolz.functoolz.compose
