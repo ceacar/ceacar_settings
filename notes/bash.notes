@@ -59,6 +59,8 @@ setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
 
 
 #curl cheats
+#POST request with data
+curl --request POST --data 'key1=value1' --data 'key2=value2' url
 #With fields:
 curl --data "param1=value1&param2=value2" https://example.com/resource.cgi
 #With fields specified individually:
