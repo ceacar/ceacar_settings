@@ -114,3 +114,5 @@ ssh -L 123:remote_host:456 remotehost
 #assume you want to map a remote server's port 456 to localhost's port 123
 ssh -R 456:localhost:123 remote_host
 
+#find which port is running by which application
+sudo lsof -i -P -n | grep LISTEN
