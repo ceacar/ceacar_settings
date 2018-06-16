@@ -180,3 +180,12 @@ with contextlib.closing(urllib2.urlopen(url, context = ctx)) as urlret:
 #use python3 for py.test
 #make sure you are in python3 venv
 python3 -m py.test ./utest_split_by_ticker.py
+
+#check if dir exists
+os.path.exists("/home/el/myfile.txt")
+#get class name from a class method def foo(self)
+self.__name__
+
+#python equivalent of pwd, current directory
+import os
+cwd = os.getcwd()
