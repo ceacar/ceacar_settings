@@ -37,6 +37,10 @@ from itertools improt islice
 islice(seq, [start=0], stop, [ste=1])
 #copies a iterator
 tee(it,[n=2])
+
+#filter a list
+list(filter(lambda x: x < 0, number_list))
+
 #repeat
 repeat(it,[n=forever])
 #cycle = repeat forever
