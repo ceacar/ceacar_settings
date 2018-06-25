@@ -193,3 +193,8 @@ self.__name__
 #python equivalent of pwd, current directory
 import os
 cwd = os.getcwd()
+
+#pdb debugging tip
+#lunch another python interactive shell within pdb
+!import code; code.interact(local=vars())
+
