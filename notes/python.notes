@@ -198,3 +198,8 @@ cwd = os.getcwd()
 #lunch another python interactive shell within pdb
 !import code; code.interact(local=vars())
 
+#sort python list by columns
+>>> from operator import itemgetter
+>>> L=[[0, 1, 'f'], [4, 2, 't'], [9, 4, 'afsd']]
+>>> sorted(L, key=itemgetter(1,2))
+[[9, 4, 'afsd'], [0, 1, 'f'], [4, 2, 't']]
