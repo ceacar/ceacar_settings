@@ -1,0 +1,107 @@
+package main
+import (
+    "fmt"
+    "math"
+    "errors"
+)
+
+type person struct{
+    name string
+    age int
+
+}
+
+func main(){
+    fmt.Println("hello world")
+    //x:=5
+    var x int = 5
+    fmt.Println(x)
+    if x <6 {
+        fmt.Println("false")
+    }
+
+    //var a [5]int
+    var a []int
+    a = append(a,5)
+
+    //when no number assigned to array, it's a slice, variable length
+    //var a [5]int{5,4,3,2,1}
+    //a[2] = 7
+    //a = append(a,110)
+    fmt.Println(a)
+
+
+    key_value_pair := make(map[string]int)
+    key_value_pair["key1"] = 2
+    key_value_pair["key2"] = 3
+    delete(key_value_pair, "key2")
+    fmt.Println(key_value_pair)
+
+    for i := 0; i < 5; i++{
+        fmt.Println(i)
+    }
+    
+        //while loop
+    //i := 0
+    //for i < 5 {
+    //    fmt.Println(i)
+    //}
+
+    m := make(map[string]string)
+    m["a"] = "alpha"
+    m["b"] = "alpha"
+    for key, value := range m{
+        fmt.Println("key:",key, "value:",value)
+    }
+
+    result := sum(2,3)
+    fmt.Println(result)
+
+    sqrt_res, err := sqrt(16)
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(sqrt_res)
+    p := person{name: "", age: 23}
+    fmt.Println(p)
+
+
+    ab :=7
+    fmt.Println(&ab)
+    //pass in the address of the pointer
+    increase(&ab)
+    fmt.Println(ab)
+
+}
+
+func increase(x *int){
+    //dereference the pointer address
+    *x++
+}
+
+func sum(x int, y int) int {
+    return x+y
+
+}
+
+func sqrt(x float64) (float64, error){
+    if x < 0 {
+        return 0, errors.New("undefined for negative")
+    }
+    return math.Sqrt(x), nil
+}
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
