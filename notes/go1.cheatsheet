@@ -1,3 +1,14 @@
+
+go run helloworld.go
+
+godoc fmt println //this cmd shows you the println function under package godoc
+
+
+
+
+example code:
+
+
 package main
 import (
     "fmt"
