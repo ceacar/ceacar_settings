@@ -63,3 +63,6 @@ git mv -k * ./subDir
 
 #rebase local branch on remote master
 git pull --rebase origin master
+
+#rebase a branch from an old branch to a new branch
+git rebase --onto newBase oldBase feature/branch
