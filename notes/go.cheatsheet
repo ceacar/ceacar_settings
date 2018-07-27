@@ -3,6 +3,14 @@ go run helloworld.go
 
 godoc fmt println //this cmd shows you the println function under package godoc
 
+
+
+//string manipulation
+strings.HasPrefix(the_str, str_pattern)
+strings.Split(the_str, separator)
+
+
+
 //testing utility
 func equals(t *testing.T, actual interface{}, expected interface{}) {
     if actual != expected {
