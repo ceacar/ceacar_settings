@@ -3,7 +3,22 @@ go run helloworld.go
 
 godoc fmt println //this cmd shows you the println function under package godoc
 
-
+//testing utility
+func equals(t *testing.T, actual interface{}, expected interface{}) {
+    if actual != expected {
+        t.Error("Expected >%s<, actual >%s<", expected, actual)
+    }
+}
+func fail(t *testing.T, err error, expected_err_string string) {
+    if err.Error() != expected_err_string {
+        t.Error("Expected >%s<, actual >%s<", expected_err_string, err.Error())
+    }
+}
+func ok(t *testing.T, actual_error error) {
+    if actual_error != nil {
+        t.Error("unexpected error raised %s", actual_error)
+    }
+}
 
 
 example code:
