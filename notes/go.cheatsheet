@@ -166,7 +166,11 @@ func saySomething(h human){
     h.speak()
 }
 
-
+//a pointer receiver, this will enable this method to have the real person struct, so you can modify its value;
+//if not a pointer receiver, the p(person struct) will be a copy of original person struct, any modify is to the copy of the struct not itself.
+func(p *person) changeFirstName(newFirstName string) {
+    p.firstname = newFirstName
+}
 
 
 
