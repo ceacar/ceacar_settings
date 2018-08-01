@@ -149,7 +149,12 @@ type secretAgent struct{
     licenceToKill bool //added class variable
 }
 
-
+//interface: with the person and secretAgent struct in the scope, now we want to generalize both person and secretAgent
+//to be a human class, in goland, this is called interface
+type human interface{
+    //this speak() defined that "every struct has this speak() method is now a human abstract class"
+    speak()
+}
 
 
 
