@@ -144,7 +144,10 @@ func(p person) speak(){
     fmt.speak("i m human")
 }
 
-
+type secretAgent struct{
+    person //this struct inherit person struct, now u can call secretAgentIns.firstname ... etc
+    licenceToKill bool //added class variable
+}
 
 
 
