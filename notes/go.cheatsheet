@@ -127,6 +127,31 @@ func sqrt(x float64) (float64, error){
 
 
 
+//method
+func sayHello(){
+    fmt.Println("hello")
+}
+
+//type struct, think struct as a class
+
+type person struct{
+    firstname String //struct variable
+    lastname String //struct variable
+    //we want a speak method for person struct
+}
+//this method defined a class method for person
+func(p person) speak(){
+    fmt.speak("i m human")
+}
+
+
+
+
+
+
+
+
+
 
 
 
