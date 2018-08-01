@@ -172,7 +172,9 @@ func(p *person) changeFirstName(newFirstName string) {
     p.firstname = newFirstName
 }
 
-
+//golang type conversion
+p=person{"joe","underwood"}
+secAgen := p.(*secretAgent) //this converts the person type to secret agent
 
 
     
