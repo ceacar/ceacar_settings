@@ -174,8 +174,16 @@ func(p *person) changeFirstName(newFirstName string) {
 
 //golang type conversion
 p=person{"joe","underwood"}
-secAgen := p.(*secretAgent) //this converts the person type to secret agent
+secAgen := p.(secretAgent) //this converts the person type to secret agent
 
+
+//empty interface to deal with multiple type problem
+//type switch
+var emptyInterface interface{} = 0 //this time we defined an empty interface and assign 0(int) to it
+switch emptyInterface.(type) {
+    case int: fmt.Println("i m an int")
+    case float64: fmt.Println("i m an float64")
+}
 
     
     
