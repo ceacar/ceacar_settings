@@ -141,12 +141,17 @@ type person struct{
 }
 //this method defined a class method for person
 func(p person) speak(){
-    fmt.speak("i m human")
+    fmt.Println("i m human")
 }
 
 type secretAgent struct{
     person //this struct inherit person struct, now u can call secretAgentIns.firstname ... etc
     licenceToKill bool //added class variable
+}
+
+//overwrite the speak() method for secretAgent
+func(s secretAgent) speak(){
+    fmt.Println('i m james bond')
 }
 
 //interface: with the person and secretAgent struct in the scope, now we want to generalize both person and secretAgent
@@ -156,8 +161,10 @@ type human interface{
     speak()
 }
 
-
-
+//now we have a human interface, we can take any human interface and call its speak function)
+func saySomething(h human){
+    h.speak()
+}
 
 
 
