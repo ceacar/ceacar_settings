@@ -186,7 +186,11 @@ switch emptyInterface.(type) {
 }
 
     
-    
+//when in terms of defining a new var for interface, if you have defined a pointer receiver interface, it would work with either pointer receiver method implementation, or value method implementation
+var i = *someInterface{}
+//but when defined a value interface
+var i = someInterface{}//this will require underlying method implementation to be all value . func(i someInterface) someMethod(){}
+
     
     
     
