@@ -193,7 +193,24 @@ var i = someInterface{}//this will require underlying method implementation to b
 
     
     
-    
+//best way to concatenate string, bytes
+package main
+
+import (
+    "bytes"
+    "fmt"
+)
+
+func main() {
+    var buffer bytes.Buffer
+
+    for i := 0; i < 1000; i++ {
+        buffer.WriteString("a")
+        //buffer.Wirte([]bytes) this also works for bytes
+    }
+
+    fmt.Println(buffer.String())
+}
     
     
     
