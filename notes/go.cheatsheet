@@ -1,3 +1,24 @@
+#vim go ide setup, bash code below
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
+
+#if mac, ubuntu use apt-get install go
+brew install go
+"go get" the basics
+go get golang.org/x/tools/cmd/godoc
+
+#install pathogen
+mkdir -p ~/.vim/autoload ~/.vim/bundle
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+#install vim-go-ide into vim, pathogen will automatically load the module
+git clone git@github.com:farazdagi/vim-go-ide.git ~/.vim_go_runtime
+sh ~/.vim_go_runtime/bin/install
+#run vim in ide mode for go
+vim -u ~/.vimrc.go
+#install necessary binaries for go ide to work(important), if run into problem of not finding the import path for modules, check the GOROOT, try unset it
+in vim run ":GoInstallBinaries"
+
+
 
 go run helloworld.go
 
