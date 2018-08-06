@@ -4,7 +4,9 @@ export PATH=$PATH:$GOPATH/bin
 
 #if mac, ubuntu use apt-get install go
 brew install go
+#optional?
 "go get" the basics
+#optional?
 go get golang.org/x/tools/cmd/godoc
 
 #install pathogen
@@ -17,7 +19,8 @@ sh ~/.vim_go_runtime/bin/install
 vim -u ~/.vimrc.go
 #install necessary binaries for go ide to work(important), if run into problem of not finding the import path for modules, check the GOROOT, try unset it
 in vim run ":GoInstallBinaries"
-
+#put below line into ~/.vimrc.go
+set t_Co=256
 
 
 go run helloworld.go
