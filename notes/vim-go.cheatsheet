@@ -1,2 +1,7 @@
 :cnext  #jump to next error
 :cprevious #jump to previous error
+:GoTestFunc #only test go function where current cursor is at
+:GoTestCompile #only compile the test file
+:GoCoverage #show the coverage of the code in the code file
+:GoCoverageClear #clear the color coding changed by GoCoverage
+:GoCoverageToggle #toggle of above two go coverage command
