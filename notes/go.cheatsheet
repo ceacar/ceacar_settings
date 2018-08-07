@@ -33,6 +33,12 @@ godoc fmt println //this cmd shows you the println function under package godoc
 strings.HasPrefix(the_str, str_pattern)
 strings.Split(the_str, separator)
 
+//initialize map[string][]string
+mapOfSlices := map[string][]string{
+    "first": {},
+    "second": []string{"one", "two", "three", "four", "five"},
+    "third": []string{"quarter", "half"},
+}
 
 
 //testing utility
