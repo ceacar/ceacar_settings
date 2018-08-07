@@ -5,3 +5,8 @@
 :GoCoverage #show the coverage of the code in the code file
 :GoCoverageClear #clear the color coding changed by GoCoverage
 :GoCoverageToggle #toggle of above two go coverage command
+
+
+VIM EDITING MODE(direct type cmd in normal mode):
+vif #select entire function code but the function definition and {}
+dif #delete the entire function code but leaves the function definition and {}
