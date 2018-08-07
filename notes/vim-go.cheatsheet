@@ -5,8 +5,24 @@
 :GoCoverage #show the coverage of the code in the code file
 :GoCoverageClear #clear the color coding changed by GoCoverage
 :GoCoverageToggle #toggle of above two go coverage command
+:GoMetaLinter #will call all available go lint tools
+:GoAlternate #will swap between current source file and test file
+:AS
+
+:GoDecls #list all functions in a file
+:GoDeclsDir #beside above it also shows test files
+:GoDef #will go to source file of the current function
+:GoRename bar # will change the name of the function your cursor currently at to a new name
+:GoSameIds #find the variable with the same name
+:GoDescribe # this will trace the variable throughtout the file, having issue get this to work
+:GoImplements #show where is current interface is implemented
+:GoWhicherrs #? similar to above with limited scope
+:GoCallees #find what calls this 
+:GoImpl io.Close #automatically implement interface for you for certain struct
 
 
 VIM EDITING MODE(direct type cmd in normal mode):
 vif #select entire function code but the function definition and {}
 dif #delete the entire function code but leaves the function definition and {}
+
+gJ #join splitted lines in an object like string definition
