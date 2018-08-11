@@ -297,3 +297,10 @@ func BenchmarkHello(b *testing.B) {
 
 //reset benchmark timer
 b.ResetTimer()
+
+
+
+//vim-go fast add qutoe to a word
+ciw"Ctrl+r" //this cmd is type ciw in normal mode will delete word, and manually type ", and then press ctrl+r" to paste what is last deleted
+//outside vim-go fast add quote
+ciw'Ctrl+r"'
