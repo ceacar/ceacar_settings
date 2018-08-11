@@ -1,0 +1,19 @@
+cgdb golang_executable_binary
+//switch between code and debugger
+use "esc" to get upper panel to navigate code
+use "i" to get to bottom panel of debugger
+//add break point at line 76
+b 76
+//run until break point
+r
+//step into function
+s
+//next line
+n
+//check value of a variable named var_name
+print var_name
+//check other possible cmd for variable v
+type "v." and then hit key "tab"
+//exit debugger
+q
+quit
