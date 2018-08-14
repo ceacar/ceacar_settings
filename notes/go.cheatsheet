@@ -28,6 +28,11 @@ go run helloworld.go
 godoc fmt println //this cmd shows you the println function under package godoc
 
 
+//remove new line from string
+read_line = read_line[:len(read_line)-1]
+//Perhaps a better approach is to use the strings library:
+read_line = strings.TrimSuffix(read_line, "\n")
+
 
 //string manipulation
 strings.HasPrefix(the_str, str_pattern)
@@ -304,3 +309,5 @@ b.ResetTimer()
 ciw"Ctrl+r" //this cmd is type ciw in normal mode will delete word, and manually type ", and then press ctrl+r" to paste what is last deleted
 //outside vim-go fast add quote
 ciw'Ctrl+r"'
+
+
