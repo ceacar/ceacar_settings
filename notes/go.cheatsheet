@@ -216,6 +216,9 @@ type human interface{
     speak()
 }
 
+//delete element from map a
+delete(aMap, key)
+
 //now we have a human interface, we can take any human interface and call its speak function)
 func saySomething(h human){
     h.speak()
