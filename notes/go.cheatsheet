@@ -333,4 +333,7 @@ ciw"Ctrl+r" //this cmd is type ciw in normal mode will delete word, and manually
 //outside vim-go fast add quote
 ciw'Ctrl+r"'
 
-
+//check if map has this element
+if _, ok := groupSet["sip"]; ok {
+    //do stuff
+}
