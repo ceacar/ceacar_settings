@@ -348,10 +348,18 @@ import "sync"
 
 
 var wg sync.WaitGroup // 1
-
+func cleanup(){
+    if r := recover(); r!=nil {
+        fmt.Println("recovered",r)
+    }
+}
 func routine(i int) {
     defer wg.Done() // 3
+    defer cleanup()
     fmt.Printf("routine %v finished\n", i)
+    if i ==2 {
+    panic("2 should not be in here")
+    }
 }
 
 func main() {
