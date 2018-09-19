@@ -371,5 +371,32 @@ func main() {
     fmt.Println("main finished")
 }
 
+//go routine channel
+package main
+import "fmt"
+import "sync"
 
+var wg sync.WaitGroup
+func foo(c chan int, v int){
+    defer wg.Done()
+    c <- v*5
+}
+func main(){
+    channelIns := make(chan int, 10)
+    for i :=0; i< 10;i++{
+        wg.Add(1)
+        go foo(channelIns, i)
+    }
+    //go foo(channelIns, 5)
+    //go foo(channelIns, 3)
+    //v1 := <- channelIns
+    //v2 := <- channelIns
+    //fmt.Println(v1, v2)
+    wg.Wait()
+    //only close channel after nothing will send to channel
+    close(channelIns)
+    for item := range channelIns{
+        fmt.Println(item)
+    }
+}
 
