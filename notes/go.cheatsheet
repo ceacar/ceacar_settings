@@ -442,3 +442,6 @@ func main() {
     modifyReference(&p)
     fmt.Println(p) // prints (0, 0)
 }
+
+//check if string is in a string
+strings.Contains("something", "some") // true
