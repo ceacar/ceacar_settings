@@ -445,3 +445,26 @@ func main() {
 
 //check if string is in a string
 strings.Contains("something", "some") // true
+
+
+
+testing:
+1.navigate to source code package dir
+2.run go tool cover -html=c.out
+3. if not sucessful, run touch c.out, then try again, if successful, you should see message like 
+HTML output written to /tmp/cover716341004/coverage.html
+4.now checkout the file generated above, in this case it is at "/tmp/cover716341004/coverage.html"
+5. now color coding is through a class called covX, known one is cov0, this means not covered, cov8 means covered
+<span class="cov0" title="0">{
+                fmt.Errorf("%s", err.Error())
+                return []string{}, 1, err
+}</span>
+above code means the part code of golang error handling is not covered
+
+
+
+
+
+
+
+
