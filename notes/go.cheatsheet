@@ -462,9 +462,11 @@ HTML output written to /tmp/cover716341004/coverage.html
 above code means the part code of golang error handling is not covered
 
 
-
-
-
-
-
-
+//string to bool
+b, err := strconv.ParseBool("true")
+//string to float
+f, err := strconv.ParseFloat("3.1415", 64)
+//string to int
+i, err := strconv.ParseInt("-42", 10, 64)
+//string to int
+u, err := strconv.ParseUint("42", 10, 64)
