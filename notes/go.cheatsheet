@@ -487,3 +487,13 @@ int(42.0)
     // Each value is an interface{} type, that is type asserted as a string
     fmt.Println(key, value.(string))
   }
+
+
+//golang time formatting conversion
+func main() {
+	fmt.Println("Hello, playground")
+	input := "2018-11-12T16:18:06.821Z"
+	layout := "2006-01-02T15:04:05.000Z"
+	t, _ := time.Parse(layout, input)
+
+}
