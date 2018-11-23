@@ -24,4 +24,4 @@ sudo make install
 
 #add comma to the end of a block of text
 ctrl+v to select block or type Vip for fast selection of a block
-now type norm A,
+now type :norm A,
