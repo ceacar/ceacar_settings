@@ -161,3 +161,8 @@ function sourcepython(){
 function sourcepython3(){
     source ~/my_python_venv3/bin/activate
 }
+
+function git_push_to_branch(){
+  branch_name=$(git branch | grep \*|sed -e 's/\* //g')
+  git push origin $branch_name
+}
