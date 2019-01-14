@@ -66,3 +66,6 @@ git pull --rebase origin master
 
 #rebase a branch from an old branch to a new branch
 git rebase --onto newBase oldBase feature/branch
+
+#regret/revert a not pushed git rebase
+git reset --hard ORIG_HEAD
