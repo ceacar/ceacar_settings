@@ -74,7 +74,8 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'kien/ctrlp.vim'
 
 " nerd tree the gui acting as a file browser in vim
-"Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " ner tree with tab, use tab to invoke nerd tree
 "Plugin 'jistr/vim-nerdtree-tabs'
@@ -157,6 +158,7 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 " vim auto completion
 Bundle 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
+"let g:NERDTreeShowIgnoredStatus = 1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "<leader> is a the primary key: if it's space it will be 'space-g' will go into definition
 
@@ -169,12 +171,13 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let python_highlight_all=1
 
 "hide pyc from nerd tree
-"let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 
 "let nerd tree start itself
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * NERDTree
+"map <Leader>n <plug>NERDTreeTabsToggle<CR>
+nmap <F7> :NERDTreeToggle<CR>
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
