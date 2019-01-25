@@ -146,6 +146,15 @@ au BufNewFile,BufRead *.scala
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
+au BufNewFile,BufRead *.go
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=200 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+
 
 "au BufNewFile,BufRead *.c,*.cpp
 "    \ set cindent |
@@ -175,7 +184,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 
 "let nerd tree start itself
-autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
 
