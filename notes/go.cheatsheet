@@ -2,6 +2,13 @@
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
 
+#install go
+#u might wanna find newest version link and then replace anmebelow
+wget https://dl.google.com/go/go1.11.5.linux-amd64.tar.gz
+tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+
+
 #if mac, ubuntu use apt-get install go
 brew install go
 #optional?

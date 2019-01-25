@@ -32,7 +32,6 @@ set smartcase
 "Plugin 'altercation/vim-colors-solarized'
 
 
-
 " always uses spaces instead of tab characters
 "set expandtab
 
@@ -59,6 +58,9 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
+" vim-go ide
+Plugin 'fatih/vim-go'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 

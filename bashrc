@@ -82,8 +82,11 @@ LS_COLORS=$LS_COLORS:'di=36:' ; export LS_COLORS
 PATH=$PATH:~/Documents/code
 PATH=$PATH:/usr/local/spark/bin
 PATH=$PATH:/usr/local/go/bin
+PATH=$PATH:/home/ceacar/projects/ceacar_settings/utility
+#add support for golang, install please check go.cheatsheet
+PATH=$PATH:/usr/local/go/bin
 export PATH
-export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$PATHONPATH
+export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:/home/ceacar/projects/ceacar_settings/utility:$PATHONPATH
 if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
   export ceacar_setting='/Users/ceacar/projects/ceacar_settings'
 else
@@ -91,4 +94,4 @@ else
 fi
 export notes=$ceacar_setting/notes
 
-
+alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
