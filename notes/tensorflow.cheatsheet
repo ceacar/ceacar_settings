@@ -1,0 +1,16 @@
+In [2]: x1=tf.constant(5)
+
+In [3]: x2=tf.constant(6)
+
+In [4]: res =tf.multiply(x1,x2)
+
+#also can use tf.matmultiply()
+
+#only have tf class run in tf session will produce result
+sess=tf.Session()
+sess.run(res)
+sess.close()
+
+
+#use this will be better
+with tf.Session() as sess:
