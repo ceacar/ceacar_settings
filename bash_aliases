@@ -27,6 +27,7 @@ alias vimnoplugin='vim -u NONE'
 alias vimwithoutycm="vim --cmd 'set rtp^='~/.vimrd''"
 uname_output="$(uname -s)"
 alias vim="/usr/local/bin/vim"
+alias ide="vim -u ~/.vimrc_ide"
 #case "$uname_output" in
 #  Linux*) alias vim="vim.nox" #only change vim to vim.nox in linux
 #  #Darwin*) 

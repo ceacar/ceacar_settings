@@ -184,7 +184,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 
 "let nerd tree start itself
-" autocmd VimEnter * NERDTree | wincmd p
+autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
 

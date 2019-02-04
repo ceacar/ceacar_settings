@@ -203,3 +203,8 @@ cwd = os.getcwd()
 >>> L=[[0, 1, 'f'], [4, 2, 't'], [9, 4, 'afsd']]
 >>> sorted(L, key=itemgetter(1,2))
 [[9, 4, 'afsd'], [0, 1, 'f'], [4, 2, 't']]
+
+
+#py.test show code coverage
+pip install pytest-cov
+py.test --cov-report term-missing --cov=weathertracker ./weathertracker/

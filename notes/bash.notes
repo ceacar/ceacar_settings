@@ -116,3 +116,14 @@ ssh -R 456:localhost:123 remote_host
 
 #find which port is running by which application
 sudo lsof -i -P -n | grep LISTEN
+
+#curl with post
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"username":"xyz","password":"xyz"}' \
+  http://localhost:3000/api/login
+
+#curl to write out status code
+--write-out %{http_code}
+
+

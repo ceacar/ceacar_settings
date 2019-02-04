@@ -1,0 +1,6 @@
+kubectl get pods
+kubectl get service
+#./yaml is dir with all yaml config files
+kubectl delete -f ./yaml/
+kubectl delete pods pod_name
+kubectl delete service service_name
