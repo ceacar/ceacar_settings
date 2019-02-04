@@ -17,6 +17,7 @@ ln -snf $PWD/bashrc ~/.bashrc
 ln -snf $PWD/bash_aliases ~/.bash_aliases
 ln -snf $PWD/bash_home_brew_script ~/.bash_home_brew_script
 ln -snf $PWD/vimrc ~/.vimrc
+ln -snf $PWD/vimrc_ide ~/.vimrc_ide
 ln -snf $PWD/tmux.conf ~/.tmux.conf
 ln -snf $PWD/screenrc ~/.screenrc
 ln -snf $PWD/vim_colors ~/.vim/colors
