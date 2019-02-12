@@ -208,3 +208,16 @@ cwd = os.getcwd()
 #py.test show code coverage
 pip install pytest-cov
 py.test --cov-report term-missing --cov=weathertracker ./weathertracker/
+
+
+#Python bit manipulation
+#2 based 
+int('00100001', 2) ==> 33 ==> 2**5 +1
+#hex string
+print "0x%x" % int('11111111', 2) => 0xff
+#from ascii integer to char
+chr(int('111011', 2)) => ';'
+1 << 7 ==> 128
+
+
+
