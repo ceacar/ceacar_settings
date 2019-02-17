@@ -141,3 +141,10 @@ docker run -v /var/lib/docker:/opt/docker -it ubuntu bash
 
 #in docker image run script as other user:
 setuser other_user_name any_cmd_or_script
+
+
+#use docker without sudo
+sudo groupadd docker
+sudo gpasswd -a $USER docker
+newgrp docker #restart the group to activate newly added user
+
