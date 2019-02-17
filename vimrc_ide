@@ -142,7 +142,7 @@ au BufNewFile,BufRead *.js,*.html,*.css,*.yml
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 
-au BufNewFile,BufRead *.scala
+au BufNewFile,BufRead *.scala,*.java
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
