@@ -3,6 +3,7 @@ set -fueo pipefail
 apt-get -y install build-essential cmake
 apt-get -y install python-dev python3-dev python-pip
 apt-get -y install python-dev libxml2-dev libxslt-dev
+apt-get -y install tmux
 #you complete me prerequisite
 apt-get -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
     libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
