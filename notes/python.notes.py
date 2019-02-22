@@ -220,4 +220,60 @@ chr(int('111011', 2)) => ';'
 1 << 7 ==> 128
 
 
+#unittest with mock
+with patch('requests.get') as mock_requests:
+    mock_requests.return_value="123"
+    assert module1.method_to_test1("http://www.google.com") == "123"
+#mock with decorator pattern
+@patch('requests.get') # this will be the mockked first argument of the test case "mock1" 
+def test_method2_wth(self, mock1): #this mock1 declared the @patch("request.get") above is named as "mock1"
+    mock1.return_value = "123"
+    assert wth.wth1("http://www.google.com") == "123"
+
+#mock with side_effect
+@patch('requests.get')
+def test_method3_wth_with_sideeffect(self, mock1):
+
+    def side_effect(*args, **kwargs): #here is the side effect mock, it will run when the mock method is called
+        raise Exception("oops")
+
+    mock1.side_effect = side_effect
+    try:
+        wth.wth1("http://www.google.com") == "123"
+    except Exception as e:
+        assert True
+
+
+#full unit test example below
+#code to mock
+import requests
+def wth1(url:str):
+    res = requests.get(url)
+    return res[:10]
+
+#mocked unit test example below
+import unittest
+import wth
+from mock import patch
+
+class TestWth(unittest.TestCase):
+    def test_wth(self):
+        with patch('requests.get') as mock_requests:
+            mock_requests.return_value="123"
+            assert wth.wth1("http://www.google.com") == "123"
+
+    @patch('requests.get')
+    def test_method2_wth(self, mock1):
+        mock1.return_value = "123"
+        assert wth.wth1("http://www.google.com") == "123"
+
+    @patch('requests.get')
+    def test_method3_wth_with_sideeffect(self, mock1):
+        def side_effect(*args, **kwargs):
+            raise Exception("oops")
+        mock1.side_effect = side_effect
+        try:
+            wth.wth1("http://www.google.com") == "123"
+        except Exception as e:
+            assert True
 
