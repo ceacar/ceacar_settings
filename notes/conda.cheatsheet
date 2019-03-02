@@ -20,6 +20,20 @@ source deactivate venv_test1
 #remove virtualenv
 conda remove --name myenv --all
 
+#conda create env from yml file 
+conda env create -f ./environment.yml
+
+#example yml file
+name: pizza
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - avro=1.8.2
+  - jupyter=1.0.0
+  - pip:
+    - avro-python3==1.8.2
+
 
 
 
