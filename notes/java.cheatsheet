@@ -1,0 +1,8 @@
+#how to run java code
+javac /filepath/classname.java
+java classname
+
+#some java path
+JAVA_HOME -> path of jdk
+CLASSPATH -> similar to python path
+JUNIT_HOME -> home of junit
