@@ -79,14 +79,16 @@ fi
 # directory color display
 LS_COLORS=$LS_COLORS:'di=36:' ; export LS_COLORS
 
+UTILITY_PATH=/home/ceacar/projects/ceacar_settings/utility
 PATH=$PATH:~/Documents/code
 PATH=$PATH:/usr/local/spark/bin
 PATH=$PATH:/usr/local/go/bin
-PATH=$PATH:/home/ceacar/projects/ceacar_settings/utility
 #add support for golang, install please check go.cheatsheet
 PATH=$PATH:/usr/local/go/bin
+PATH=$PATH:$UTILITY_PATH/bash_lib
+PATH=$PATH:/opt/share/jvm/current_java_jdk
 export PATH
-export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:/home/ceacar/projects/ceacar_settings/utility:$PATHONPATH
+export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$UTILITY_PATH/python_lib:$UTILITY_PATH/python_lib/excalibur:$PATHONPATH
 if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
   export ceacar_setting='/Users/ceacar/projects/ceacar_settings'
 else
@@ -95,3 +97,19 @@ fi
 export notes=$ceacar_setting/notes
 
 alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
+# added by Anaconda3 2018.12 installer
+# >>> conda init >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/home/ceacar/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    \eval "$__conda_setup"
+else
+    if [ -f "/home/ceacar/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/ceacar/anaconda3/etc/profile.d/conda.sh"
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        \export PATH="/home/ceacar/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda init <<<
