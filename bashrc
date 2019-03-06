@@ -86,7 +86,7 @@ PATH=$PATH:/usr/local/go/bin
 #add support for golang, install please check go.cheatsheet
 PATH=$PATH:/usr/local/go/bin
 PATH=$PATH:$UTILITY_PATH/bash_lib
-PATH=$PATH:/opt/share/jvm/current_java_jdk
+PATH=$PATH:/opt/share/jvm/current_java_jdk/bin
 export PATH
 export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$UTILITY_PATH/python_lib:$UTILITY_PATH/python_lib/excalibur:$PATHONPATH
 if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
