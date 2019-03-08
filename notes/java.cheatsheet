@@ -6,3 +6,17 @@ java classname
 JAVA_HOME -> path of jdk
 CLASSPATH -> similar to python path
 JUNIT_HOME -> home of junit
+
+
+#sort arraylist
+import java.util.*
+Collections.sort(al); 
+
+
+
+
+
+
+
+
+
