@@ -122,6 +122,8 @@ set invnumber nornu
 nnoremap <F5> :set invnumber nornu<cr>
 " toggle ignore case
 nnoremap <F6> :set ic!<cr>
+"Remove all trailing whitespace by pressing F5
+nnoremap <F8> :%s/ $//g<cr>
 "nmap <F9> :set ignorecase! ignorecase?
 
 " enable the folding plugin

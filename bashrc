@@ -88,7 +88,8 @@ PATH=$PATH:/usr/local/go/bin
 PATH=$PATH:$UTILITY_PATH/bash_lib
 PATH=$PATH:/opt/share/jvm/current_java_jdk/bin
 export PATH
-export PYTHONPATH=/home/ceacar/projects/xiazi_utils/python_lib:$UTILITY_PATH/python_lib:$UTILITY_PATH/python_lib/excalibur:$PATHONPATH
+export PYTHONPATH=/home/ceacar/projects/ceacar_settings/excalibur:$PYTHONPATH
+export JAVA_HOME=/opt/share/jvm/current_java_jdk
 if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
   export ceacar_setting='/Users/ceacar/projects/ceacar_settings'
 else
@@ -113,3 +114,7 @@ else
 fi
 unset __conda_setup
 # <<< conda init <<<
+
+# added by Anaconda3 installer
+export PATH="/home/ceacar/anaconda3/bin:$PATH"
+. /home/ceacar/anaconda3/etc/profile.d/conda.sh

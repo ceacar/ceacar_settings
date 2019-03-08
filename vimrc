@@ -124,6 +124,17 @@ nnoremap <F5> :set invnumber nornu<cr>
 nnoremap <F6> :set ic!<cr>
 "nmap <F9> :set ignorecase! ignorecase?
 
+"Remove all trailing whitespace by pressing F5
+"either one below will work
+nnoremap <F8> :%s/ $//g<cr>
+"nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
+" enable vim auto reload vimrc config
+augroup myvimrchooks
+    au!
+    autocmd bufwritepost .vimrc source ~/.vimrc
+augroup END
+
 " enable the folding plugin
 "Plugin 'tmhedberg/SimpylFold'
 
