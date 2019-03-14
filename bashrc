@@ -88,7 +88,7 @@ PATH=$PATH:/usr/local/go/bin
 PATH=$PATH:$UTILITY_PATH/bash_lib
 PATH=$PATH:/opt/share/jvm/current_java_jdk/bin
 export PATH
-export PYTHONPATH=/home/ceacar/projects/excalibur:$PYTHONPATH
+export PYTHONPATH=/home/ceacar/projects/excalibur/excalibur:$PYTHONPATH
 export JAVA_HOME=/opt/share/jvm/current_java_jdk
 if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
   export ceacar_setting='/Users/ceacar/projects/ceacar_settings'
