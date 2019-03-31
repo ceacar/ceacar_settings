@@ -110,6 +110,7 @@ export PYTHONPATH=~/projects/excalibur:$PYTHONPATH
 export JAVA_HOME=/opt/share/jvm/current_java_jdk
 export ceacar_setting=~/projects/ceacar_settings
 export notes=$ceacar_setting/notes
+export MY_SOURCE_CODE_DIR=~/projects
 
 alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
 # added by Anaconda3 2018.12 installer
