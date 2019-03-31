@@ -72,9 +72,6 @@ if $is_linux;then
   esac
 fi
 
-
-
-
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -84,6 +81,12 @@ fi
 if [ -f ~/.bash_home_brew_script ]; then
     . ~/.bash_home_brew_script
 fi
+
+# custom dir_path 
+if [ -f ~/.bash_dir_path ]; then
+    . ~/.bash_dir_path
+fi
+
 # enable programmable completion features 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then

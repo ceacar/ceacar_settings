@@ -1,0 +1,3 @@
+#!/bin/bash
+#shortcut for dir path
+export aggr=~/projects/pulsepoint/aggr

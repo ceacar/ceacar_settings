@@ -56,6 +56,7 @@ function replace_config_files(){
   sudo -u $user_name ln -snf $config_path/bashrc ~/.bashrc
   sudo -u $user_name ln -snf $config_path/bash_aliases ~/.bash_aliases
   sudo -u $user_name ln -snf $config_path/bash_home_brew_script ~/.bash_home_brew_script
+  sudo -u $user_name ln -snf $config_path/bash_dir_path~/.bash_dir_path
   sudo -u $user_name ln -snf $config_path/vimrc ~/.vimrc
   sudo -u $user_name ln -snf $config_path/vimrc_ide ~/.vimrc_ide
   sudo -u $user_name ln -snf $config_path/tmux.conf ~/.tmux.conf
