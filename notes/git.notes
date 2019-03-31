@@ -69,3 +69,41 @@ git rebase --onto newBase oldBase feature/branch
 
 #regret/revert a not pushed git rebase
 git reset --hard ORIG_HEAD
+
+
+#git always asks for passphrase/password
+#this works for mac
+This has been happening to me after restarts since upgrading from OS X El Capitan (10.11) to macOS Sierra (10.12). The ssh-add solution worked temporarily but would not persist across another restart.
+
+The permanent solution was to edit (or create) ~/.ssh/config and enable the UseKeychain option.
+
+Host *
+    UseKeychain yes
+
+#put below code in bashrc for linux
+SSH_ENV=$HOME/.ssh/environment
+
+# start the ssh-agent
+    function start_agent {
+    echo "Initializing new SSH agent..."
+    # spawn ssh-agent
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add
+}
+
+if [ -f "${SSH_ENV}" ]; then
+     . "${SSH_ENV}" > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
+fi
+
+#other solution, maybe put this in bashrc will work also
+eval $(ssh-agent)
+ssh-add 
+
