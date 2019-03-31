@@ -154,12 +154,12 @@ function digtunnel(){
 }
 
 function sourcepython(){
-    source ~/my_python_venv/bin/activate
+    source ~/.venv/my_python_venv/bin/activate
     export PYTHONPATH="$PYTHONPATH:/Users/ceacar/projects/sunfish:"
 }
 
 function sourcepython3(){
-    source ~/my_python_venv3/bin/activate
+    source ~/.venv/my_python_venv3/bin/activate
 }
 
 function git_push_to_branch(){

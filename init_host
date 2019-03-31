@@ -1,110 +1,288 @@
 #!/bin/bash
-#set -fueo pipefail
+set -fueo pipefail
+user_name=${1:?your local user_name cannot be empty and it is your local user name, for example ceacar}
+set -xv
+is_linux=false
+is_mac=false
+#is_cygwin=false
+is_unknown=false
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     export is_linux=true;;
+    Darwin*)    export is_mac=true;;
+    #CYGWIN*)    export is_cygwin=true;;
+    *)          export is_unknown="UNKNOWN:${unameOut}"
+esac
+
+#put everything in projects
+log_file=/tmp/init_host.txt
+projects_location=~/projects
+python_venv_locations=~/.venv
+setting_path=$projects_location/ceacar_settings
+ls $projects_location >/dev/null 2>&1 || mkdir -p $projects_location
+cd $projects_location
+
+config_path=$setting_path/configs
+package_list_path=$config_path/packages
+linux_package_path=$config_path/packages/linux
+mac_package_path=$config_path/packages/mac
+venv_package_path=$config_path/packages/venv
+tmp_bak_path=$projects_location/bak
+
+#check if is root
+#need to check if mac can do it
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
-#disable interactive mode 
-#so some confirmation won't bug you
-export DEBIAN_FRONTEND=noninteractive
-#need sudo access
 #backing up old files
-mkdir -p bak
-ls ~/.bashrc 2>/dev/null && mv ~/.bashrc $PWD/bak/bashrc
-ls ~/.vimrc 2>/dev/null && mv ~/.vimrc $PWD/bak/vimrc
-ls ~/.tmux.conf 2>/dev/null && mv ~/.tmux.conf $PWD/bak/tmux.conf
-ls ~/.screenrc 2>/dev/null && mv ~/.screenrc $PWD/bak/.screenrc
-mkdir -p ~/.vim/
-ln -snf $PWD/bashrc ~/.bashrc
-ln -snf $PWD/bash_aliases ~/.bash_aliases
-ln -snf $PWD/bash_home_brew_script ~/.bash_home_brew_script
-ln -snf $PWD/vimrc ~/.vimrc
-ln -snf $PWD/vimrc_ide ~/.vimrc_ide
-ln -snf $PWD/tmux.conf ~/.tmux.conf
-ln -snf $PWD/screenrc ~/.screenrc
-ln -snf $PWD/vim_colors ~/.vim/colors
-ln -snf $PWD/notes ~/notes
-ln -snf $PWD/tmux_lunch ~/.tmux_lunch
-chmod +x ~/.tmux_lunch
-mv ~/notes $PWD/bak/notes
-#clone git repo frequently used
-ls $PWD/utility 2>/dev/null || git clone https://github.com/ceacar/utility.git $PWD/utility
-ls $PWD/albert_practice 2>/dev/null || git clone https://github.com/ceacar/albert_practice.git $PWD/albert_practice
 
-#disable interactive apt-get confirmation
-ls /etc/apt/listchanges.conf 2>/dev/null || sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
+function make_essential_path(){
+  echo "creating essential path"
+  sudo -u $user_name mkdir -p $tmp_bak_path
+  sudo -u $user_name mkdir -p ~/.vim/
+  sudo -u $user_name mkdir -p ~/.venv
+}
 
-#some essential dev env
-apt-get -y install build-essential cmake
-apt-get -y install python-dev python3-dev python-pip
-apt-get -y install python-dev libxml2-dev libxslt-dev
-apt-get -y install tmux
-#you complete me prerequisite
-apt-get -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
-    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
-    python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
-pip install --upgrade virtualenv
-pip install --upgrade pip 
+function move_old_config_to_bak(){
+  echo "moving old config to $tmp_bak_path"
+  ls ~/.bashrc 2>/dev/null && mv ~/.bashrc $tmp_bak_path/bashrc
+  ls ~/.vimrc 2>/dev/null && mv ~/.vimrc $tmp_bak_path/vimrc
+  ls ~/.tmux.conf 2>/dev/null && mv ~/.tmux.conf $tmp_bak_path/tmux.conf
+  ls ~/.screenrc 2>/dev/null && mv ~/.screenrc $tmp_bak_path/screenrc
+  ls ~/notes 2>/dev/null && mv ~/notes $tmp_bak_path/notes
+}
 
-ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+function replace_config_files(){
+  echo "symbolic linking config files"
+  sudo -u $user_name ln -snf $config_path/bashrc ~/.bashrc
+  sudo -u $user_name ln -snf $config_path/bash_aliases ~/.bash_aliases
+  sudo -u $user_name ln -snf $config_path/bash_home_brew_script ~/.bash_home_brew_script
+  sudo -u $user_name ln -snf $config_path/vimrc ~/.vimrc
+  sudo -u $user_name ln -snf $config_path/vimrc_ide ~/.vimrc_ide
+  sudo -u $user_name ln -snf $config_path/tmux.conf ~/.tmux.conf
+  sudo -u $user_name ln -snf $config_path/screenrc ~/.screenrc
+  sudo -u $user_name ln -snf $config_path/vim_colors ~/.vim/colors
+  sudo -u $user_name ln -snf $config_path/notes ~/notes
+  sudo -u $user_name ln -snf $config_path/tmux_lunch ~/.tmux_lunch
+}
 
-#change permission of the directory so vim could install everything when other user need it
+function set_config_files_permission(){
+  echo "setting permission for config files"
+  chmod +x ~/.tmux_lunch
+}
 
-#git alias
-./git_alias
-#git 
-./git_username
+function set_mac_config(){
+  echo "setting mac bash config"
+  #enable auto load bashrc, mac only
+  sudo -u $user_name touch ~/.bash_profile
+  cat ~/.bash_profile | grep "source ~/.bashrc" >/dev/null || echo "source ~/.bashrc" >> ~/.bash_profile
+}
 
-mkdir -p ~/projects/
-cd ~/projects/
-#sudo apt-get -y install vim-nox
-ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
-cd vim
+function set_linux_config(){
+  echo "setting linux config"
+  #disable interactive apt-get confirmation
+  ls /etc/apt/listchanges.conf 2>/dev/null || sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
+  #disable interactive confirmation during install application proess
+  export DEBIAN_FRONTEND=noninteractive
+}
 
-#new vim cannot work with python 2 and python 3, so picking python 3
-./configure \
-  --with-features=huge \
-  --enable-multibyte\
-  --enable-rubyinterp=yes\
-  --enable-python3interp=yes\
-  --with-python3-config-dir=/usr/lib/$(ls -al /usr/lib/ |grep python3.[1-9]|awk '{print $9}')/config\
-  --enable-perlinterp=yes\
-  --enable-luainterp=yes\
-  --enable-gui=gtk2\
-  --enable-cscope\
-  --prefix=/usr/local\
+function clone_git_repos(){
+  echo "cloning needed repos"
+  #clone git repo frequently used
+  sudo -u $user_name ls $projects_location/utility >/dev/null 2>/dev/null || git clone https://github.com/ceacar/utility.git $projects_location/utility
+  sudo -u $user_name ls $projects_location/albert_practice >/dev/null 2>/dev/null || git clone https://github.com/ceacar/albert_practice.git $projects_location/albert_practice
+  sudo -u $user_name ls $projects_location/excalibur >/dev/null 2>/dev/null || git clone https://github.com/ceacar/excalibur.git $projects_location/excalibur
+}
 
-#./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.5/config --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --prefix=/usr
-make install
+function install_packages_from_file(){
+  local file_name=$1
+  local install_cmd=$2
+  cat $file_name\
+    | grep -v "#" \
+    | while read pak;do
+	eval "$install_cmd $pak"
+      done
+}
+
+function install_linux_essential_packages(){
+  echo "installing linux essential packages"
+  apt-get update
+  install_packages_from_file $linux_package_path/requirements.apt "apt-get -y install"
+  #cat $linux_package_path/requirements.apt\
+  #  | grep -v "#" \
+  #  | while read pak;do
+  #      apt-get -y install $pak
+  #    done
+
+  install_packages_from_file $linux_package_path/requirements.apt "pip install --ignore-installed"
+  #cat $linux_package_path/requirements.txt\
+  #  | grep -v "#" \
+  #  | while read pak;do
+  #      pip install --upgrade $pak >/dev/null
+  #    done
+
+  install_packages_from_file $linux_package_path/requirements.apt "pip3 install --ignore-installed"
+  #cat $linux_package_path/requirements.txt3\
+  #  | grep -v "#" \
+  #  | while read pak;do
+  #      pip3 install --upgrade $pak >/dev/null
+  #    done
+}
+
+function install_conda(){
+  echo "installing conda"
+  sudo -u $user_name ls ~/anaconda3 >/dev/null 2>&1 || \
+    { wget https://repo.anaconda.com/archive/Anaconda3-2018.12-MacOSX-x86_64.sh -O /tmp/anaconda.sh &&\
+    bash ~/anaconda.sh -b -p $HOME/anaconda3 &&\
+    export PATH="$HOME/anaconda3/bin:$PATH"; }
+}
+
+function install_mac_essential_packages(){
+  #brew cannot run in sudo mode
+  sudo -u $user_name brew help >/dev/null 2>/dev/null || echo 'please install brew /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  sudo -u $user_name brew update
+
+  cat $mac_package_path/requirements.apt\
+    | grep -v "#" \
+    | while read pak;do
+	sudo -u $user_name brew list $pak || { brew install $pak || echo "failed to install essential apps through brew"; }
+      done
+
+  install_packages_from_file $mac_package_path/requirements.txt "pip install --ignore-installed"
+  #cat $mac_package_path/requirements.txt\
+  #  | grep -v "#" \
+  #  | while read pak;do
+  #      pip install --ignore-installed $pak >/dev/null
+  #    done
+
+  install_packages_from_file $mac_package_path/requirements.txt3 "pip install --ignore-installed"
+  #cat $mac_package_path/requirements.txt3\
+  #  | grep -v "#" \
+  #  | while read pak;do
+  #      pip3 install --ignore-installed $pak >/dev/null
+  #    done
+}
 
 
-#install for vim
-vim -c 'PluginInstall' -c 'qa!'
+function config_vim(){
+  echo "configuring vim"
+  ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  #change permission of the directory so vim could install everything when other user need it
+  #?
 
-#compile you completeme
-cd ~/.vim/bundle/YouCompleteMe
-./install.py --clang-completer
-#overwrite the default vim to vim.nox
-#ln -snf $(which vim.nox) /usr/local/bin/vim
-chmod -R 755 ~/.vim
+  #install for vim
+  vim -c 'PluginInstall' -c 'qa!'
 
-virtualenv ~/my_python_venv/
+  #compile you completeme
+  cd ~/.vim/bundle/YouCompleteMe
+  ./install.py --clang-completer
+  #overwrite the default vim to vim.nox
+  #ln -snf $(which vim.nox) /usr/local/bin/vim
+  chmod -R 755 ~/.vim
+}
 
-virtualenv -p $(which python3) ~/my_python_venv3/
+function set_git_config(){
+  echo "setting git config"
+  #git alias
+  sudo -u $user_name $config_path/git_alias
+  #git username
+  sudo -u $user_name $config_path/git_username
+}
 
-source ~/my_python_venv/bin/activate
-pip install coverage funcsigs mock numpy pandas pbr py \
-pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
-pdbpp boto flask cloudpickle
-deactivate
+function reinstall_vim(){
+  echo "reinstalling vim"
+  #sudo apt-get -y install vim-nox
+  ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
+  cd vim
 
-source ~/my_python_venv3/bin/activate
-pip install coverage funcsigs mock numpy pandas pbr py \
-pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
-pdbpp boto flask cloudpickle
-deactivate
+  #new vim cannot work with python 2 and python 3, so picking python 3
+  ./configure \
+    --with-features=huge \
+    --enable-multibyte\
+    --enable-rubyinterp=yes\
+    --enable-python3interp=yes\
+    --with-python3-config-dir=/usr/lib/$(ls -al /usr/lib/ |grep python3.[1-9]|awk '{print $9}')/config\
+    --enable-perlinterp=yes\
+    --enable-luainterp=yes\
+    --enable-gui=gtk2\
+    --enable-cscope\
+    --prefix=/usr/local\
 
-#create ipython profile dir in ~/.ipython
-ipython profile create
-#adding auto reload enable by default to ipython
-echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> ~/.ipython/profile_default/ipython_config.py
+  #./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.5/config --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --prefix=/usr
+  make install
+}
 
+function setup_python_venv(){
+  echo "creating python venv"
+  sudo -u $user_name pip >/dev/null 2>/dev/null || easy_install pip >$log_file 2>&1
+  sudo -u $user_name virtualenv >/dev/null 2>/dev/null || pip install virtualenv >$log_file 2>&1
+  sudo -u $user_name virtualenv $python_venv_locations/my_python_venv >$log_file 2>&1
+  sudo -u $user_name virtualenv -p $(which python3) $python_venv_locations/my_python_venv3 >$log_file 2>&1
+  echo "installing packages for venv"
+  source $python_venv_locations/my_python_venv/bin/activate
+
+  install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
+  #pip install --ignore-installed coverage funcsigs mock numpy pandas pbr py \
+  #  pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
+  #  pdbpp boto flask cloudpickle >$log_file 2>&1 &&\
+  #  deactivate
+
+  install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
+  #source $python_venv_locations/my_python_venv3/bin/activate &&\
+  #  pip install --ignore-installed coverage funcsigs mock numpy pandas pbr py \
+  #  pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
+  #  pdbpp boto flask cloudpickle >$log_file 2>&1 &&\
+  #  deactivate
+}
+
+function config_ipython(){
+  echo "configuring ipython"
+  #create ipython profile dir in ~/.ipython
+  ipython profile create
+  #adding auto reload enable by default to ipython
+  echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> ~/.ipython/profile_default/ipython_config.py
+}
+
+function prepare_vim_color_scheme(){
+  ls ~/.vim/colors 2>/dev/null || mv $tmp_bak_path/.vim/colors 
+  ln -snf $config_path/vim_colors ~/.vim/colors
+}
+
+function initialize_host(){
+
+  if $is_linux;then
+    set_linux_config
+  fi
+
+  make_essential_path
+  move_old_config_to_bak
+  replace_config_files
+  set_config_files_permission
+
+  if $is_mac;then
+    set_mac_config
+    #brew doesn't run in sudo mode
+    install_mac_essential_packages
+
+  fi
+
+  if $is_linux;then
+    install_linux_essential_packages
+  fi
+
+  set_git_config
+  clone_git_repos
+
+  if $is_linux;then
+    reinstall_vim
+  fi
+
+  setup_python_venv
+  config_ipython
+  prepare_vim_color_scheme
+  install_conda
+  #this config_vim is install you complete me, may fail
+  config_vim
+  cd -
+}
+
+initialize_host 2>&1 | tee $PWD/initilization_host.log

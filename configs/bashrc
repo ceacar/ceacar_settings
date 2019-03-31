@@ -3,6 +3,15 @@ case $- in
       *) return;;
 esac
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     export is_linux=true;;
+    Darwin*)    export is_mac=true;;
+    CYGWIN*)    export is_cygwin=true;;
+    *)          export is_unknown="UNKNOWN:${unameOut}"
+esac
+
+
 HISTCONTROL=ignoreboth
 
 shopt -s histappend
@@ -14,14 +23,19 @@ shopt -s checkwinsize
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+#enhance security in linux
+if $is_linux;then
+  if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+      debian_chroot=$(cat /etc/debian_chroot)
+  fi
 fi
 
+#setting color prompt for terminal
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    #mac is xterm-256color
+    xterm-256color) color_prompt=yes;;
 esac
-
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -32,36 +46,40 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    if $is_linux;then
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    fi
+    if $is_mac;then
+      PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    fi
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    if $is_linux;then
+      PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    fi
+    if $is_mac;then
+      PS1='\u@\h:\w\$ '
+    fi
 fi
 unset color_prompt force_color_prompt
 
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+if $is_linux;then
+  case "$TERM" in
+  xterm*|rxvt*)
+      PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+      ;;
+  *)
+      ;;
+  esac
 fi
+
+
+
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
 # custom script
 if [ -f ~/.bash_home_brew_script ]; then
     . ~/.bash_home_brew_script
@@ -78,10 +96,10 @@ fi
 
 # directory color display
 LS_COLORS=$LS_COLORS:'di=36:' ; export LS_COLORS
-
-UTILITY_PATH=/home/ceacar/projects/ceacar_settings/utility
+UTILITY_PATH=~/projects/utility
 PATH=$PATH:~/Documents/code
-PATH=$PATH:/usr/local/spark/bin
+spark_location=/usr/local/spark/bin
+ls $spark_location >/dev/null 2>&1 && PATH=$PATH:$spark_location
 PATH=$PATH:/usr/local/go/bin
 #add support for golang, install please check go.cheatsheet
 PATH=$PATH:/usr/local/go/bin
@@ -90,11 +108,7 @@ PATH=$PATH:/opt/share/jvm/current_java_jdk/bin
 export PATH
 export PYTHONPATH=/home/ceacar/projects/excalibur:$PYTHONPATH
 export JAVA_HOME=/opt/share/jvm/current_java_jdk
-if $(uname -a | grep -q "Darwin" && echo "true" || echo "false");then
-  export ceacar_setting='/Users/ceacar/projects/ceacar_settings'
-else
-  export ceacar_setting='/home/ceacar/projects/ceacar_settings'
-fi
+export ceacar_setting=~/projects/ceacar_settings
 export notes=$ceacar_setting/notes
 
 alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
@@ -116,5 +130,5 @@ unset __conda_setup
 # <<< conda init <<<
 
 # added by Anaconda3 installer
-export PATH="/home/ceacar/anaconda3/bin:$PATH"
-. /home/ceacar/anaconda3/etc/profile.d/conda.sh
+export PATH=$PATH:~/anaconda3/bin
+. ~/anaconda3/etc/profile.d/conda.sh

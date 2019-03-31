@@ -13,6 +13,11 @@ nnoremap cc i<space><esc>
 "highlight highlight_id_cursor=darkgreen
 " size of a hard tabstop
 "set tabstop=4
+"
+"disable annoying visual flashing
+"set novisualbell
+set visualbell
+set t_vb=
 
 " size of an "indent"
 set shiftwidth=2
@@ -226,4 +231,5 @@ nmap t <Plug>(easymotion-t2)
 "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " let nerd tree tab open up on vim startup
 "let g:nerdtree_tabs_open_on_console_startup=1
+
 
