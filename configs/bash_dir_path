@@ -3,3 +3,5 @@
 export aggr=~/projects/pulsepoint/aggr
 export playground=~/projects/play_ground
 export playground_python=~/projects/play_ground/python_playground
+#MY_SOURCE_CODE_DIR will enable find_my_code to search folders string which deliminitered with empty space
+export MY_SOURCE_CODE_DIR="~/projects/ceacar_settings ~/projects/excalibur/excalibur ~/projects/misc ~/projects/pulsepoint/aggr/aggr ~/projects/utility"
