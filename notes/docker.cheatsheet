@@ -148,3 +148,22 @@ sudo groupadd docker
 sudo gpasswd -a $USER docker
 newgrp docker #restart the group to activate newly added user
 
+
+#install docker on mac
+brew install docker-machine docker
+
+#mac complain about docker daemon not running
+docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+  #To have launchd start docker-machine now and restart at login:
+  brew services start docker-machine
+  #Or, if you don't want/need a background service you can just run:
+  docker-machine start
+  #create a default docker machine, need to have virtualbox is installed
+  docker-machine create --driver virtualbox default
+  #connect to your default docker machine
+  eval "$(docker-machine env default)"
+  #test with below command
+  docker run busybox echo hello world
+
+#mac list docker machines
+docker-machine ls

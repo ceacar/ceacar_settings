@@ -1,3 +1,6 @@
 tmux
 cmake
 parallel
+docker
+docker-machine
+docker-compose

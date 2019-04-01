@@ -1,3 +1,5 @@
 #!/bin/bash
 #shortcut for dir path
 export aggr=~/projects/pulsepoint/aggr
+export playground=~/projects/play_ground
+export playground_python=~/projects/play_ground/python_playground

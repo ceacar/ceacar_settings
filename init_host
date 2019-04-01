@@ -108,25 +108,8 @@ function install_linux_essential_packages(){
   echo "installing linux essential packages"
   apt-get update
   install_packages_from_file $linux_package_path/requirements.apt "apt-get -y install"
-  #cat $linux_package_path/requirements.apt\
-  #  | grep -v "#" \
-  #  | while read pak;do
-  #      apt-get -y install $pak
-  #    done
-
   install_packages_from_file $linux_package_path/requirements.apt "pip install --ignore-installed"
-  #cat $linux_package_path/requirements.txt\
-  #  | grep -v "#" \
-  #  | while read pak;do
-  #      pip install --upgrade $pak >/dev/null
-  #    done
-
   install_packages_from_file $linux_package_path/requirements.apt "pip3 install --ignore-installed"
-  #cat $linux_package_path/requirements.txt3\
-  #  | grep -v "#" \
-  #  | while read pak;do
-  #      pip3 install --upgrade $pak >/dev/null
-  #    done
 }
 
 function install_conda(){
@@ -149,18 +132,7 @@ function install_mac_essential_packages(){
       done
 
   install_packages_from_file $mac_package_path/requirements.txt "pip install --ignore-installed"
-  #cat $mac_package_path/requirements.txt\
-  #  | grep -v "#" \
-  #  | while read pak;do
-  #      pip install --ignore-installed $pak >/dev/null
-  #    done
-
   install_packages_from_file $mac_package_path/requirements.txt3 "pip install --ignore-installed"
-  #cat $mac_package_path/requirements.txt3\
-  #  | grep -v "#" \
-  #  | while read pak;do
-  #      pip3 install --ignore-installed $pak >/dev/null
-  #    done
 }
 
 
@@ -168,7 +140,6 @@ function config_vim(){
   echo "configuring vim"
   ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   #change permission of the directory so vim could install everything when other user need it
-  #?
 
   #install for vim
   vim -c 'PluginInstall' -c 'qa!'
@@ -191,7 +162,6 @@ function set_git_config(){
 
 function reinstall_vim(){
   echo "reinstalling vim"
-  #sudo apt-get -y install vim-nox
   ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
   cd vim
 
@@ -207,8 +177,6 @@ function reinstall_vim(){
     --enable-gui=gtk2\
     --enable-cscope\
     --prefix=/usr/local\
-
-  #./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.5/config --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --prefix=/usr
   make install
 }
 
@@ -220,19 +188,9 @@ function setup_python_venv(){
   sudo -u $user_name virtualenv -p $(which python3) $python_venv_locations/my_python_venv3 >$log_file 2>&1
   echo "installing packages for venv"
   source $python_venv_locations/my_python_venv/bin/activate
-
   install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
-  #pip install --ignore-installed coverage funcsigs mock numpy pandas pbr py \
-  #  pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
-  #  pdbpp boto flask cloudpickle >$log_file 2>&1 &&\
-  #  deactivate
-
   install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
-  #source $python_venv_locations/my_python_venv3/bin/activate &&\
-  #  pip install --ignore-installed coverage funcsigs mock numpy pandas pbr py \
-  #  pytest pytz six ipython pytest-cov python-dateutil pdbpp redis requests \
-  #  pdbpp boto flask cloudpickle >$log_file 2>&1 &&\
-  #  deactivate
+  chown -R $user_name: $python_venv_locations/
 }
 
 function config_ipython(){
