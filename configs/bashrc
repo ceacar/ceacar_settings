@@ -114,6 +114,10 @@ export JAVA_HOME=/opt/share/jvm/current_java_jdk
 export ceacar_setting=~/projects/ceacar_settings
 export notes=$ceacar_setting/notes
 
+if [ -f $ceacar_setting/configs/local_configs/bash_local_config ];then
+    . $ceacar_setting/configs/local_configs/bash_local_config
+fi
+
 #alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
 
 if $is_amc;then

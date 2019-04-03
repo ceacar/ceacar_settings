@@ -320,3 +320,24 @@ A.static_foo('hi')
 # executing static_foo(hi)
 Staticmethods are used to group functions which have some logical connection with a class to the class.
 
+
+#property decorator, it makes a method to act as a variable of a class, we can use cls.var1=new_value and del clas.var1 to access setter and getter, exmaple below
+class C(object):
+    def __init__(self):
+        self._x = None
+
+    @property
+    #use cls.x to retrieve the value
+    def x(self):
+        """I'm the 'x' property."""
+        return self._x
+
+    @x.setter
+    #use cls.x = new_value
+    def x(self, value):
+        self._x = value
+
+    @x.deleter
+    #use del cls.x to delete the value
+    def x(self):
+        del self._x

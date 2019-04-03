@@ -1,0 +1,5 @@
+configs/local_configs/*
+*.swp
+
+# exception to the rule
+!configs/local_configs/.gitkeep 
