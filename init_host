@@ -1,4 +1,6 @@
 #!/bin/bash
+#set -u will complain empty PS1
+export PS1="$PS1"
 set -fueo pipefail
 user_name=${1:?your local user_name cannot be empty and it is your local user name, for example ceacar}
 set -xv
@@ -48,7 +50,7 @@ function move_old_config_to_bak(){
   ls ~/.vimrc 2>/dev/null && mv ~/.vimrc $tmp_bak_path/vimrc
   ls ~/.tmux.conf 2>/dev/null && mv ~/.tmux.conf $tmp_bak_path/tmux.conf
   ls ~/.screenrc 2>/dev/null && mv ~/.screenrc $tmp_bak_path/screenrc
-  ls ~/notes 2>/dev/null && mv ~/notes $tmp_bak_path/notes
+  ls ~/notes 2>/dev/null && mv ~/notes $tmp_bak_path/notes || echo ""
 }
 
 function replace_config_files(){
@@ -63,12 +65,12 @@ function replace_config_files(){
   sudo -u $user_name ln -snf $config_path/screenrc ~/.screenrc
   sudo -u $user_name ln -snf $config_path/vim_colors ~/.vim/colors
   sudo -u $user_name ln -snf $config_path/notes ~/notes
-  sudo -u $user_name ln -snf $config_path/tmux_lunch ~/.tmux_lunch
+  sudo -u $user_name ln -snf $config_path/tmux_launch ~/.tmux_launch
 }
 
 function set_config_files_permission(){
   echo "setting permission for config files"
-  chmod +x ~/.tmux_lunch
+  chmod +x ~/.tmux_launch
 }
 
 function set_mac_config(){
@@ -81,7 +83,7 @@ function set_mac_config(){
 function set_linux_config(){
   echo "setting linux config"
   #disable interactive apt-get confirmation
-  ls /etc/apt/listchanges.conf 2>/dev/null || sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
+  ls /etc/apt/listchanges.conf 2>/dev/null && sed -i s/frontend=pager/frontend=none/g /etc/apt/listchanges.conf
   #disable interactive confirmation during install application proess
   export DEBIAN_FRONTEND=noninteractive
 }
@@ -226,6 +228,7 @@ function initialize_host(){
 
   if $is_linux;then
     install_linux_essential_packages
+    echo "linux packages installed"
   fi
 
   set_git_config
@@ -233,6 +236,7 @@ function initialize_host(){
 
   if $is_linux;then
     reinstall_vim
+    echo "vim reinstalled"
   fi
 
   setup_python_venv

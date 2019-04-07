@@ -1,0 +1,39 @@
+#procedure example:
+#in this procedure, name is country_hos, and input parameter is con char(20)
+DELIMITER //
+CREATE PROCEDURE country_hos
+(IN con CHAR(20))
+BEGIN
+  SELECT Name, HeadOfState FROM Country
+  WHERE Continent = con;
+END //
+DELIMITER ;
+
+#how to call procedure
+CALL country_hos('Europe');
+
+
+
+#trigger example
+CREATE TRIGGER ins_sum BEFORE INSERT ON account
+     FOR EACH ROW SET @sum = @sum + NEW.amount; # this @sum is a global variable in mysql
+
+#now try out this trigger
+SET @sum = 0;
+INSERT INTO account VALUES(137,14.98),(141,1937.50),(97,-100.00);
+SELECT @sum AS 'Total amount inserted';
+#drop trigger
+DROP TRIGGER test.ins_sum;
+
+#another trigger example, now adds a for loop in it
+mysql> delimiter //
+mysql> CREATE TRIGGER upd_check BEFORE UPDATE ON account
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.amount < 0 THEN
+    ->         SET NEW.amount = 0;
+    ->     ELSEIF NEW.amount > 100 THEN
+    ->         SET NEW.amount = 100;
+    ->     END IF;
+    -> END;//
+mysql> delimiter ;
