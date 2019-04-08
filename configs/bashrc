@@ -87,6 +87,11 @@ if [ -f ~/.bash_dir_path ]; then
     . ~/.bash_dir_path
 fi
 
+# load git autocompletion
+if [ -f  ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi
+
 # enable programmable completion features 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then

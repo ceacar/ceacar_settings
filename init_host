@@ -160,6 +160,8 @@ function set_git_config(){
   sudo -u $user_name $config_path/git_alias
   #git username
   sudo -u $user_name $config_path/git_username
+  #install git auto completion script
+  sudo -u $user_name curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 }
 
 function reinstall_vim(){

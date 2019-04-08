@@ -48,6 +48,9 @@ def drawgraph(nodelist, labeldict):
     G = nx.DiGraph()
 
     G.add_edges_from(nodelist, weight=1)
+    
+    #better layer for crowded map
+    #pos = nx.spring_layout(G,scale=2)
 
 
     pos=nx.spring_layout(G)
