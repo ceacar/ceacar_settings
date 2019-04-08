@@ -3,6 +3,11 @@ case $- in
       *) return;;
 esac
 
+is_mac=false
+is_linux=false
+is_cygwin=false
+
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     export is_linux=true;;
@@ -120,7 +125,7 @@ fi
 
 #alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
 
-if $is_amc;then
+if $is_mac;then
   #source docker-machine env, needed for docker cmd access
   eval "$(docker-machine env default)"
   #this will try to start brew docker daemon service if it is not available
