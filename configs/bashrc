@@ -125,13 +125,18 @@ fi
 
 #alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
 
-if $is_amc;then
+if $is_mac;then
   #source docker-machine env, needed for docker cmd access
   eval "$(docker-machine env default)"
   #this will try to start brew docker daemon service if it is not available
   docker_machine_count=$(docker-machine ls | wc -l)
   if [ $docker_machine_count -lt 2 ];then
     brew services start docker-machine
+  fi
+fi
+if $is_linux;then
+  if [ -z "$SSH_AUTH_SOCK" ] ; then
+    automate_ssh_agent  
   fi
 fi
 

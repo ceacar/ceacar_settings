@@ -135,9 +135,15 @@ nnoremap <F8> :%s/ $//g<cr>
 "nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 " enable vim auto reload vimrc config
-augroup myvimrchooks
+" augroup myvimrchooks
+"     au!
+"     autocmd bufwritepost .vimrc source ~/.vimrc
+" augroup END
+
+" enable vim auto reload vimrc config, more cross platform friendly
+augroup myvimrc
     au!
-    autocmd bufwritepost .vimrc source ~/.vimrc
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
 " enable the folding plugin
