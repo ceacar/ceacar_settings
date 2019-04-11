@@ -400,16 +400,10 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
-	<key>NSColorPanelMode</key>
-	<string>6</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/projects/ceacar_settings/configs/iterm2</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
-	<key>NSNavPanelExpandedSizeForSaveMode</key>
-	<string>{712, 532}</string>
-	<key>NSNavPanelExpandedStateForSaveMode</key>
-	<true/>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -425,7 +419,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAdKAAAAAAANIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAc7Gdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -441,35 +435,12 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
-	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
-	<dict>
-		<key>TB Is Shown</key>
-		<integer>1</integer>
-	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>2018 243 445 270 0 0 2560 1418 </string>
-	<key>NSWindow Frame Preferences</key>
-	<string>389 283 606 456 0 0 1440 877 </string>
-	<key>NSWindow Frame ProfilesPanel</key>
-	<string>531 958 735 382 0 0 2560 1417 </string>
-	<key>NSWindow Frame SUStatusFrame</key>
-	<string>528 614 384 129 0 0 1440 900 </string>
-	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>410 363 620 392 0 0 1440 877 </string>
+	<string>811 158 445 77 0 0 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 272 796 486 0 0 1440 900 </string>
+	<string>2147 406 796 486 1440 -180 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 97 650 477 0 0 1440 900 </string>
-	<key>NSWindow Frame iTerm Window 1</key>
-	<string>10 24 1121 651 0 0 1440 877 </string>
-	<key>NSWindow Frame iTerm Window 2</key>
-	<string>449 87 876 600 0 0 1440 900 </string>
-	<key>NSWindow Frame iTerm Window 3</key>
-	<string>2209 766 905 651 1440 0 2560 1417 </string>
-	<key>NSWindow Frame iTerm Window 4</key>
-	<string>27 226 905 651 0 0 1440 900 </string>
-	<key>NSWindow Frame iTerm Window 5</key>
-	<string>246 226 905 651 0 0 1440 900 </string>
+	<string>161 259 650 477 0 0 1440 900 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -490,12 +461,16 @@
 			</dict>
 			<key>Ansi 1 Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.0</real>
+				<real>0.0014949459582567215</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.0</real>
+				<real>0.9896240234375</real>
 				<key>Red Component</key>
-				<real>0.73333334922790527</real>
+				<real>0.10194227130870104</real>
 			</dict>
 			<key>Ansi 10 Color</key>
 			<dict>
@@ -553,12 +528,16 @@
 			</dict>
 			<key>Ansi 2 Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.0</real>
+				<real>0.26616115024111764</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.73333334922790527</real>
+				<real>0.553863525390625</real>
 				<key>Red Component</key>
-				<real>0.0</real>
+				<real>0.14399302285164595</real>
 			</dict>
 			<key>Ansi 3 Color</key>
 			<dict>
@@ -571,12 +550,16 @@
 			</dict>
 			<key>Ansi 4 Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.29269543290138245</real>
+				<real>0.82171630859375</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.73333334922790527</real>
+				<real>0.49179996050934538</real>
 				<key>Red Component</key>
-				<real>0.2765674889087677</real>
+				<real>0.16652243491262197</real>
 			</dict>
 			<key>Ansi 5 Color</key>
 			<dict>
@@ -629,12 +612,16 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.14973245561122894</real>
+				<real>0.074964889325201511</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.21826185286045074</real>
+				<real>0.13823667964735645</real>
 				<key>Red Component</key>
-				<real>0.32086917757987976</real>
+				<real>0.224517822265625</real>
 			</dict>
 			<key>Background Image Is Tiled</key>
 			<false/>
@@ -1030,7 +1017,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 13</string>
+			<string>Monaco 18</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<true/>
 			<key>Option Key Sends</key>
@@ -1207,16 +1194,10 @@
 			<string>/Users/ceacar</string>
 		</dict>
 	</array>
-	<key>NoSyncConfirmBeta</key>
-	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
-	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
-	<integer>0</integer>
-	<key>NoSyncHaveShownPromoWithId_4</key>
+	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>E41D9505-6702-4BD2-805D-B4FACD0E2F4A</string>
+	<string>22F1DA3E-1B24-4844-BF67-52C2E7E72302</string>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1224,11 +1205,7 @@
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>488230516.45529801</real>
-	<key>NoSyncTimeOfLastPromo</key>
-	<real>477794483.58873701</real>
-	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>486052218.04521197</real>
+	<real>575674775.04091406</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -1275,11 +1252,11 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/ceacar/projects/ceacar_settings/configs/iterm2</string>
+	<string>/Users/xyu/projects/ceacar_settings/configs/iterm2</string>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
-	<false/>
+	<true/>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
@@ -1289,11 +1266,13 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=88</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=20</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-03-30T20:34:30Z</date>
+	<date>2019-04-05T15:35:54Z</date>
+	<key>SUSendProfileInfo</key>
+	<false/>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>

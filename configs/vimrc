@@ -86,7 +86,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'jistr/vim-nerdtree-tabs'
 
 " PEP8 code check
-"Plugin 'nvie/vim-flake8'
+Plugin 'nvie/vim-flake8'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -135,9 +135,15 @@ nnoremap <F8> :%s/ $//g<cr>
 "nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 " enable vim auto reload vimrc config
-augroup myvimrchooks
+" augroup myvimrchooks
+"     au!
+"     autocmd bufwritepost .vimrc source ~/.vimrc
+" augroup END
+
+" enable vim auto reload vimrc config, more cross platform friendly
+augroup myvimrc
     au!
-    autocmd bufwritepost .vimrc source ~/.vimrc
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
 " enable the folding plugin
@@ -203,6 +209,9 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
+
+" remap pep8 check to F8
+autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 
 " make backspaces more powerfull
 set backspace=indent,eol,start

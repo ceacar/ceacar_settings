@@ -92,6 +92,11 @@ if [ -f ~/.bash_dir_path ]; then
     . ~/.bash_dir_path
 fi
 
+# load git autocompletion
+if [ -f  ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi
+
 # enable programmable completion features 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -132,6 +137,11 @@ if $is_mac;then
   docker_machine_count=$(docker-machine ls | wc -l)
   if [ $docker_machine_count -lt 2 ];then
     brew services start docker-machine
+  fi
+fi
+if $is_linux;then
+  if [ -z "$SSH_AUTH_SOCK" ] ; then
+    automate_ssh_agent  
   fi
 fi
 

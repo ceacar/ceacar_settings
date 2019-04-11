@@ -130,7 +130,7 @@ function install_mac_essential_packages(){
   cat $mac_package_path/requirements.apt\
     | grep -v "#" \
     | while read pak;do
-	sudo -u $user_name brew list $pak || { brew install $pak || echo "failed to install essential apps through brew"; }
+	sudo -u $user_name brew list $pak >/dev/null 2>&1 || { sudo -u $user_name brew install $pak || echo "failed to install essential apps through brew"; }
       done
 
   install_packages_from_file $mac_package_path/requirements.txt "pip install --ignore-installed"
@@ -146,12 +146,14 @@ function config_vim(){
   #install for vim
   vim -c 'PluginInstall' -c 'qa!'
 
+  chown -R $user_name: ~/.vim
   #compile you completeme
   cd ~/.vim/bundle/YouCompleteMe
-  ./install.py --clang-completer
+
+  sudo -u $user_name ./install.py --clang-completer
   #overwrite the default vim to vim.nox
   #ln -snf $(which vim.nox) /usr/local/bin/vim
-  chmod -R 755 ~/.vim
+  #chmod -R 755 ~/.vim
 }
 
 function set_git_config(){
@@ -160,6 +162,8 @@ function set_git_config(){
   sudo -u $user_name $config_path/git_alias
   #git username
   sudo -u $user_name $config_path/git_username
+  #install git auto completion script
+  sudo -u $user_name curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 }
 
 function reinstall_vim(){
@@ -192,6 +196,13 @@ function setup_python_venv(){
   source $python_venv_locations/my_python_venv/bin/activate
   install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
   install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
+  deactivate
+  chown -R $user_name: $python_venv_locations/
+
+  source $python_venv_locations/my_python_venv3/bin/activate
+  install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
+  install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
+  deactivate
   chown -R $user_name: $python_venv_locations/
 }
 
@@ -223,7 +234,6 @@ function initialize_host(){
     set_mac_config
     #brew doesn't run in sudo mode
     install_mac_essential_packages
-
   fi
 
   if $is_linux;then

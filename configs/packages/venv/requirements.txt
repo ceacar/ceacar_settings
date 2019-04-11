@@ -18,3 +18,4 @@ pdbpp
 boto
 flask
 cloudpickle
+flake8
