@@ -86,7 +86,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'jistr/vim-nerdtree-tabs'
 
 " PEP8 code check
-"Plugin 'nvie/vim-flake8'
+Plugin 'nvie/vim-flake8'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -203,6 +203,9 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
+
+" remap pep8 check to F8
+autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
