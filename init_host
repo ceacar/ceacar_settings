@@ -17,10 +17,16 @@ case "${unameOut}" in
     *)          export is_unknown="UNKNOWN:${unameOut}"
 esac
 
+root_path=~
+
+if [ $is_linux ];then
+  root_path="/home/$user_name"
+fi
+
 #put everything in projects
 log_file=/tmp/init_host.txt
-projects_location=~/projects
-python_venv_locations=~/.venv
+projects_location=$root_path/projects
+python_venv_locations=$root_path/.venv
 setting_path=$projects_location/ceacar_settings
 ls $projects_location >/dev/null 2>&1 || mkdir -p $projects_location
 cd $projects_location
@@ -37,47 +43,51 @@ tmp_bak_path=$projects_location/bak
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 #backing up old files
 
+function enable_python3_for_centos() {
+  cat /etc/os-release | grep "CentOS" >/dev/null && scl enable rh-python36 bash
+}
+
 function make_essential_path(){
   echo "creating essential path"
   sudo -u $user_name mkdir -p $tmp_bak_path
-  sudo -u $user_name mkdir -p ~/.vim/
-  sudo -u $user_name mkdir -p ~/.venv
+  sudo -u $user_name mkdir -p $root_path/.vim/
+  sudo -u $user_name mkdir -p $root_path/.venv
 }
 
 function move_old_config_to_bak(){
   echo "moving old config to $tmp_bak_path"
-  ls ~/.bashrc 2>/dev/null && mv ~/.bashrc $tmp_bak_path/bashrc
-  ls ~/.vimrc 2>/dev/null && mv ~/.vimrc $tmp_bak_path/vimrc
-  ls ~/.tmux.conf 2>/dev/null && mv ~/.tmux.conf $tmp_bak_path/tmux.conf
-  ls ~/.screenrc 2>/dev/null && mv ~/.screenrc $tmp_bak_path/screenrc
-  ls ~/notes 2>/dev/null && mv ~/notes $tmp_bak_path/notes || echo ""
+  ls $root_path/.bashrc 2>/dev/null && mv $root_path/.bashrc $tmp_bak_path/bashrc
+  ls $root_path/.vimrc 2>/dev/null && mv $root_path/.vimrc $tmp_bak_path/vimrc
+  ls $root_path/.tmux.conf 2>/dev/null && mv $root_path/.tmux.conf $tmp_bak_path/tmux.conf
+  ls $root_path/.screenrc 2>/dev/null && mv $root_path/.screenrc $tmp_bak_path/screenrc
+  ls $root_path/notes 2>/dev/null && mv $root_path/notes $tmp_bak_path/notes || echo ""
 }
 
 function replace_config_files(){
   echo "symbolic linking config files"
-  sudo -u $user_name ln -snf $config_path/bashrc ~/.bashrc
-  sudo -u $user_name ln -snf $config_path/bash_aliases ~/.bash_aliases
-  sudo -u $user_name ln -snf $config_path/bash_home_brew_script ~/.bash_home_brew_script
-  sudo -u $user_name ln -snf $config_path/bash_dir_path~/.bash_dir_path
-  sudo -u $user_name ln -snf $config_path/vimrc ~/.vimrc
-  sudo -u $user_name ln -snf $config_path/vimrc_ide ~/.vimrc_ide
-  sudo -u $user_name ln -snf $config_path/tmux.conf ~/.tmux.conf
-  sudo -u $user_name ln -snf $config_path/screenrc ~/.screenrc
-  sudo -u $user_name ln -snf $config_path/vim_colors ~/.vim/colors
-  sudo -u $user_name ln -snf $config_path/notes ~/notes
-  sudo -u $user_name ln -snf $config_path/tmux_launch ~/.tmux_launch
+  sudo -u $user_name ln -snf $config_path/bashrc $root_path/.bashrc
+  sudo -u $user_name ln -snf $config_path/bash_aliases $root_path/.bash_aliases
+  sudo -u $user_name ln -snf $config_path/bash_home_brew_script $root_path/.bash_home_brew_script
+  sudo -u $user_name ln -snf $config_path/bash_dir_path$root_path/.bash_dir_path
+  sudo -u $user_name ln -snf $config_path/vimrc $root_path/.vimrc
+  sudo -u $user_name ln -snf $config_path/vimrc_ide $root_path/.vimrc_ide
+  sudo -u $user_name ln -snf $config_path/tmux.conf $root_path/.tmux.conf
+  sudo -u $user_name ln -snf $config_path/screenrc $root_path/.screenrc
+  sudo -u $user_name ln -snf $config_path/vim_colors $root_path/.vim/colors
+  sudo -u $user_name ln -snf $config_path/notes $root_path/notes
+  sudo -u $user_name ln -snf $config_path/tmux_launch $root_path/.tmux_launch
 }
 
 function set_config_files_permission(){
   echo "setting permission for config files"
-  chmod +x ~/.tmux_launch
+  chmod +x $root_path/.tmux_launch
 }
 
 function set_mac_config(){
   echo "setting mac bash config"
   #enable auto load bashrc, mac only
-  sudo -u $user_name touch ~/.bash_profile
-  cat ~/.bash_profile | grep "source ~/.bashrc" >/dev/null || echo "source ~/.bashrc" >> ~/.bash_profile
+  sudo -u $user_name touch $root_path/.bash_profile
+  cat $root_path/.bash_profile | grep "source $root_path/.bashrc" >/dev/null || echo "source $root_path/.bashrc" >> $root_path/.bash_profile
 }
 
 function set_linux_config(){
@@ -116,10 +126,10 @@ function install_linux_essential_packages(){
 
 function install_conda(){
   echo "installing conda"
-  sudo -u $user_name ls ~/anaconda3 >/dev/null 2>&1 || \
-    { wget https://repo.anaconda.com/archive/Anaconda3-2018.12-MacOSX-x86_64.sh -O /tmp/anaconda.sh &&\
-    bash ~/anaconda.sh -b -p $HOME/anaconda3 &&\
-    export PATH="$HOME/anaconda3/bin:$PATH"; }
+  sudo -u $user_name ls $root_path/anaconda3 >/dev/null 2>&1 && rm -rf $root_path/anaconda3
+  sudo -u $user_name $(alias md5="md5sum";wget https://repo.anaconda.com/archive/Anaconda3-2018.12-MacOSX-x86_64.sh -O $root_path/anaconda.sh &&\
+    bash $root_path/anaconda.sh -b -p $root_path/anaconda3)
+  #export PATH="$root_path/anaconda3/bin:$PATH")
 }
 
 function install_mac_essential_packages(){
@@ -140,16 +150,17 @@ function install_mac_essential_packages(){
 
 function config_vim(){
   echo "configuring vim"
-  ls ~/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  sudo -u $user_name ls $root_path/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git $root_path/.vim/bundle/Vundle.vim
   #change permission of the directory so vim could install everything when other user need it
 
   #install for vim
-  vim -c 'PluginInstall' -c 'qa!'
+  sudo -u $user_name vim -c 'PluginInstall' -c 'qa!'
+
+  sudo -u $user_name ls ~/.vim/bundle/YouCompleteMe >/dev/null|| git clone https://github.com/Valloric/YouCompleteMe.git $root_path/.vim/bundle/YouCompleteMe
 
   chown -R $user_name: ~/.vim
   #compile you completeme
-  cd ~/.vim/bundle/YouCompleteMe
-
+  cd $root_path/.vim/bundle/YouCompleteMe
   sudo -u $user_name ./install.py --clang-completer
   #overwrite the default vim to vim.nox
   #ln -snf $(which vim.nox) /usr/local/bin/vim
@@ -168,7 +179,7 @@ function set_git_config(){
 
 function reinstall_vim(){
   echo "reinstalling vim"
-  ls ~/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git
+  ls $root_path/projects/vim 2>/dev/null || git clone https://github.com/vim/vim.git $root_path/projects/vim
   cd vim
 
   #new vim cannot work with python 2 and python 3, so picking python 3
@@ -208,18 +219,20 @@ function setup_python_venv(){
 
 function config_ipython(){
   echo "configuring ipython"
-  #create ipython profile dir in ~/.ipython
+  #create ipython profile dir in $root_path/.ipython
   ipython profile create
   #adding auto reload enable by default to ipython
-  echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> ~/.ipython/profile_default/ipython_config.py
+  echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> $root_path/.ipython/profile_default/ipython_config.py
 }
 
 function prepare_vim_color_scheme(){
-  ls ~/.vim/colors 2>/dev/null || mv $tmp_bak_path/.vim/colors 
-  ln -snf $config_path/vim_colors ~/.vim/colors
+  ls $root_path/.vim/colors 2>/dev/null || mv $tmp_bak_path/.vim/colors 
+  ln -snf $config_path/vim_colors $root_path/.vim/colors
 }
 
 function initialize_host(){
+  #enable python3 for centos
+  #enable_python3_for_centos
 
   if $is_linux;then
     set_linux_config
@@ -237,7 +250,7 @@ function initialize_host(){
   fi
 
   if $is_linux;then
-    install_linux_essential_packages
+    #install_linux_essential_packages
     echo "linux packages installed"
   fi
 
@@ -249,7 +262,7 @@ function initialize_host(){
     echo "vim reinstalled"
   fi
 
-  setup_python_venv
+  #setup_python_venv
   config_ipython
   prepare_vim_color_scheme
   install_conda
@@ -258,4 +271,5 @@ function initialize_host(){
   cd -
 }
 
-initialize_host 2>&1 | tee $PWD/initilization_host.log
+#initialize_host 2>&1 | tee $PWD/initilization_host.log
+install_conda

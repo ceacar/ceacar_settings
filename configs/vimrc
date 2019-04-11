@@ -1,3 +1,5 @@
+let g:go_version_warning = 0
+
 nnoremap cc i<space><esc>
 "noremap <Up> <NOP>
 "noremap <Down> <NOP>
@@ -187,7 +189,7 @@ au BufNewFile,BufRead *.go
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " vim auto completion
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
 "let g:NERDTreeShowIgnoredStatus = 1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
