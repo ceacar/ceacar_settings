@@ -1,6 +1,5 @@
 #functional programming
-from functools import partial
-from operator import add
+from functools import partial from operator import add
 def add1(x):
   return add(1,x)
 #above function can be written as below
@@ -341,3 +340,40 @@ class C(object):
     #use del cls.x to delete the value
     def x(self):
         del self._x
+
+
+#python logging
+import logging
+
+logging.basicConfig(level = logging.DEBUG) #logging.DEBUG is 10 INFO is 20, increaed by 10
+#logging.basicConfig(filename = 'test.log', level = logging.DEBUG) #this will write log to the file named test.log in appending
+#logging.basicConfig(filename = 'test.log', level = logging.DEBUG, format = '%(asctime)s:%(levelname)s:%(message)s') #this will write log to the file named test.log in appending
+
+
+def add(x,y):
+    return x + y
+add_result = add(1,2)
+logging.warning('result of add is xxx')
+#logging.debug("123")--> this prints info, need to set log level to lower for this info to work
+
+"""
+Level	Numeric value
+CRITICAL	50
+ERROR	40
+WARNING	30
+INFO	20
+DEBUG	10
+NOTSET	0
+"""
+#logging would by default writing to root logger, use getLogger to change where it should write to, logger would fall back to root if no other logger specified
+logger = logging.getLogger(__name__) #if run in main the name would be main, module then module
+logger.setLevel(logging.INFO) #or file_handler.setLevel(logging.INFO), samething, but file_handler logging level only stick with file_handler
+file_handler = logging.FileHandler('employee.log')
+formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+logger.addHandler(file_handler)
+logger.setFormatter(formatter)
+logger.info("test123") #here need to use logger instad of default logging
+
+#stream handler, it will print to console
+stream_handler = logging.StreamHandler() #use this as the same of file handler
+

@@ -1,0 +1,31 @@
+#troubleshoot a hanging process
+strace -p [PID] #this will print out the recent stack
+#for example a python program with a while loop and sleep statement:
+  #Process 27528 attached
+  #select(0, NULL, NULL, NULL, {0, 112076}) = 0 (Timeout)
+  #select(0, NULL, NULL, NULL, {1, 0})     = 0 (Timeout)
+  #select(0, NULL, NULL, NULL, {1, 0})     = 0 (Timeout)
+#so 
+
+
+
+
+
+#gbd debugs c tool and can attach to process with pid
+$ sleep 999 & 
+[1] 17340
+$ gdb -p 17340 /bin/sleep 
+Reading symbols from /bin/sleep...(no debugging symbols found)...done.
+Attaching to program: /usr/bin/sleep, process 17340
+Missing separate debuginfos, use: dnf debuginfo-install coreutils-8.24-8.fc23.x86_64
+(gdb) bt
+#0  0x00007fb84f43d510 in __nanosleep_nocancel () from /lib64/libc.so.6
+#1  0x0000562be81da29f in rpl_nanosleep ()
+#2  0x0000562be81da100 in xnanosleep ()
+#3  0x0000562be81d7a1d in main ()
+(gdb) detach
+Detaching from program: /usr/bin/sleep, process 17340
+(gdb) quit
+
+
+

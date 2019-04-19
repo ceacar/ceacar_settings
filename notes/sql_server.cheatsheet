@@ -1,0 +1,35 @@
+-- list all tables created by user
+SELECT
+  *
+FROM
+  SYSOBJECTS
+WHERE
+  xtype = 'U';
+GO
+
+
+
+--merge two tables, insert update and delete statement in one giant if statement
+--target_table is the table you want to update, source_table is the new_table has all the update information
+MERGE target_table as T
+USING source_table as S
+on T.ID = S.ID
+WHEN MATCHED THEN
+  --when target_table have this record, update it
+  UPDATE SET T.NAME = S.NAME
+WHEN NOT MATCHED BY TARGET THEN
+  --when target_table doesn't have this record, insert this record into target_table
+  INSERT (ID,NAME) VALUES(S.ID, S.NAME)
+WHEN NOT MATCHED BY SOURCE THEN
+  --when the source_table doesn't have this record, delete it
+  DELETE;
+
+
+
+--create new table
+
+if not exists (select * from sysobjects where name='cars' and xtype='U')
+    create table cars (
+        Name varchar(64) not null
+    )
+go

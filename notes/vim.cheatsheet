@@ -63,3 +63,9 @@ make
 sudo make install
 
 # alias vi="vim" in .zshrc / .bashrc
+
+#search within a block of lines
+/\%>384l\%<400ltable #%> and %< is marks of start and end of search block, \is to escape it, 384l means 384line.
+#so above cmd means start from line 384 ends with 400line search for word table
+
+

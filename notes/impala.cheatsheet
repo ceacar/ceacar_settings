@@ -1,0 +1,2 @@
+--invalidates the metadata of a table, so before impala run query for the table, impala needs to reload the metadata
+invalidate metadata new_db_from_hive.new_table_from_hive;

@@ -103,7 +103,17 @@ else
     start_agent;
 fi
 
-#other solution, maybe put this in bashrc will work also
-eval $(ssh-agent)
+#linux solution, write your own function in bashrc
+ssh-agent > ~/.ssh_agent_file
+source ~/.ssh_agent_file
 ssh-add 
 
+if $is_linux;then
+  if [ -z "$SSH_AUTH_SOCK" ] ; then
+    automate_ssh_agent
+  fi
+fi
+
+
+#git force push replacement --force-with-lease
+#this force with lease will help you to avoid accidentally overwrite your coworkers code when doing force push like rebase to master
