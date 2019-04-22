@@ -3,7 +3,6 @@
 export PS1="$PS1"
 set -fueo pipefail
 user_name=${1:?your local user_name cannot be empty and it is your local user name, for example ceacar}
-set -xv
 is_linux=false
 is_mac=false
 #is_cygwin=false
@@ -19,7 +18,7 @@ esac
 
 root_path=~
 
-if [ $is_linux ];then
+if $is_linux;then
   root_path="/home/$user_name"
 fi
 
@@ -149,6 +148,16 @@ function install_mac_essential_packages(){
 
 
 function config_vim(){
+#mac way of installing youcompelte me 
+#brew install cmake
+#cd ~/.vim/bundle
+#git clone https://github.com/Valloric/YouCompleteMe.git
+#mkdir YouCompleteMe/ycmbuild
+#cd YouCompleteMe/ycmbuild
+#git submodule update --init --recursive
+#cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/cpp/
+#make ycm_core
+
   echo "configuring vim"
   sudo -u $user_name ls $root_path/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git $root_path/.vim/bundle/Vundle.vim
   #change permission of the directory so vim could install everything when other user need it

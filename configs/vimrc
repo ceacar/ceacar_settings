@@ -187,14 +187,13 @@ au BufNewFile,BufRead *.go
 
 " flag excess space 
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
 " vim auto completion
-"Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
-"let g:NERDTreeShowIgnoredStatus = 1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "<leader> is a the primary key: if it's space it will be 'space-g' will go into definition
 
+"let g:NERDTreeShowIgnoredStatus = 1
 "code highlight
 " disabled for conflict with you complete me   :w will pop out a whitebar on
 " left side
@@ -239,7 +238,7 @@ nmap t <Plug>(easymotion-t2)
 
 
 "set ycm extra conf
-"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " let nerd tree tab open up on vim startup
 "let g:nerdtree_tabs_open_on_console_startup=1
 
