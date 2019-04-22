@@ -117,3 +117,6 @@ fi
 
 #git force push replacement --force-with-lease
 #this force with lease will help you to avoid accidentally overwrite your coworkers code when doing force push like rebase to master
+
+#git auto complete branch name
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
