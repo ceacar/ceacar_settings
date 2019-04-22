@@ -75,6 +75,7 @@ function replace_config_files(){
   sudo -u $user_name ln -snf $config_path/vim_colors $root_path/.vim/colors
   sudo -u $user_name ln -snf $config_path/notes $root_path/notes
   sudo -u $user_name ln -snf $config_path/tmux_launch $root_path/.tmux_launch
+  sudo -u $user_name ln -snf $config_path/git-completion.bash $root_path/.git-completion.bash
 }
 
 function set_config_files_permission(){
