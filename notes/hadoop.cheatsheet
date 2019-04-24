@@ -1,0 +1,3 @@
+hadoop kill job_id
+hadoop dfs -ls file_url
+hadoop dfs -cat file_url
