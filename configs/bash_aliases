@@ -43,4 +43,3 @@ alias uname_output="$(uname -s)"
 alias ide="vim -u ~/.vimrc_ide"
 #alias vim="/usr/local/bin/vim"
 #alias pypy="/opt/share/pypy/current/pypy-5.0-linux_x86_64-portable/bin/pypy"
-alias md5='md5sum'
