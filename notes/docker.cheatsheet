@@ -167,3 +167,7 @@ docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is t
 
 #mac list docker machines
 docker-machine ls
+
+
+#mac find docker default ip address ( this is different from linux, because mac docker is actually virtualbox image that is running, this image has its own ip address so, if you see in dockerps 35100 -> 5000tcp, this is actually docker machine's ip with 35100 port which points to internal 5000 port of docker machine
+docker-machine ip default
