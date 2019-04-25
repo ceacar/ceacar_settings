@@ -377,3 +377,8 @@ logger.info("test123") #here need to use logger instad of default logging
 #stream handler, it will print to console
 stream_handler = logging.StreamHandler() #use this as the same of file handler
 
+
+#pip isntall from a file
+pip install -r path_to_pip_dependency_files
+
+
