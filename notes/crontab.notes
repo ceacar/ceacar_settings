@@ -1,0 +1,2 @@
+#minute hour dayofmonth month dayofweek
+0 0 * * * things_to_do
