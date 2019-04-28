@@ -177,3 +177,10 @@ function automate_ssh_agent(){
   source $HOME/.ssh_agent_socket
   ssh-add
 }
+
+function docker_startup_mac(){
+  docker-machine ls >/dev/null 2>&1 || {
+    echo "docker-machine default is not running, starting a new one"
+    docker-machine start 
+  }
+}
