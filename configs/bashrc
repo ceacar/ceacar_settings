@@ -133,7 +133,7 @@ if [ -f $ceacar_setting/configs/local_configs/bash_local_config ];then
     . $ceacar_setting/configs/local_configs/bash_local_config
 fi
 
-#alias sshmycellphone='ssh xiazi@192.168.86.244 -p 8022'
+alias sshmycellphone='ssh xiazi@10.10.40.28 -p 8022'
 
 if $is_mac;then
   #source docker-machine env, needed for docker cmd access
@@ -154,7 +154,5 @@ if $is_mac;then
   docker_startup_mac
 fi
 
-export PATH=$PATH:/home/xiazi/anaconda/bin
-
 source $HOME/anaconda/etc/profile.d/conda.sh
-
+export PATH=$PATH:$HOME/anaconda/bin

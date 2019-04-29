@@ -139,4 +139,5 @@ curl --header "Content-Type: application/json" \
 #curl to write out status code
 --write-out %{http_code}
 
-
+#xargs, it need to use -I then variable name "var1" to pass it to function echo to use var1
+echo 123|xargs -I var1 echo var1

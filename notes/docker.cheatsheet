@@ -17,7 +17,7 @@ docker rm <name|id>
 docker run -p 8080:80 #map the local host port 8080 to the docker's port 80
 docker --name container_name #name the container
 docker -d #run as daemon(background service)
-docker build -t tag1 . #tag current image file as tag1
+docker build -t tag1 .  #tag current image file as tag1 and use . as path where the dockerfile is located
 docker build -f file_path #it will build the docker with the config file at file_path
 docker build -f file_path -t tag1 #tag the file specified as tag1
 docker-compose -p project_name -f ./compose.base.pyapi-ws.yml up #put this config in different project name, if multiple container trying to use same port in same project, the latter will kill the previous one
@@ -131,7 +131,8 @@ mysql:
 
 
 #hack everything by mounting the volume as docker volume
-docker run -v /var/lib/docker:/opt/docker -it ubuntu bash
+docker run -v local_dir_path:container_dir_path -it ubuntu bash
+example: docker run -v /var/lib/docker:/opt/docker -it ubuntu bash
 
 
 #Know issue

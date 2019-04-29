@@ -1,0 +1,12 @@
+--db viz has ; as delimiter by default; so when it runs jdbc to send query to remote mssql, it just remove the ; from the query and send it. this resulted in mssql merge statement doesn't have ';' in its statement, to bypass this issue, we can add @delimiter to NEW_DELIMITER OLD_DELIMITER <- yes this has two delimiter new and old together to tell db viz in this statement we want to change delimiter, don't forget to add the new delimiter after statement
+
+@delimiter %% ;
+
+MERGE [dbo].[AdvPixel] as T
+USING [dbo].[BhPixelSegmentSize] as S
+on T.[Token] = S.[pixelid]
+WHEN MATCHED THEN
+  UPDATE SET T.[SegmentSize] = S.[total]
+;
+%% --this %% is the new delimiter tells db viz query have ended; very importatnt
+@delimiter ; %%  -- more important, switch the delimiter to the default one
