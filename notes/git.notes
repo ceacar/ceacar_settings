@@ -120,3 +120,14 @@ fi
 
 #git auto complete branch name
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+
+
+
+
+#git remote branch doesn't refresh, run below cmds
+git fetch --all
+git branch -r
+git branch -a
+
+
+
