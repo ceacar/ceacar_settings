@@ -122,6 +122,7 @@ PATH=$PATH:/usr/local/go/bin
 #add support for golang, install please check go.cheatsheet
 PATH=$PATH:/usr/local/go/bin
 PATH=$PATH:$UTILITY_PATH/bash_lib
+PATH=$PATH:$UTILITY_PATH/python_lib
 PATH=$PATH:/opt/share/jvm/current_java_jdk/bin
 export PATH
 export PYTHONPATH=~/projects/excalibur:$PYTHONPATH
