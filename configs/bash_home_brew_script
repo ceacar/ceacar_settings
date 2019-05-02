@@ -187,3 +187,8 @@ function docker_startup_mac(){
     docker-machine start 
   }
 }
+
+function ssh_my_phone_from_usb(){
+  adb forward tcp:8022 tcp:8022
+  ssh localhost -p 8022
+}
