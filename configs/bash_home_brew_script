@@ -58,17 +58,15 @@ function executeRemoteCmd(){
 }
 
 function shipMyProjects(){
-  local ip=${1:?ip not set in $FUNCNAME}
-  local user_name=${2:?user_name not set in $FUNCNAME}
-  local path="/home/xiazi"
-  local config_path="config"
-  local taq_path="taq"
-  local fbd_path="fbd-professional-services"
-  local shared_path="shared_with_subhost"
-  for path_temp in $config_path $taq_path $fbd_path $shared_path;do
+  local shared_dir_with_remote=${SHARED_DIR:?SHARED_DIR is not setup in $FUNCNAME}
+  local default_ip=${DEFAULT_REMOTE_IP_FOR_UPLOADING:?DEFAULT_REMOTE_IP_FOR_UPLOADING is not set in $FUNCNAME}
+  local default_user=${DEFAULT_REMOTE_USER_FOR_UPLOADING:?DEFAULT_REMOTE_USER_FOR_UPLOADING is not set in $FUNCNAME}
+  local ip=${1:-$default_ip}
+  local user_name=${2:-$default_user}
+  for path_temp in $SHARED_DIR;do
     executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
-    rsync -az $path/$path_temp/ $user_name@$ip:/$user_name/$path_temp/
-    echo "rsync -az $path/$path_temp/ $user_name@$ip:/$user_name/$path_temp/"
+    echo "rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/"
+    rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/
   done
 }
 
