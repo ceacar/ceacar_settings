@@ -11,7 +11,7 @@ if $is_linux;then
   fi
 fi
 
-if $is_max;then
+if $is_mac;then
   alias ls='ls -GFh'
 fi
 
