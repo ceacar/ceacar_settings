@@ -126,10 +126,18 @@ function install_linux_essential_packages(){
 
 function install_conda(){
   echo "installing conda"
-  sudo -u $user_name ls $root_path/anaconda3 >/dev/null 2>&1 && rm -rf $root_path/anaconda3
-  sudo -u $user_name $(alias md5="md5sum";wget https://repo.anaconda.com/archive/Anaconda3-2018.12-MacOSX-x86_64.sh -O $root_path/anaconda.sh &&\
-    bash $root_path/anaconda.sh -b -p $root_path/anaconda3)
-  #export PATH="$root_path/anaconda3/bin:$PATH")
+  sudo -u $user_name ls $root_path/anaconda >/dev/null 2>&1 && rm -rf $root_path/anaconda
+  if $is_mac;then
+    sudo -u $user_name $(alias md5="md5sum";wget https://repo.anaconda.com/archive/Anaconda3-2018.12-MacOSX-x86_64.sh -O $root_path/anaconda.sh &&\
+    bash $root_path/anaconda.sh -b -p $root_path/anaconda)
+  fi
+
+  if $is_linux;then
+    sudo -u $user_name $(alias md5="md5sum";wget https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh -O $root_path/anaconda.sh &&\
+    bash $root_path/anaconda.sh -b -p $root_path/anaconda)
+  fi
+
+  #export PATH="$root_path/anaconda/bin:$PATH"
 }
 
 function install_mac_essential_packages(){
