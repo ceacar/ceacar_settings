@@ -16,6 +16,8 @@ case "${unameOut}" in
     *)          export is_unknown="UNKNOWN:${unameOut}"
 esac
 
+PROJECT_PATH=$HOME/projects
+
 function enable_python3_for_centos() {
   cat /etc/os-release | grep "CentOS" >/dev/null && scl enable rh-python36 bash
 }
@@ -130,8 +132,10 @@ export PYTHONPATH=~/projects/excalibur:$PYTHONPATH
 export ceacar_setting=~/projects/ceacar_settings
 export notes=$ceacar_setting/notes
 
-if [ -f $ceacar_setting/configs/local_configs/bash_local_config ];then
-    . $ceacar_setting/configs/local_configs/bash_local_config
+if [ -d $ceacar_setting/configs/local_configs ];then
+  for file_path_temp in $ceacar_setting/configs/local_configs/bash_local_*; do
+    . $file_path_temp
+  done
 fi
 
 alias sshmycellphone='ssh xiazi@10.10.40.28 -p 8022'
