@@ -178,7 +178,7 @@ function docker_attach_to_container(){
 function automate_ssh_agent(){
   ls $HOME/.ssh_agent_socket >/dev/null 2>&1 || ssh-agent > $HOME/.ssh_agent_socket
   source $HOME/.ssh_agent_socket
-  ssh-add
+  #ssh-add
 }
 
 function docker_startup_mac(){

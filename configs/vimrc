@@ -94,6 +94,8 @@ Plugin 'nvie/vim-flake8'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" Required for YouCompleteMe
+set encoding=utf-8
 
 " Enable folding
 set foldmethod=indent
@@ -123,8 +125,9 @@ endfunc
 
 nnoremap <F3> :call NumberToggle()<cr>
 
-
-set invnumber nornu
+" disabled this, since this will cause termux vim to toggle number line after
+" :w
+" set invnumber nornu
 
 nnoremap <F5> :set invnumber nornu<cr>
 " toggle ignore case
@@ -150,6 +153,7 @@ augroup END
 
 " enable the folding plugin
 "Plugin 'tmhedberg/SimpylFold'
+
 
 " enable python indentation
 au BufNewFile,BufRead *.py
@@ -186,7 +190,8 @@ au BufNewFile,BufRead *.go
 "    \ set expandtab |
 
 " flag excess space 
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h
+  \ match BadWhitespace /\s\+$/
 " vim auto completion
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
