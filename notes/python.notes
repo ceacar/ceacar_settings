@@ -421,3 +421,7 @@ Code	Meaning	Example
 
 #converts datestring to datetime with timezone
 datetime(*(time.strptime(date_string, format)[0:6]))
+
+
+#lru cache in functools
+@functools.lru_cache(maxsize=100)
