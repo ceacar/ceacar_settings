@@ -188,7 +188,15 @@ function docker_startup_mac(){
   }
 }
 
+PHONE_URL_USB="localhost"
+PHONE_PORT_USB=8022
+PHONE_DEFAULT_USERNAME="u0_a213"
 function ssh_my_phone_from_usb(){
   adb forward tcp:8022 tcp:8022
-  ssh localhost -p 8022
+  ssh $PHONE_URL_USB -p $PHONE_PORT_USB
+}
+
+function copy_to_my_phone_from_usb(){
+  local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
+  scp -C -r -P $PHONE_PORT_USB $path_to_copy $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/
 }
