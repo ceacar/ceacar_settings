@@ -82,6 +82,8 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " PEP8 code check
 "Plugin 'nvie/vim-flake8'
+"Syntastic a syntax check tool
+Plugin 'vim-syntastic/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -126,6 +128,19 @@ nnoremap <F6> :set ic!<cr>
 nnoremap <F8> :%s/ $//g<cr>
 "nmap <F9> :set ignorecase! ignorecase?
 
+" enable vim auto reload vimrc config
+" augroup myvimrchooks
+"     au!
+"     autocmd bufwritepost .vimrc source ~/.vimrc
+" augroup END
+
+
+" enable vim auto reload vimrc config, more cross platform friendly
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
 " enable the folding plugin
 "Plugin 'tmhedberg/SimpylFold'
 
@@ -165,7 +180,6 @@ au BufNewFile,BufRead *.go
 
 " flag excess space 
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
 " vim auto completion
 Bundle 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -189,6 +203,8 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
+" remap pep8 check to F8
+autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
@@ -217,4 +233,13 @@ nmap t <Plug>(easymotion-t2)
 "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " let nerd tree tab open up on vim startup
 "let g:nerdtree_tabs_open_on_console_startup=1
+"syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 

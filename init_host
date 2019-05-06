@@ -248,6 +248,21 @@ function prepare_vim_color_scheme(){
   ln -snf $config_path/vim_colors $root_path/.vim/colors
 }
 
+function install_aws_on_mac(){
+  cd /tmp
+  curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+  sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+  cd -
+}
+
+function config_flake8(){
+  #make flake8 check to allow long python lines, this made life easier and code more readable
+  mkdir -p ~/.config
+  touch ~/.config/flake8
+  echo "[flake8]" >> ~/.config/flake8
+  echo '"max-line-length" = 120' >> ~/.config/flake8
+}
+
 function initialize_host(){
   #enable python3 for centos
   #enable_python3_for_centos
