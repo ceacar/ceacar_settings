@@ -1,5 +1,4 @@
 let g:go_version_warning = 0
-
 nnoremap cc i<space><esc>
 "noremap <Up> <NOP>
 "noremap <Down> <NOP>
@@ -89,6 +88,8 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " PEP8 code check
 Plugin 'nvie/vim-flake8'
+"Syntastic a syntax check tool
+Plugin 'vim-syntastic/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -170,7 +171,7 @@ au BufNewFile,BufRead *.js,*.html,*.css,*.yml
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 
-au BufNewFile,BufRead *.scala
+au BufNewFile,BufRead *.scala,*.java
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -215,7 +216,6 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <F7> :NERDTreeToggle<CR>
-
 " remap pep8 check to F8
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 
@@ -246,5 +246,13 @@ nmap t <Plug>(easymotion-t2)
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " let nerd tree tab open up on vim startup
 "let g:nerdtree_tabs_open_on_console_startup=1
+"syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_pylint_post_args="--max-line-length=120"
