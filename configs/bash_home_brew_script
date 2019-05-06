@@ -175,10 +175,15 @@ function docker_attach_to_container(){
   sudo docker exec -it $docker_name bash
 }
 
-function automate_ssh_agent(){
+function source_ssh_agent(){
   ls $HOME/.ssh_agent_socket >/dev/null 2>&1 || ssh-agent > $HOME/.ssh_agent_socket
   source $HOME/.ssh_agent_socket
-  #ssh-add
+  #use ssh-add to test if ssh agent is running or not
+}
+
+function regen_ssh_agent(){
+  ssh-agent > $HOME/.ssh_agent_socket
+  source_ssh_agent
 }
 
 function docker_startup_mac(){

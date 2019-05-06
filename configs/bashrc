@@ -151,7 +151,7 @@ if $is_mac;then
 fi
 if $is_linux;then
   if [ -z "$SSH_AUTH_SOCK" ] ; then
-    automate_ssh_agent  
+    source_ssh_agent 
   fi
 fi
 
