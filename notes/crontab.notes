@@ -1,2 +1,25 @@
 #minute hour dayofmonth month dayofweek
 0 0 * * * things_to_do
+
+
+#a good answer in github for cron
+
+1.Firstly, does /path_to_my_php_script/info.php run correctly from the command-line?
+
+
+2./bin/sh -c "(export PATH=/usr/bin:/bin; /path_to_my_php_script/info.php </dev/null)"
+If that works, does it work like this?
+
+3./bin/sh -c "(export PATH=/usr/bin:/bin; /path_to_my_php_script/info.php </dev/null >/dev/null 2>&1)"
+Step (3) is similar to how cron will run your program (as documented in "man 5 cron".
+
+4.The most likely problem you're having is that the PATH cron is using to run your program is too restrictive. Therefore, you may wish to add something like the following to the top of your crontab entry (you'll need to add in whatever directories your script will need):
+
+PATH=~/bin:/usr/bin/:/bin
+Also note that cron will by default use /bin/sh, not bash. If you need bash, also add this to the start of your crontab file:
+
+5.SHELL=/bin/bash
+Note that both those changes will affect all the crontab entries. If you just want to modify these values for your info.php program, you could do something like this:
+
+*/2 * * * * /bin/bash -c ". ~/.bashrc; /path_to_my_php_script/info.php"
+It's also worth mentioning that on a system configured for "mail" (in other words a system which has an MTA configured [sendmail/postfix/etc]), all output from crontab programs is sent to you via email automatically. A default Ubuntu desktop system won't have local mail configured, but if you're working on a server you can just type "mail" in a terminal to see all those cron mails. This also applies to the "at" command.
