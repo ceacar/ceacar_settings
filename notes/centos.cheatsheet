@@ -1,0 +1,2 @@
+#grant user root privilege
+usermod -aG wheel username
