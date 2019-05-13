@@ -13,6 +13,7 @@ fi
 
 if $is_mac;then
   alias ls='ls -GFh'
+  alias zcat='gzcat'  # fixes the issue of mac zcat automatically appending .Z in the end of file name
 fi
 
 alias grep='grep --color=auto'
