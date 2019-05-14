@@ -1,0 +1,7 @@
+#how to select text with keyboard
+1.Cmd-F
+2.Type some text that matches part of what you want to copy.
+3.When you have a partial match on what you want to copy, you can expand the selection.  Press tab to grow it one word to the right; press shift-tab to grow it one word to the left.
+
+As soon as you press tab or shift-tab, it is copied to the clipboard. You can press option-Enter to immediately paste the selection and close the find bar at once.
+You could also assign custom keys in Prefs -> Keys. (Source)

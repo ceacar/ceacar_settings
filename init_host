@@ -313,4 +313,4 @@ function initialize_host(){
 }
 
 #initialize_host 2>&1 | tee $PWD/initilization_host.log
-install_conda
+#install_conda
