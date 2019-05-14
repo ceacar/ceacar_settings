@@ -189,6 +189,9 @@ python3 -m py.test ./utest_split_by_ticker.py
 os.path.exists("/home/el/myfile.txt")
 #get class name from a class method def foo(self)
 self.__name__
+#get function name without knowing which function
+import sys
+this_function_name = sys._getframe().f_code.co_name
 
 #python equivalent of pwd, current directory
 import os
@@ -425,3 +428,14 @@ datetime(*(time.strptime(date_string, format)[0:6]))
 
 #lru cache in functools
 @functools.lru_cache(maxsize=100)
+
+
+#bell = [[0] * n] * n
+#this init of an array is error prone, it looks like a pointer to object '0' is copied n*n times instead of a new '0' object created n*n times
+
+#flat_map
+flat_map = itertools.chain.from_iterable(sum_matrix)
+
+
+#install package in develop mode
+pip install -e ./PACKAGE_PATH

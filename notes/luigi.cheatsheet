@@ -1,0 +1,14 @@
+#how luigi works
+
+class Child():
+  def run():
+    print(1234)
+
+class Parent():
+  def run():
+    yield Child()
+
+#process about how luigi handles the above example:
+1.parent will yield child as task
+2.child task call child.complete() to see if it has been run or not, if not, run the task
+2.parent keep calling child.complete() to see if it has been completed or not
