@@ -263,6 +263,11 @@ function config_flake8(){
   echo '"max-line-length" = 120' >> ~/.config/flake8
 }
 
+function config_ipython_history(){
+  mkdir -p $(ipython locate profile)/startup
+  ln -snf $config_path/ipython_keep_history.py $(ipython locate profile)/startup/log_history.py
+}
+
 function initialize_host(){
   #enable python3 for centos
   #enable_python3_for_centos
@@ -301,6 +306,9 @@ function initialize_host(){
   install_conda
   #this config_vim is install you complete me, may fail
   config_vim
+
+  # config ipython to keep history
+  config_ipython_history
   cd -
 }
 
