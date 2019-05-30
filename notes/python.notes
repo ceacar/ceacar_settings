@@ -439,3 +439,37 @@ flat_map = itertools.chain.from_iterable(sum_matrix)
 
 #install package in develop mode
 pip install -e ./PACKAGE_PATH
+
+#expand a list
+*arr
+a= [1,2,3, *b] # this expands b arr into a
+
+#type annotation
+##any type
+#T = TypeVar('T')
+
+
+#ordered dict in collections library
+## it has update, get and move_to_end method, this is a perfect implementation of LRU
+Out[5]: OrderedDict()
+In [6]: a.update({"a":1})
+In [8]: a.update({"b":2})
+
+In [9]: a
+Out[9]: OrderedDict([('a', 1), ('b', 2)])
+
+In [10]: a.get('a')
+Out[10]: 1
+
+In [13]: a.move_to_end('b', last = False)
+
+In [14]: a
+Out[14]: OrderedDict([('b', 2), ('a', 1)])
+
+
+
+
+
+
+
+

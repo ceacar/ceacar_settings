@@ -219,3 +219,14 @@ Force a reload of the config file on C-a r:
 Some other settings that I use:
 
     setw -g xterm-keys on                                                                                                                                                                                                                                                                                                                            setw -g xterm-keys on
+
+
+
+
+
+
+
+#tmux swap window from third window to 1st window
+swap-window -s 3 -t 1
+
+

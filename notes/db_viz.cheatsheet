@@ -10,3 +10,18 @@ WHEN MATCHED THEN
 ;
 %% --this %% is the new delimiter tells db viz query have ended; very importatnt
 @delimiter ; %%  -- more important, switch the delimiter to the default one
+
+
+# download query result from table( very slow )
+-- sets the max allowed query for db viz to unlimited
+@set maxrows -1;
+--export turned on 
+@export on;
+--defines filename and csv format
+@export set filename="/tmp/temp.csv" CsvColumnDelimiter=",";
+--actual query
+select * from schema1.table1;
+--turn off export
+@export off;
+--turn row limit back on
+@set maxrows 1000;

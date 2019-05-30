@@ -172,3 +172,7 @@ docker-machine ls
 
 #mac find docker default ip address ( this is different from linux, because mac docker is actually virtualbox image that is running, this image has its own ip address so, if you see in dockerps 35100 -> 5000tcp, this is actually docker machine's ip with 35100 port which points to internal 5000 port of docker machine
 docker-machine ip default
+
+
+#how docker runs entrypoint, overwrite entrypoint
+docker run -p 38888:5000 --entrypoint "/bin/sleep" -it registry.pulsepoint.com/report-api:added_column_name_as_header  10000000 #this command added sleep 1000000 to it, but it is written in a way of separated, due to how the docker works.

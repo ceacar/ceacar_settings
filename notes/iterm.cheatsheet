@@ -5,3 +5,5 @@
 
 As soon as you press tab or shift-tab, it is copied to the clipboard. You can press option-Enter to immediately paste the selection and close the find bar at once.
 You could also assign custom keys in Prefs -> Keys. (Source)
+
+#use CMD+G to go to next work

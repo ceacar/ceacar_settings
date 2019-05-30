@@ -69,3 +69,14 @@ sudo make install
 #so above cmd means start from line 384 ends with 400line search for word table
 
 
+
+#syntastic
+#153
+#
+#:SyntasticToggleMode
+#you can toggle Syntastic into passive mode, which will disable auto-checking
+#You can then check a file by running :SyntasticCheck instead.
+help syntastic-commands
+
+
+ctags -R . # this generates tags for vim to search

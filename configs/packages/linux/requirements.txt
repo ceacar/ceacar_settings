@@ -1,3 +1,5 @@
 virtualenv
 pip
 flake8
+pytest
+pytest-cov

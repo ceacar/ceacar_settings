@@ -142,3 +142,6 @@ select 0
 
 #delete all keys
 FLUSHALL
+
+#get first 100 keys
+scan 0 count 100 match *

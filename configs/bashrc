@@ -151,7 +151,8 @@ if $is_mac;then
 fi
 if $is_linux;then
   if [ -z "$SSH_AUTH_SOCK" ] ; then
-    source_ssh_agent 
+    # mute this since scp will need it stay quiet to work
+    source_ssh_agent >/dev/null 2>&1
   fi
 fi
 

@@ -141,3 +141,18 @@ curl --header "Content-Type: application/json" \
 
 #xargs, it need to use -I then variable name "var1" to pass it to function echo to use var1
 echo 123|xargs -I var1 echo var1
+
+#check definition of a function, print a function definiton
+type function_name
+
+
+
+#prevent somebody ssh and source someone's bashrc file, this also make scp to be possible because it doesn't print out any message during login, so scp can work
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+
+
+

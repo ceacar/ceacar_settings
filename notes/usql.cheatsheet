@@ -1,0 +1,318 @@
+usql is a universal command line tool for connecting to db
+#install all drivers using below cmd
+go get -u -tags all github.com/xo/usql
+
+# connect to a postgres database
+$ usql pg://user:pass@host/dbname
+$ usql pgsql://user:pass@host/dbname
+$ usql postgres://user:pass@host:port/dbname
+$ usql pg://
+$ usql /var/run/postgresql
+$ usql pg://user:pass@host/dbname?sslmode=disable # Connect without SSL
+
+# connect to a mysql database
+$ usql my://user:pass@host/dbname
+$ usql mysql://user:pass@host:port/dbname
+$ usql my://
+$ usql /var/run/mysqld/mysqld.sock
+
+# connect to a mssql (Microsoft SQL) database
+$ usql ms://user:pass@host/dbname
+$ usql ms://user:pass@host/instancename/dbname
+$ usql mssql://user:pass@host:port/dbname
+$ usql ms://
+
+# connect to a mssql (Microsoft SQL) database using Windows domain authentication
+$ runas /user:ACME\wiley /netonly "usql mssql://host/dbname/"
+
+# connect to a oracle database
+$ usql or://user:pass@host/sid
+$ usql oracle://user:pass@host:port/sid
+$ usql or://
+
+# connect to a cassandra database
+$ usql ca://user:pass@host/keyspace
+$ usql cassandra://host/keyspace
+$ usql cql://host/
+$ usql ca://
+
+# connect to a sqlite database that exists on disk
+$ usql dbname.sqlite3
+
+# NOTE: when connecting to a SQLite database, if the "<driver>://" or
+# "<driver>:" scheme/alias is omitted, the file must already exist on disk.
+#
+# if the file does not yet exist, the URL must incorporate file:, sq:, sqlite3:,
+# or any other recognized sqlite3 driver alias to force usql to create a new,
+# empty database at the specified path:
+$ usql sq://path/to/dbname.sqlite3
+$ usql sqlite3://path/to/dbname.sqlite3
+$ usql file:/path/to/dbname.sqlite3
+
+# connect to a adodb ole resource (windows only)
+$ usql adodb://Microsoft.Jet.OLEDB.4.0/myfile.mdb
+$ usql "adodb://Microsoft.ACE.OLEDB.12.0/?Extended+Properties=\"Text;HDR=NO;FMT=Delimited\""
+
+# connect with ODBC driver (requires building with odbc tag)
+$ cat /etc/odbcinst.ini
+[DB2]
+Description=DB2 driver
+Driver=/opt/db2/clidriver/lib/libdb2.so
+FileUsage = 1
+DontDLClose = 1
+
+[PostgreSQL ANSI]
+Description=PostgreSQL ODBC driver (ANSI version)
+Driver=psqlodbca.so
+Setup=libodbcpsqlS.so
+Debug=0
+CommLog=1
+UsageCount=1
+# connect to db2, postgres databases using ODBC
+$ usql odbc+DB2://user:pass@localhost/dbname
+$ usql odbc+PostgreSQL+ANSI://user:pass@localhost/dbname?TraceFile=/path/to/trace.log
+
+$ usql sqlite://example.sqlite3
+Connected with driver sqlite3 (SQLite3 3.17.0)
+Type "help" for help.
+
+sq:example.sqlite3=> create table test (test_id int, name string);
+CREATE TABLE
+sq:example.sqlite3=> insert into test (test_id, name) values (1, 'hello');
+INSERT 1
+sq:example.sqlite3=> select * from test;
+  test_id | name
++---------+-------+
+        1 | hello
+(1 rows)
+
+sq:example.sqlite3=> select * from test
+sq:example.sqlite3-> \p
+select * from test
+sq:example.sqlite3-> \g
+  test_id | name
++---------+-------+
+        1 | hello
+(1 rows)
+
+sq:example.sqlite3=> \c postgres://booktest@localhost
+error: pq: 28P01: password authentication failed for user "booktest"
+Enter password:
+Connected with driver postgres (PostgreSQL 9.6.6)
+pg:booktest@localhost=> select * from authors;
+  author_id |      name
++-----------+----------------+
+          1 | Unknown Master
+          2 | blah
+          3 | aoeu
+(3 rows)
+
+pg:booktest@localhost=>
+Commands may accept one or more parameter, and can be quoted using either ' or ". Command parameters may also be backtick'd.
+
+Backslash Commands
+Currently available commands:
+
+$ usql
+Type "help" for help.
+
+(not connected)=> \?
+General
+  \q                              quit usql
+  \copyright                      show usql usage and distribution terms
+  \drivers                        display information about available database drivers
+  \g [FILE] or ;                  execute query (and send results to file or |pipe)
+  \gexec                          execute query and execute each value of the result
+  \gset [PREFIX]                  execute query and store results in usql variables
+
+Help
+  \? [commands]                   show help on backslash commands
+  \? options                      show help on usql command-line options
+  \? variables                    show help on special variables
+
+Query Buffer
+  \e [FILE] [LINE]                edit the query buffer (or file) with external editor
+  \p                              show the contents of the query buffer
+  \raw                            show the raw (non-interpolated) contents of the query buffer
+  \r                              reset (clear) the query buffer
+  \w FILE                         write query buffer to file
+
+Input/Output
+  \echo [STRING]                  write string to standard output
+  \i FILE                         execute commands from file
+  \ir FILE                        as \i, but relative to location of current script
+
+Formatting
+  \pset [NAME [VALUE]]            set table output option
+  \a                              toggle between unaligned and aligned output mode
+  \C [STRING]                     set table title, or unset if none
+  \f [STRING]                     show or set field separator for unaligned query output
+  \H                              toggle HTML output mode
+  \t [on|off]                     show only rows
+  \T [STRING]                     set HTML <table> tag attributes, or unset if none
+  \x [on|off|auto]                toggle expanded output
+
+Transaction
+  \begin                          begin a transaction
+  \commit                         commit current transaction
+  \rollback                       rollback (abort) current transaction
+
+Connection
+  \c URL                          connect to database with url
+  \c DRIVER PARAMS...             connect to database with SQL driver and parameters
+  \Z                              close database connection
+  \password [USERNAME]            change the password for a user
+  \conninfo                       display information about the current database connection
+
+Operating System
+  \cd [DIR]                       change the current working directory
+  \setenv NAME [VALUE]            set or unset environment variable
+  \! [COMMAND]                    execute command in shell or start interactive shell
+
+Variables
+  \prompt [-TYPE] [PROMPT] <VAR>  prompt user to set variable
+  \set [NAME [VALUE]]             set internal variable, or list all if no parameters
+  \unset NAME                     unset (delete) internal variable
+Features and Compatibility
+The usql project's goal is to support all standard psql commands and features. Pull Requests are always appreciated!
+
+Variables and Interpolation
+usql supports client-side interpolation of variables that can be \set and \unset:
+
+$ usql
+(not connected)=> \set
+(not connected)=> \set FOO bar
+(not connected)=> \set
+FOO = 'bar'
+(not connected)=> \unset FOO
+(not connected)=> \set
+(not connected)=>
+A \set variable, NAME, will be directly interpolated (by string substitution) into the query when prefixed with : and optionally surrounded by quotation marks (' or "):
+
+pg:booktest@localhost=> \set FOO bar
+pg:booktest@localhost=> select * from authors where name = :'FOO';
+  author_id | name
++-----------+------+
+          7 | bar
+(1 rows)
+The three forms, :NAME, :'NAME', and :"NAME", are used to interpolate a variable in parts of a query that may require quoting, such as for a column name, or when doing concatenation in a query:
+
+pg:booktest@localhost=> \set TBLNAME authors
+pg:booktest@localhost=> \set COLNAME name
+pg:booktest@localhost=> \set FOO bar
+pg:booktest@localhost=> select * from :TBLNAME where :"COLNAME" = :'FOO'
+pg:booktest@localhost-> \p
+select * from authors where "name" = 'bar'
+pg:booktest@localhost-> \raw
+select * from :TBLNAME where :"COLNAME" = :'FOO'
+pg:booktest@localhost-> \g
+  author_id | name
++-----------+------+
+          7 | bar
+(1 rows)
+
+pg:booktest@localhost=>
+Note: variables contained within other strings will NOT be interpolated:
+
+pg:booktest@localhost=> select ':FOO';
+  ?column?
++----------+
+  :FOO
+(1 rows)
+
+pg:booktest@localhost=> \p
+select ':FOO';
+pg:booktest@localhost=>
+Backtick'd parameters
+Meta (\ ) commands support backticks on parameters:
+
+(not connected)=> \echo Welcome `echo $USER` -- 'currently:' "(" `date` ")"
+Welcome ken -- currently: ( Wed Jun 13 12:10:27 WIB 2018 )
+(not connected)=>
+Backtick'd parameters will be passed to the user's SHELL, exactly as written, and can be combined with \set:
+
+pg:booktest@localhost=> \set MYVAR `date`
+pg:booktest@localhost=> \set
+MYVAR = 'Wed Jun 13 12:17:11 WIB 2018'
+pg:booktest@localhost=> \echo :MYVAR
+Wed Jun 13 12:17:11 WIB 2018
+pg:booktest@localhost=>
+Passwords
+usql supports reading passwords for databases from a .usqlpass file contained in the user's HOME directory at startup:
+
+$ cat $HOME/.usqlpass
+# format is:
+# protocol:host:port:dbname:user:pass
+postgres:*:*:*:booktest:booktest
+$ usql pg://
+Connected with driver postgres (PostgreSQL 9.6.9)
+Type "help" for help.
+
+pg:booktest@=>
+Note: the .usqlpass file cannot be readable by other users. Please set the permissions accordingly:
+
+$ chmod 0600 ~/.usqlpass
+Runtime Configuration (RC) File
+usql supports executing a .usqlrc contained in the user's HOME directory:
+
+$ cat $HOME/.usqlrc
+\echo WELCOME TO THE JUNGLE `date`
+\set SYNTAX_HL_STYLE paraiso-dark
+$ usql
+WELCOME TO THE JUNGLE Thu Jun 14 02:36:53 WIB 2018
+Type "help" for help.
+
+(not connected)=> \set
+SYNTAX_HL_STYLE = 'paraiso-dark'
+(not connected)=>
+The .usqlrc file is read by usql at startup in the same way as a file passed on the command-line with -f / --file. It is commonly used to set startup environment variables and settings.
+
+You can temporarily disable the RC-file by passing -X or --no-rc on the command-line:
+
+$ usql --no-rc pg://
+Host Connection Information
+By default, usql displays connection information when connecting to a database. This might cause problems with some databases or connections. This can be disabled by setting the system environment variable USQL_SHOW_HOST_INFORMATION to false:
+
+$ export USQL_SHOW_HOST_INFORMATION=false
+$ usql pg://booktest@localhost
+Type "help" for help.
+
+pg:booktest@=>
+SHOW_HOST_INFORMATION is a standard usql variable, and can be \set or \unset. Additionally, it can be passed via the command-line using -v or --set:
+
+$ usql --set SHOW_HOST_INFORMATION=false pg://
+Type "help" for help.
+
+pg:booktest@=> \set SHOW_HOST_INFORMATION true
+pg:booktest@=> \connect pg://
+Connected with driver postgres (PostgreSQL 9.6.9)
+pg:booktest@=>
+Syntax Highlighting
+Interactive queries will be syntax highlighted by default, using Chroma. There are a number of variables that control syntax highlighting:
+
+Variable	Default	Values	Description
+SYNTAX_HL	true	true or false	enables syntax highlighting
+SYNTAX_HL_FORMAT	dependent on terminal support	formatter name	Chroma formatter name
+SYNTAX_HL_OVERRIDE_BG	true	true or false	enables overriding the background color of the chroma styles
+SYNTAX_HL_STYLE	monokai	style name	Chroma style name
+Time Formatting
+Some databases support time/date columns that support formatting. By default, usql formats time/date columns as RFC3339Nano, and can be set using the TIME_FORMAT variable:
+
+$ usql pg://
+Connected with driver postgres (PostgreSQL 9.6.9)
+Type "help" for help.
+
+pg:booktest@=> \set
+TIME_FORMAT = 'RFC3339Nano'
+pg:booktest@=> select now();
+                now
++----------------------------------+
+  2018-06-14T03:24:12.481923+07:00
+(1 rows)
+
+pg:booktest@=> \set TIME_FORMAT Kitchen
+pg:booktest@=> \g
+   now
++--------+
+  3:24AM
+(1 rows)

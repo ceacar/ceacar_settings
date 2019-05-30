@@ -130,14 +130,15 @@ nnoremap <F3> :call NumberToggle()<cr>
 " :w
 " set invnumber nornu
 
+"nnoremap <F11> :edit!<cr>
 nnoremap <F5> :set invnumber nornu<cr>
 " toggle ignore case
 nnoremap <F6> :set ic!<cr>
-"nmap <F9> :set ignorecase! ignorecase?
+nmap <F1> :set ignorecase! ignorecase?
 
 "Remove all trailing whitespace by pressing F5
 "either one below will work
-nnoremap <F8> :%s/ $//g<cr>
+nnoremap <F4> :%s/ $//g<cr>
 "nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 " enable vim auto reload vimrc config
@@ -190,7 +191,7 @@ au BufNewFile,BufRead *.go
 "    \ set shiftwidth=2 |
 "    \ set expandtab |
 
-" flag excess space 
+" flag excess space
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h
   \ match BadWhitespace /\s\+$/
 " vim auto completion
@@ -215,15 +216,15 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 "let nerd tree start itself
 " autocmd VimEnter * NERDTree | wincmd p
 "map <Leader>n <plug>NERDTreeTabsToggle<CR>
-nmap <F7> :NERDTreeToggle<CR>
+nmap <F8> :NERDTreeToggle<CR>
 " remap pep8 check to F8
-autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+"autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
 
 syntax on
-colorscheme xedit 
+colorscheme xedit
 highlight Comment ctermfg=darkgreen
 
 "highlight Comment guifg=darkgreen
@@ -256,3 +257,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_pylint_post_args="--max-line-length=120"
+
+" searching for tags
+nnoremap <C-m> :CtrlPTag<CR>
+
+":tabnew :tag  funcname
+nnoremap <C-n> <C-w><C-]><C-w>T

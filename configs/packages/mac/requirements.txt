@@ -1,2 +1,4 @@
 ipython
 virtualenv
+pytest
+pytest-cov

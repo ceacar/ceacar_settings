@@ -1,2 +1,24 @@
 #show create table statement
 SHOW CREATE TABLE myTable;
+
+
+
+export hive table to local file
+
+INSERT OVERWRITE LOCAL DIRECTORY '/tmp/temp.csv' ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+select * from user_jzile.pmp_sonob_ids_export limit 100;
+
+
+
+#explode , make one filed from array to rows, can only explode one field, no other field can be select
+#lateral view, used with explode to expand arry into multiple rows
+#example: table1
+#name, value_arr
+#john, [1,2,3]
+select name, dummy_values from table1 lateral view explode(value_arr) dummy as dummy_values;
+#this prints out
+#john,1
+#john,2
+#john,3
+#in this example the value_arr is exploded and then converted lateral view [(john,1),(john,2), (john, 3)] as a new table, and needed to be selected in a new select statement
