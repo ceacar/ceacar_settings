@@ -201,9 +201,15 @@ function ssh_my_phone_from_usb(){
   ssh $PHONE_URL_USB -p $PHONE_PORT_USB
 }
 
+function _copy_to_my_phone_via_usb(){
+  local path_from=${1:?path_from empty}
+  local path_to=${2:?path_to empty}
+  scp -C -P $PHONE_PORT_USB "$path_from" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"$path_to"
+}
+
 function copy_to_my_phone_via_usb(){
   local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
-  scp -C -r -P $PHONE_PORT_USB $path_to_copy $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/
+  _copy_to_my_phone_via_usb $path_to_copy $path_to_copy
 }
 
 function copy_from_my_phone_via_usb(){
@@ -219,4 +225,13 @@ function ide_py2(){
 function ide_py3(){
   sourcepython3
   vim $@
+}
+
+function update_host_ip_to_phone(){
+  #echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2|grep "192.168.1\|192.168.86")" > /tmp/host_ip
+  echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2| head -1)" > /tmp/host_ip
+  echo "$USER" > /tmp/host_username
+  _copy_to_my_phone_via_usb /tmp/host_ip '~/.config/misc'
+  _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
+  #scp -C -P $PHONE_PORT_USB /tmp/host_ip $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/.config/misc/
 }
