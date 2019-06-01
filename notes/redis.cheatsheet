@@ -145,3 +145,5 @@ FLUSHALL
 
 #get first 100 keys
 scan 0 count 100 match *
+#get hash key's all values
+hgetall key1

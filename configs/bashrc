@@ -134,7 +134,7 @@ export notes=$ceacar_setting/notes
 
 if [ -d $ceacar_setting/configs/local_configs ];then
   for file_path_temp in $(ls $ceacar_setting/configs/local_configs/|grep bash_local); do
-    . $file_path_temp
+    . $ceacar_setting/configs/local_configs/$file_path_temp
   done
 fi
 
