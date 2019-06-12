@@ -1,4 +1,13 @@
 #!/bin/bash
+PHONE_URL_USB="localhost"
+PHONE_PORT_USB=8022
+PHONE_DEFAULT_USERNAME="u0_a213"
+TEMP_PATH=~/temp
+
+if [ ! -d "$TEMP_PATH" ];then
+  mkdir -p "$TEMP_PATH"
+fi
+
 function cl() {
   cd "$@" && ls;
 }
@@ -193,9 +202,6 @@ function docker_startup_mac(){
   }
 }
 
-PHONE_URL_USB="localhost"
-PHONE_PORT_USB=8022
-PHONE_DEFAULT_USERNAME="u0_a213"
 function ssh_my_phone_from_usb(){
   adb forward tcp:8022 tcp:8022
   ssh $PHONE_URL_USB -p $PHONE_PORT_USB
@@ -228,10 +234,13 @@ function ide_py3(){
 }
 
 function update_host_ip_to_phone(){
-  #echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2|grep "192.168.1\|192.168.86")" > /tmp/host_ip
   echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2| head -1)" > /tmp/host_ip
   echo "$USER" > /tmp/host_username
   _copy_to_my_phone_via_usb /tmp/host_ip '~/.config/misc'
   _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
-  #scp -C -P $PHONE_PORT_USB /tmp/host_ip $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/.config/misc/
+}
+
+function update_host_info(){
+  export host_ip="$(cat ~/.config/misc/host_ip)"
+  export host_user="$(cat ~/.config/misc/host_username)"
 }
