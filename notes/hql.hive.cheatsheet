@@ -22,3 +22,25 @@ select name, dummy_values from table1 lateral view explode(value_arr) dummy as d
 #john,2
 #john,3
 #in this example the value_arr is exploded and then converted lateral view [(john,1),(john,2), (john, 3)] as a new table, and needed to be selected in a new select statement
+#
+
+#hive create table
+CREATE TABLE [IF NOT EXISTS] db_name.]table_name
+  [PRIMARY KEY (col_name[, ...])]
+  [PARTITION BY kudu_partition_clause
+  [COMMENT 'table_comment']
+  STORED AS KUDU
+  [TBLPROPERTIES ('key1'='value1', 'key2'='value2', ...)]
+AS
+  select_statement
+
+
+
+merge into customer_partitioned
+ using all_updates on customer_partitioned.id = all_updates.id
+ when matched then update set
+   email=all_updates.email,
+   state=all_updates.state
+ when not matched then insert
+   values(all_updates.id, all_updates.name, all_updates.email,
+   all_updates.state, all_updates.signup);

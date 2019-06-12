@@ -80,3 +80,8 @@ help syntastic-commands
 
 
 ctags -R . # this generates tags for vim to search
+
+#goto nth character
+The pipe '|' character may be what you want:
+To go to 25th column in a line in normal mode press 25|
+To go to 37th column in a line in normal mode press 37|

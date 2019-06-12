@@ -230,3 +230,10 @@ Some other settings that I use:
 swap-window -s 3 -t 1
 
 
+#how to copy text from tmux for pasting it to another tmux window
+TMUX_HOT_KEY + [ # this enters into a view mode
+v # this currently configured in tmux as a view mode like vim so you can select text later
+w or b or hjkl # this is same vim keyset to navigate between text
+y # this copies text, same as in vim
+
+

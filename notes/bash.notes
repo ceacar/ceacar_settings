@@ -155,4 +155,8 @@ esac
 
 
 
+#ssh config to ignore unkown host  (turn off known host verification)
+Host 192.168.86.*
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
 
