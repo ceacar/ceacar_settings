@@ -244,3 +244,11 @@ function update_host_info(){
   export host_ip="$(cat ~/.config/misc/host_ip)"
   export host_user="$(cat ~/.config/misc/host_username)"
 }
+
+function backup_ubuntu_terminal_theme(){
+  dconf dump /org/gnome/terminal/legacy/profiles:/ > $ceacar_setting/configs/ubuntu_terminal/work_profile.dconf
+}
+
+function reload_ubuntu_terminal_theme(){
+  dconf load /org/gnome/terminal/legacy/profiles:/ < $ceacar_setting/configs/ubuntu_terminal/work_profile.dconf
+}
