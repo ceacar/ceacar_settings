@@ -177,10 +177,6 @@ docker-machine ip default
 docker run -p 38888:5000 --entrypoint "/bin/sleep" -it registry.pulsepoint.com/report-api:added_column_name_as_header  10000000 #this command added sleep 1000000 to it, but it is written in a way of separated, due to how the docker works.
 
 
-
-
-
-
 # want to access file after docker exit
 docker cp <container_id>:/root/hello.txt .
 you can get container_id by run “docker ps -a”
