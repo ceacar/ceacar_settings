@@ -224,11 +224,13 @@ function copy_from_my_phone_via_usb(){
 }
 
 function ide_py2(){
+  ctags -R .
   sourcepython
   vim $@
 }
 
 function ide_py3(){
+  ctags -R .
   sourcepython3
   vim $@
 }
@@ -251,4 +253,14 @@ function backup_ubuntu_terminal_theme(){
 
 function reload_ubuntu_terminal_theme(){
   dconf load /org/gnome/terminal/legacy/profiles:/ < $ceacar_setting/configs/ubuntu_terminal/work_profile.dconf
+}
+
+function attach_my_dev_container(){
+  local first_container_match="$(docker ps |grep '9.9.999-DEV'|head -1|cut -d ' ' -f1)"
+  if [[ ! "$first_container_match" ]];then
+    echo "no dev docker found, spinning up new one"
+    docker_run_dev lga bash
+  else
+    docker exec -it $(docker ps |grep '9.9.999-DEV'|head -1|cut -d ' ' -f1) bash
+  fi
 }

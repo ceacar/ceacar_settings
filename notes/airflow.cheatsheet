@@ -1,0 +1,67 @@
+# define a dag
+from airflow import models as af_models
+Dag = af_models.DAG(
+  dag_id = 'my_dag',
+  start_date = datetime(2017,6,30),
+  schedule_interval = '0 10 * * *'
+  )
+
+# useful args for DAG
+# 1. default_args->the args DAG would feed to every task, handy when there are many common args across all tasks
+# 2. max_active_task: the tasks count airflow can run
+# 3. concurrency: the max tasks count can run concurrently
+
+# define a task
+import airflow.operators as af_op
+
+first_task = af_op.PythonOperator(
+  task_id = 'my_task1',
+  python_callable = module.function,
+  dag = DAG
+)
+
+second_task = af_op.PythonOperator(
+  task_id = 'my_task2',
+  python_callable = module.function,
+  dag = DAG
+)
+
+# useful args for task
+# 1. retries
+# 2. pool: max concurrency tasks can run
+# 3. queue : Parameters for only celery, assign specific worker
+# 4. execution_time: timeout
+# 5. trigger_rule: which task gets executed, for example-> some task failed, then run this task
+# 6. Args for python callbacks: 
+# 7. Environmental Variables
+# 8. Template Variables: Ginger templates??
+
+# set first_task as dependency of second_task
+second_task.set_upstream(first_task)
+
+# CeleryExecutor: airflow use it
+# SequentialExecutor: have task run in same process as schduler, useful in debug mode, this mode can use pdb(amazing!)
+# LocalExecutor: use python multiprocessing module on local host
+# MesosExecutor: 
+
+# Debugging:
+# 1.SequentialExecutor
+# 2.pdb
+# 3.airflow test: no db task will ran, not sure??
+
+# Local PipeLine Testing:
+# 1. start_date=some_date
+# 2. schedule_interval='@once': airflow only run once, will not do any backfilling despite of the start_date being set to the past
+# 3. delete DAG run(DAG run is a file that indicate this pipeline has been ran) or task-instances to rerun
+
+# Misc:
+# Execution date: the date of previous task started, not current task start time
+
+# Airflow CLI
+# airflow scheduler --num_runs : this num_runs is the count of pipeline ran before airflow kills itself( have a while loop starting it could make airflow automatically loads the newest code, set it to 1 can make sure it will run once and then reload the code)
+# CELERYD_MAX_TASKS_PER_CHILD: 
+
+
+
+# video link
+# https://www.youtube.com/watch?v=cHATHSB_450

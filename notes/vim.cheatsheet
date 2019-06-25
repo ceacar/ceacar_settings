@@ -85,3 +85,7 @@ ctags -R . # this generates tags for vim to search
 The pipe '|' character may be what you want:
 To go to 25th column in a line in normal mode press 25|
 To go to 37th column in a line in normal mode press 37|
+
+#to lowercase
+select text in v mode
+and then press u for lower case, U for upper case

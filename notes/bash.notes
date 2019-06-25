@@ -160,3 +160,7 @@ Host 192.168.86.*
   StrictHostKeyChecking no
   UserKnownHostsFile=/dev/null
 
+
+# ssh via a intermedia host to run a cmd
+ssh -A -tt $host_user@$host_ip ssh -tt -q -o ConnectTimeout=5 lga256 "source /home/xiazi/.bashrc\;export PATH=$LGA_ENV_PATH\; export HOST_AGGR_PATH=/home/xiazi/projects/pulsepoint/aggr\&\&uname\&\&cd /home/xiazi/projects/pulsepoint/aggr\&\&source docker_run_tools.sh \&\& docker_run_dev lga bash"
+
