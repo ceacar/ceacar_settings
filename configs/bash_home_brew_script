@@ -75,10 +75,13 @@ function shipMyProjects(){
   local user_name=${2:-$default_user}
   for path_temp in $SHARED_DIR;do
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
     echo "rsync -e 'ssh -q' -az ~/$path_temp/ $user_name@$ip:~/$path_temp/"
     rsync -e 'ssh -q' -az ~/$path_temp/ $user_name@$ip:~/$path_temp/
 =======
+=======
+>>>>>>> Stashed changes
     #executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
     echo "rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/"
     rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/
