@@ -1,0 +1,58 @@
+#show all keyspaces
+SELECT * FROM system_schema.keyspaces;
+
+
+#switch to a keyspaces
+use users
+
+
+
+Try run follows commands in cqlsh console:
+
+Get keyspaces info
+
+SELECT * FROM system.schema_keyspaces ;
+
+Get tables info
+
+SELECT columnfamily_name FROM system.schema_columnfamilies WHERE keyspace_name = 'keyspace name';
+
+Get table info
+
+SELECT column_name, type, validator FROM system.schema_columns WHERE keyspace_name = 'keyspace name' AND columnfamily_name = 'table name';
+
+Sinse v 5.0.x Docs
+
+Get keyspaces info
+
+SELECT * FROM system.schema_keyspaces;
+
+Get tables info
+
+SELECT * FROM system_schema.tables WHERE keyspace_name = 'keyspace name';
+
+Get table info
+
+SELECT * FROM system_schema.columns 
+WHERE keyspace_name = 'keyspace_name' AND table_name = 'table_name';
+
+Sinse v 6.0 Docs
+
+Get keyspaces info
+
+SELECT * FROM system_schema.keyspaces
+
+Get tables info
+
+SELECT * FROM system_schema.tables WHERE keyspace_name = 'keyspace name';
+
+Get table info
+
+SELECT * FROM system_schema.columns 
+WHERE keyspace_name = 'keyspace_name' AND table_name = 'table_name';
+
+
+#for current, select all tables;
+SELECT * FROM system_schema.columns  WHERE keyspace_name = 'users';
+
+
