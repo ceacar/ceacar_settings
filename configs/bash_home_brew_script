@@ -63,7 +63,8 @@ function executeRemoteCmd(){
   local ip=${1:?ip not set in $FUNCNAME}
   local user_name=${2:?user_name not set in $FUNCNAME}
   local cmd=${3:?cmd not set in $FUNCNAME}
-  ssh -q -o ConnectTimeout=2 $user_name@$ip $cmd
+  # ssh -q -o ConnectTimeout=2 $user_name@$ip $cmd
+  ssh -i $HOME/projects/pulsepoint/pp_notes/id_rsa -o ConnectTimeout=2 $user_name@$ip $cmd
 }
 
 function shipMyProjects(){
@@ -73,9 +74,15 @@ function shipMyProjects(){
   local ip=${1:-$default_ip}
   local user_name=${2:-$default_user}
   for path_temp in $SHARED_DIR;do
+<<<<<<< Updated upstream
     executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
     echo "rsync -e 'ssh -q' -az ~/$path_temp/ $user_name@$ip:~/$path_temp/"
     rsync -e 'ssh -q' -az ~/$path_temp/ $user_name@$ip:~/$path_temp/
+=======
+    #executeRemoteCmd $ip $user_name "mkdir -p ~/$path_temp"
+    echo "rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/"
+    rsync -az ~/$path_temp/ $user_name@$ip:~/$path_temp/
+>>>>>>> Stashed changes
   done
 }
 
