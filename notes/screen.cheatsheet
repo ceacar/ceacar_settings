@@ -1,0 +1,58 @@
+# screen shortcut of scroll buffer
+ctrl+a  -> esc ->use arrows to navigate -> q or esc to quit
+
+# copy in copy mode
+use space to mark two markers on anywhere, upon pressed the space second time(set the second marker), you've copied the whole text between two markers
+use Y to copy entire line, use W to copy word
+
+# paste what've copied
+use ctrl-a + [ to paste that you've copied
+
+
+GNU Screen splitting
+
+1. Open a new terminal and execute “screen”
+
+This should present you with the command prompt (you may get a message regarding GNU Screen licensing — simply hit “return” to skip this).
+
+Step 1
+
+2. Split the screen vertically
+
+Press CTRL-a SHIFT- (CTRL-a	) to split the screen vertically.
+
+
+You can use CTRL-a TAB to switch between the panes. Note the blank pane doesn’t do anything useful yet.
+
+3. Start a command prompt in the blank pane.
+
+Press CTRL-a TAB until you’re in the new, blank pane, then press CTRL-a c to create a new window with a command prompt in this pane.
+
+
+
+4. Split the right pane horizontally
+
+Ensure the right pane has focus (press CTRL-a TAB until the cursor is in the blank pane), then press CTRL-a SHIFT-s (CTRL-a S) to split the pane horizontally.
+
+
+
+Again, the new pane is blank and seemingly unresponsive.
+
+5. Switch to the lower right pane and create a new session.
+
+Use CTRL-a TAB to move focus to the lower right pane we just created, then CTRL-a c to spin up a new shell prompt.
+
+
+
+6. Use CTRL-a TAB to move between the panes and start coding!
+
+
+
+Other useful commands
+
+CTRL-a SHIFT-x (CTRL-a X) will close the pane that has focus
+CTRL-a d will detach screen from the TTY and put it in the background. Resume with screen -r
+CTRL-a n and CTRL-a p shifts input focus to the next & previous window, respectively.
+CTRL-a SHIFT-a (CTRL-a A) will ask you to set the title of the focus window.
+CTRL-” list available windows
+For more, you can grab GNU Screen: The virtual terminal manager from Amazon.

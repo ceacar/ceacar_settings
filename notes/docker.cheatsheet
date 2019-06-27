@@ -181,3 +181,13 @@ docker run -p 38888:5000 --entrypoint "/bin/sleep" -it registry.pulsepoint.com/r
 docker cp <container_id>:/root/hello.txt .
 you can get container_id by run “docker ps -a”
 theoretically docker saves the file even after it exited
+
+
+# attach to intermediate docker images during the built process
+  # This command will:
+  # Run the specified Docker image — bf6d2fd8e919.
+  # Keep STDIN open even if not attached (-i flag).
+  # Allocate a pseudo-tty (-t flag).
+  # Automatically clean up the container and remove the file system when the container exits (--rmflag). This is optional.
+  # Run the bash command inside of the container.
+docker run --rm -it bf6d2fd8e919 bash

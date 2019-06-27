@@ -258,6 +258,13 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_pylint_post_args="--max-line-length=120"
 
+" see :h syntastic-loclist-callback
+function! SyntasticCheckHook(errors)
+  if !empty(a:errors)
+      let g:syntastic_loc_list_height = min([len(a:errors), 10])
+  endif
+endfunction
+
 " searching for tags
 nnoremap <C-m> :CtrlPTag<CR>
 

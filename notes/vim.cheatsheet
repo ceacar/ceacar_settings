@@ -89,3 +89,7 @@ To go to 37th column in a line in normal mode press 37|
 #to lowercase
 select text in v mode
 and then press u for lower case, U for upper case
+
+
+#close all tab except current one
+:tabonly
