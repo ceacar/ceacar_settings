@@ -211,7 +211,7 @@ function ssh_my_phone_from_usb(){
 function _copy_to_my_phone_via_usb(){
   local path_from=${1:?path_from empty}
   local path_to=${2:?path_to empty}
-  scp -C -P $PHONE_PORT_USB "$path_from" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"$path_to"
+  scp -C -r -P $PHONE_PORT_USB "$path_from" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"$path_to"
 }
 
 function copy_to_my_phone_via_usb(){
