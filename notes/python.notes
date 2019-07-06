@@ -469,7 +469,19 @@ Out[14]: OrderedDict([('b', 2), ('a', 1)])
 
 
 
+# python Set, set
+a = {'a', 'b'}
+a.add('c')
+a.remove('a')
+a.discard('d') # discard would not raise error if element does not exist in it
+
+# difference of two sets
+set_A.difference(set_B) # for (A - B)
+set _B.difference(set_A) # for (B - A)
 
 
-
+# iterate through pandas framework
+pandas_gen = pandas_res.iterrows() # this yields a generator
+for index, row in pandas_gen:
+  print(row['column1'])
 

@@ -33,3 +33,23 @@ if not exists (select * from sysobjects where name='cars' and xtype='U')
         Name varchar(64) not null
     )
 go
+
+--insert
+INSERT INTO TABLE1(
+  col1,col2
+) VALUES (
+  val1, val2
+);
+
+
+--describe table
+EXEC sp_help tablename
+
+--insert into tables from another db table content
+INSERT INTO db1.schema1.table_a (col1a)
+SELECT col1b
+FROM db2.schema2.table_b;
+
+
+--copy a table from one place to another
+select * into db1.schema1.table1 from db2.schema2.table2;
