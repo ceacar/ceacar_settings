@@ -1,0 +1,43 @@
+/dev/pts/1 20190629 13:13:06 apt-get install gdrive
+/dev/pts/1 20190629 13:13:14 sudo apt-get install gdrive
+/dev/pts/1 20190629 15:15:30 mv ~/Downloads/gdrive-linux-x64 /usr/bin/gdrive
+/dev/pts/1 20190629 15:15:36 sudo mv ~/Downloads/gdrive-linux-x64 /usr/bin/gdrive
+/dev/pts/1 20190629 15:16:30 which gdrive
+/dev/pts/1 20190629 15:16:33 gdrive
+/dev/pts/1 20190629 15:16:42 chmod +x /usr/bin/gdrive
+/dev/pts/1 20190629 15:17:20 which gdrive
+/dev/pts/1 20190629 15:18:30 gdrive about
+/dev/pts/1 20190629 15:18:36 gdrive list
+/dev/pts/1 20190629 15:19:35 gdrive about
+/dev/pts/1 20190629 15:21:23 ls -al ~/.|grep gdrive
+/dev/pts/1 20190629 15:21:28 ls -al ~/.gdrive
+/dev/pts/1 20190629 15:21:32 ls -al ~/.gdrive/token_v2.json
+/dev/pts/1 20190629 15:21:41 less -al ~/.gdrive/token_v2.json
+/dev/pts/1 20190629 15:21:55 mv ~/.gdrive/token_v2.json ~/.gdrive/xyu_google_token.json
+/dev/pts/1 20190629 15:22:23 gdrive about
+/dev/pts/1 20190629 15:22:28 gdrive list
+/dev/pts/3 20190629 15:22:40 gdrive list
+/dev/pts/3 20190629 15:23:52 gdrive
+/dev/pts/3 20190629 15:23:55 gdrive help
+/dev/pts/3 20190629 15:24:43 gdrive sync download 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37 ~/projects/pulsepoint/pp_notes
+/dev/pts/3 20190629 15:24:55 gdrive help
+/dev/pts/3 20190629 15:25:33 gdrive download 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37
+/dev/pts/3 20190629 15:25:41 gdrive --recursive download 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37
+/dev/pts/3 20190629 15:26:11 gdrive download --recursive 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37
+/dev/pts/4 20190629 15:26:25 cl ~/.gdrive/
+/dev/pts/3 20190629 15:27:01 gdrive download --recursive 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37
+/dev/pts/3 20190629 15:27:21 gdrive download --recursive 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37 --force
+/dev/pts/4 20190629 15:27:38 copy_to_my_phone_via_usb ./.gdrive
+/dev/pts/2 20190629 15:28:54 copy_to_my_phone_via_usb ~/.gdrive
+/dev/pts/2 20190629 15:30:44 copy_to_my_phone_via_usb ~/.gdrive
+/dev/pts/2 20190629 15:30:51 ls ~/.gdrive
+/dev/pts/2 20190629 15:31:05 cl ~/.gdrive
+/dev/pts/2 20190629 15:31:14 copy_to_my_phone_via_usb $PWD/.gdrive
+/dev/pts/2 20190629 15:31:26 ls $PWD/.gdrive
+/dev/pts/2 20190629 15:31:35 cl ~/.gdrive
+/dev/pts/1 20190706 13:32:01 gdrive
+/dev/pts/1 20190706 13:32:07 phistory |grep gdrive
+/dev/pts/4 20190706 13:46:05 gdrive
+/dev/pts/4 20190706 13:46:07 phistory |grep gdrive
+/dev/pts/4 20190706 13:46:45 gdrive download --recursive 1yI_hsUUjwoJWmU1Fx4MvHDSPPc5zBX37 --force
+/dev/pts/4 20190706 13:58:19 phistory |grep gdrive

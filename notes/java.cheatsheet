@@ -19,4 +19,5 @@ Collections.sort(al);
 
 
 
-
+# install java jdk
+sudo apt install default-jdk
