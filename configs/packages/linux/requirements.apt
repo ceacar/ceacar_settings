@@ -34,4 +34,5 @@ lua5.1
 lua5.1-dev 
 libperl-dev 
 git
-
+# for ifconfig to work, ubuntu18.04 doesn't have it in stock
+net-tools
