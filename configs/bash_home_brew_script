@@ -237,7 +237,7 @@ function ide_py3(){
 }
 
 function update_host_ip_to_phone(){
-  echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2| head -1)" > /tmp/host_ip
+  echo "$(ifconfig | grep "inet " | grep -v 127.0.0.1 | awk -v FS=' +' '{print $3}'| head -1)" > /tmp/host_ip
   echo "$USER" > /tmp/host_username
   _copy_to_my_phone_via_usb /tmp/host_ip '~/.config/misc'
   _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
