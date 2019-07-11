@@ -3,3 +3,6 @@ configs/local_configs/*
 
 # exception to the rule
 !configs/local_configs/.gitkeep 
+
+# mac file
+.DS_Store
