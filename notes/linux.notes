@@ -1,3 +1,5 @@
+>>>>debian:
+
 #troubleshoot a hanging process
 strace -p [PID] #this will print out the recent stack
 #for example a python program with a while loop and sleep statement:
@@ -28,4 +30,23 @@ Detaching from program: /usr/bin/sleep, process 17340
 (gdb) quit
 
 
+
+# this disables interactive mode of apt-get
+DEBIAN_FRONTEND='noninteractive'
+
+# list all service
+service --status-all
+
+# start a service
+service cassandra start
+
+# stop a service
+service cassandra stop
+
+# check resource limit
+ulimit -Ha # list all hardware resource limit
+ulimit -Sa # list all software resource limit
+
+ulimit -l unlimited # set memory this user can lock to be unlimited
+ulimit -f # set max file can be opened
 

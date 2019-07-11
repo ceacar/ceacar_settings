@@ -50,7 +50,8 @@ docker rm $(docker ps -q -f status=exited)
 docker rm $(docker ps -a -q)
 #remove all dangling docker images, dangling is a state where docker image is not used in anywhere
 docker rmi $(docker images -f "dangling=true" -q)
-
+# remove container by name
+docker rm $(docker ps -a | grep $docker_name |awk -v FS='   +' '{print $6}')
 
 
 
@@ -191,3 +192,120 @@ theoretically docker saves the file even after it exited
   # Automatically clean up the container and remove the file system when the container exits (--rmflag). This is optional.
   # Run the bash command inside of the container.
 docker run --rm -it bf6d2fd8e919 bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################DOCKER FILE SYNTAX###############
+#
+#
+1. escape
+# escape=\ (backslash)
+# Or
+# escape=` (backtick)
+# The escape directive sets the character used to escape characters in a Dockerfile. If not specified, the default escape character is \.
+2. env
+# set up env var
+# ENV abc=hello
+# ENV abc=bye def=$abc
+# ENV ghi=$abc
+
+3. .dockerignore file
+similar to gitignore, it will filter files when using add copy cmd to ship files in to container image
+#Here is an example .dockerignore file:
+# comment
+*/temp*
+*/*/temp*
+temp?
+
+4. ARG set and variable
+example:
+ARG VERSION=latest
+RUN echo $VERSION > image_version
+
+4. FROM imagea AS alias_name_for_image
+ARG VERSION=latest
+FROM busybox:$VERSION
+# ARG after FROM is cleared
+
+5. RUN
+
+6. CMD
+#The CMD instruction has three forms:
+#
+#CMD ["executable","param1","param2"] (exec form, this is the preferred form)
+#CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
+#CMD command param1 param2 (shell form)
+#There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
+#
+#The main purpose of a CMD is to provide defaults for an executing container. These defaults can include an executable, or they can omit the executable, in which case you must specify an ENTRYPOINT instruction as well.
+
+#exmaple:
+#CMD echo "This is a test." | wc -
+#CMD ["/usr/bin/wc","--help"]
+
+
+7. ENTRYPOINT
+#below will run like one cmd top -b -c when start container
+#FROM ubuntu
+#ENTRYPOINT ["top", "-b"]
+#CMD ["-c"]
+
+8. LABEL
+#LABEL is comment for container
+#LABEL <key>=<value> <key>=<value> <key>=<value> ...
+#The LABEL instruction adds metadata to an image. A LABEL is a key-value pair. To include spaces within a LABEL value, use quotes and backslashes as you would in command-line parsing. A few usage examples:
+#
+#LABEL "com.example.vendor"="ACME Incorporated"
+#LABEL com.example.label-with-value="foo"
+#LABEL version="1.0"
+#LABEL description="This text illustrates \
+#that label-values can span multiple lines."
+
+9. EXPOSE
+EXPOSE <port> [<port>/<protocol>...]
+EXPOSE 80/tcp
+EXPOSE 80/udp
+EXPOSE 80
+docker run -p 80:80/tcp -p 80:80/udp ...
+
+10. ADD
+# same as copy, but it can be a url, and if it is a zip file , it will extract it
+# ADD
+# ADD has two forms:
+# 
+# ADD [--chown=<user>:<group>] <src>... <dest>
+# ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+
+# ADD hom* /mydir/        # adds all files starting with "hom"
+# ADD hom?.txt /mydir/    # ? is replaced with any single character, e.g., "home.txt"
+
+11. COPY
+# similar to add, but only used to copy directory from host to docker image
+
+12.WORKDIR
+# it will mkdir -p this dir and cd to it for following cmd
+
+#################END OF DOCKER FILE SYNTAX#######
+
+
+
+
+# container cannot run ulimit cmd
+add either of below options into docker run cmd
+--cap-add sys_resource  # guess this will add a cap of ulimit as system resource limit
+--privileged # guess this gives permission for container to run restricted cmds
+
