@@ -1,0 +1,19 @@
+# allow your own subnet to access
+add below line to /etc/hosts.allow
+ALL : 192.168.0.0/24 : allow
+
+# manually run ssh in debug mode, this works for me when trying to ssh cygwin from my phone
+/usr/sbin/sshd.exe -D -dd
+
+# cygwin runs sshd as service
+cygrunsrv -S sshd
+# cygwin stop it
+cygrunsrv -E sshd
+
+
+# link adb from android sdk tools
+#1.go to "this pc"->property->advanced setting -> environment -> edit "PATH" -> add new entry "C:\Users\ceacar\AppData\Local\Android\Sdk\platform-tools"
+#2.go to cygwin to run cmd
+export PATH=~Library/Android/Sdk/platform-tools:$PATH
+#3. now you have adb.exe in cygwin path, seems this took care of the permissioning issue too
+

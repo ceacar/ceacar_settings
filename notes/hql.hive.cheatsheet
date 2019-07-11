@@ -44,3 +44,7 @@ merge into customer_partitioned
  when not matched then insert
    values(all_updates.id, all_updates.name, all_updates.email,
    all_updates.state, all_updates.signup);
+
+
+
+LOAD DATA INPATH '{hdfs_file_to_load}' INTO TABLE table1 partition(partitionname1=partitionvalue1)

@@ -25,3 +25,11 @@ select * from schema1.table1;
 @export off;
 --turn row limit back on
 @set maxrows 1000;
+
+# shortcut
+cmd+enter = run current selected query or all query if not selected
+ctrl-c = copy
+ctrl-v = paste
+ctrl+cmd+arrow(left or right)
+
+ctrl+shift + . to select current statement
