@@ -1,0 +1,347 @@
+# ================START of CASSANDRA NOTES================
+# install cassandra
+# ============docker image below===============
+FROM ubuntu
+
+# disable interactive mode since cassandra will promp for timezone information
+ENV DEBIAN_FRONTEND noninteractive
+
+# install dependencies for curl cmd and curl cmd itself
+RUN apt-get update && apt-get install -y curl gnupg2
+RUN echo "deb http://www.apache.org/dist/cassandra/debian 311x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
+RUN curl https://www.apache.org/dist/cassandra/KEYS | apt-key add -
+
+# install cassandra
+# TODO: cassandra wants to setup demographic for its timezone, what to solve this issue
+RUN apt-get update && apt-get install -y cassandra
+
+# you may see /etc/init.d/cassandra: 72: ulimit: error setting limit (Operation not permitted), it is script try to set ulimit
+# docker doesn't allow this operation
+ENTRYPOINT ['service', 'cassandra', 'start']
+
+=============================================
+
+
+#cassandra config file location
+/etc/cassandra/cassandra.yaml # if installed from packges, or you should find it in ./conf/cassandra.yaml
+
+
+ports used:
+1. 7199 - JMX (was 8080 pre Cassandra 0.8.xx)
+2. storage_port: 7000 - Internode communication (not used if TLS enabled)
+3. ssl_storage_port: 7001 - TLS Internode communication (used if TLS enabled)
+4. 9160 - Thrift client API
+5. 9042 - CQL native transport port
+6. 1024 - 65355 Random port required by JMX. Starting with Java 7u4 a specific port can be specified using the com.sun.management.jmxremote.rmi.port property.
+
+
+# Main runtime properties
+  #Most of configuration in Cassandra is done via yaml properties that can be set in cassandra.yaml. At a minimum you should consider setting the following properties:
+
+  cluster_name: the name of your cluster.
+  seeds: a comma separated list of the IP addresses of your cluster seeds.
+  storage_port: you don’t necessarily need to change this but make sure that there are no firewalls blocking this port.
+  listen_address: the IP address of your node, this is what allows other nodes to communicate with this node so it is important that you change it. Alternatively, you can set listen_interface to tell Cassandra which interface to use, and consecutively which address to use. Set only one, not both.
+  native_transport_port: as for storage_port, make sure this port is not blocked by firewalls as clients will communicate with Cassandra on this port.
+
+# Changing the location of directories
+  # The following yaml properties control the location of directories:
+
+  # data_file_directories: one or more directories where data files are located.
+  # commitlog_directory: the directory where commitlog files are located.
+  # saved_caches_directory: the directory where saved caches are located.
+  # hints_directory: the directory where hints are located.
+
+
+# performance related
+For performance reasons, if you have multiple disks, consider putting commitlog and data files on different disks.
+
+# set JVM heap size
+JVM-level settings such as heap size can be set in cassandra-env.sh. You can add any additional JVM command line argument to the JVM_OPTS environment variable; when Cassandra starts these arguments will be passed to the JVM.
+
+
+# Logging
+The logger in use is logback. You can change logging properties by editing logback.xml. By default it will log at INFO level into a file called system.log and at debug level into a file called debug.log. When running in the foreground, it will also log at INFO level to the console.
+
+
+
+
+
+# Consistentcy, Availbility, Partition Tolerance  <- CAP theory
+# cassandra sits between availbility and partition tolerance, with reasonable consistency
+
+
+# consistency level in cassandra during read/write operation
+assume replica factor is set to 3
+consistentcy level can be, any, 1, 2, 3, Quorum
+1. any:
+any node have write, we can tell client this write operation is success
+for node have read, we can just read 1 node and return client the result
+
+2. 2:
+two nodes have to be written before we determine this write operation is success
+two nodes data have to be read and pick the newer one to return to client
+
+3. Quorum:
+(replica + 1) //2 nodes have to be written or read, if replica is 3, then quorum is 2
+
+# official document of consistency
+#1.ONE
+#Only a single replica must respond.
+#2.TWO
+#Two replicas must respond.
+#3.THREE
+#Three replicas must respond.
+#4.QUORUM
+#A majority (n/2 + 1) of the replicas must respond.
+#5.ALL
+#All of the replicas must respond.
+#6.LOCAL_QUORUM
+#A majority of the replicas in the local datacenter (whichever datacenter the coordinator is in) must respond.
+#7.EACH_QUORUM
+#A majority of the replicas in each datacenter must respond.
+#8.LOCAL_ONE
+#Only a single replica must respond. In a multi-datacenter cluster, this also gaurantees that read requests are not sent to replicas in a remote datacenter.
+#9.ANY
+#A single replica may respond, or the coordinator may store a hint. If a hint is stored, the coordinator will later attempt to replay the hint and deliver the mutation to the replicas. This consistency level is only accepted for write operations.
+
+# Write operations are always sent to all replicas, regardless of consistency level. The consistency level simply controls how many responses the coordinator waits for before responding to the client.
+# For read operations, the coordinator generally only issues read commands to enough replicas to satisfy the consistency level, with one exception. Speculative retry may issue a redundant read request to an extra replica if the other replicas have not responded within a specified time window.
+
+
+
+# query first approach
+# design query around query, so 1 query hits 1 table, by doing this can yield benefits from cassandra. this can sacrifice some data duplication of data write
+
+
+# primary key
+cassandra uses partition_key + column_number to be primary key
+
+# in cassadra, we should always access data by partition key, so the ring could know where to efficiently retrieve data
+if an id as a primary key, there should be one table with id as partition key
+
+# how does cassandra partition?
+# turn partition key string1 -> sha(string1) -> 64 bit integer with range from -2^63 <-> 2^63 -1, which represents a partition
+
+
+
+# how data is stored in cassandra
+all data with same partition key is stored in the same node,
+# example of ring 
+if there is 5 data notes with hashed partition key 10,20,30,40,50, node 1 store data with paritition key hashed value from 10 -> 20, node 2 stores 20 -> 30
+# in reality it is stored in virtual nodes, lets say node1 has range 0->10000, it will will multiple virtualnodes, virtualnodes1 have range 0 -> 2000, virtualnodes2 have range 2000 -> 4000, ...  they will all end up in node
+# any nodes can be assigned by default 256 virtual nodes, this can be configured
+
+
+
+# list current node config
+nodetool status
+
+# cassandra rack information file
+cassandra-rackdc.properties
+
+
+# cassandra writing nodes picking strategy
+1. SimpleStrategy: good for 1 datacenter 
+2. NetworkTopologyStrategy
+
+# key-space need to setup replication factor to tell cassandra how many replica of data need to be stored
+
+
+
+# change cluster name
+# 1. stop node
+nodetool decommission
+# 2. change cluster name in yaml file
+# 3. clean the node
+sudo rm -rf /var/lib/cassandra/* /var/log/cassandra/*
+# 4. start cassandra service on node
+service start cassandra
+
+# ================END of CASSANDRA NOTES==================
+
+
+# ============DATASTAX=================
+# python driver for cassandra connection
+# https://github.com/datastax/python-driver
+# example code:
+from cassandra.cluster import Cluster
+from cassandra.policies import DCAwareRoundRobinPolicy
+cluster = Cluster(['192.168.0.1', '192.168.0.2'])
+# The set of IP addresses we pass to the Cluster is simply an initial set of contact points. After the driver connects to one of these nodes it will automatically discover the rest of the nodes in the cluster and connect to them, so you don’t need to list every node in your cluster.
+
+#If you need to use a non-standard port, use SSL, or customize the driver’s behavior in some other way, this is the place to do it:
+cluster = Cluster(
+    ['10.1.1.3', '10.1.1.4', '10.1.1.5'],
+    load_balancing_policy=DCAwareRoundRobinPolicy(local_dc='US_EAST'),
+    port=9042)
+# session will establish a live session, and use keyspace at the same time(keyspace is optional)
+session = cluster.connect('mykeyspace')
+You can always change a Session’s keyspace using set_keyspace() or by executing a USE query:
+
+# or you can do this instead
+# session.set_keyspace('users')
+# or 
+# session.execute('USE users')
+
+# Executing Queries
+rows = session.execute('SELECT name, age, email FROM users')
+# print results
+for user_row in rows:
+    # By default, each row in the result set will be a namedtuple. Each row will have a matching attribute for each column defined in the schema, such as name, age, and so on. You can also treat them as normal tuples by unpacking them or accessing fields by position. The following three examples are equivalent:
+    print user_row.name, user_row.age, user_row.email
+This will transparently pick a Cassandra node to execute the query against and handle any retries that are necessary if the operation fails.
+
+# 1 way of iterating through rows
+rows = session.execute('SELECT name, age, email FROM users')
+for row in rows:
+    print row.name, row.age, row.email
+
+# another way of iterating
+rows = session.execute('SELECT name, age, email FROM users')
+for (name, age, email) in rows:
+    print name, age, email
+
+# not so recommended way
+rows = session.execute('SELECT name, age, email FROM users')
+for row in rows:
+    print row[0], row[1], row[2]
+
+# For queries that will be run repeatedly, you should use Prepared statements.
+
+# Passing Parameters to CQL Queries
+# When executing non-prepared statements, the driver supports two forms of parameter place-holders: positional and named.
+# Positional parameters are used with a %s placeholder. For example, when you execute:
+session.execute(
+    """
+    INSERT INTO users (name, credits, user_id)
+    VALUES (%s, %s, %s)
+    """,
+    ("John O'Reilly", 42, uuid.uuid1())
+)
+It is translated to the following CQL query:
+
+INSERT INTO users (name, credits, user_id)
+VALUES ('John O''Reilly', 42, 2644bada-852c-11e3-89fb-e0b9a54a6d93)
+# Note that you should use %s for all types of arguments, not just strings. For example, this would be wrong:
+# session.execute("INSERT INTO USERS (name, age) VALUES (%s, %d)", ("bob", 42))  # wrong
+# Instead, use %s for the age placeholder.
+
+# If you need to use a literal % character, use %%.
+
+# Note: you must always use a sequence for the second argument, even if you are only passing in a single variable:
+# session.execute("INSERT INTO foo (bar) VALUES (%s)", "blah")  # wrong
+# session.execute("INSERT INTO foo (bar) VALUES (%s)", ("blah"))  # wrong, in Python, single-element tuples require a comma.
+session.execute("INSERT INTO foo (bar) VALUES (%s)", ("blah", ))  # right
+# session.execute("INSERT INTO foo (bar) VALUES (%s)", ["blah"])  # right
+
+#use dict of fill values, Named place-holders use the %(name)s form:
+session.execute(
+    """
+    INSERT INTO users (name, credits, user_id, username)
+    VALUES (%(name)s, %(credits)s, %(user_id)s, %(name)s)
+    """,
+    {'name': "John O'Reilly", 'credits': 42, 'user_id': uuid.uuid1()}
+)
+# =============END OF DATASTAX======================
+
+# =================CQL=====================
+# cassandra cli
+cqlsh localhost:9042
+# set strategy
+cqlsh> CREATE KEYSPACE cassandrademodb WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
+cqlsh> CREATE KEYSPACE cassandrademodb WITH REPLICATION = {'class' : 'SimpleStrategy', 'dc1' : 3};
+
+#durable writes, cassandra defaults to true, if set to false, increased chance of data loss
+cqlsh> CREATE KEYSPACE cassandrademodb WITH REPLICATION = {'class' : 'SimpleStrategy', 'dc1' : 3} AND durable_writes = 'true';
+
+# describe keyspace, list all keyspaces
+DESCRIBE KEYSPACES
+
+# drop keyspace, remove a keyspace
+DROP keyspace_name1
+
+# use keyspace: access the keyspace
+USE keyspace_name1
+
+# describe single keyspace, it will list all create table statment too
+describe keyspace_name1
+
+# create table statement, table name should reflect which kind of query it may be used
+CREATE TABLE employee_by_id (id INT PRIMARY KEY, name TEXT, position TEXT);
+# first parameter for primary key is partition key
+CREATE TABLE employee_by_car_make (car_make TEXT, car_model TEXT, id INT, PRIMARY KEY(car_make, id)); # now the primary key is combination of car_make and id
+CREATE TABLE employee_by_car_make_and_model (car_make TEXT, car_model TEXT, id INT, PRIMARY KEY((car_make, car_model), id)); # now the partitiion key is a tuple of car_make and car_model
+CREATE TABLE employee_by_car_make_and_model (car_make TEXT, car_model TEXT, id INT, name TEXT, PRIMARY KEY((car_make, car_model), id)); # now the partitiion key is a tuple of car_make and car_model
+
+# describe tables
+DESCRIBE TABLES;
+
+# describe 1 table;
+DESCRIBE TABLE employee_by_id
+
+# check consistency
+CONSISTENCY
+# change consistency to quorum CONSISTENCY QUORUM
+
+# insert values, all partition keys and clustering keys should be covered(all primary keys should be covered)
+# if insert values is overlapping with some other records, it will overwrite it
+INSERT INTO table1(col1, col2) values('val1', 'val2');
+insert into employee_by_car_make_and_model(car_make, car_model, id, name) values('bmw', 'hatchback', 1, 'bob');
+
+# select statement, return result will show partition keys as red and clustering keys as blue, and normal values as grey
+# where condition's id should be part of primary key, if not, cassandra will refuse, unless ALLOW FILTERING is added to query
+SELECT * FROM table1 where id=1;
+# writetime will return the time of data is written
+SELECT col1, writetime(col2) FROM table1 where id=1;
+# select data without matching all primary key, this practice should never be in a query that runs regularly
+SELECT phone_number from employee_by_car_make_and_model where car_make = 'bmw' ALLOW FILTERING;
+
+# order by clustering column, the ordering of clustering column must be the same, if you have clustering columns as id1, id2, you should run query select with orderby id1,id2; you cannot do it by id2,id1
+
+# update statement
+UPDATE employee_by_car_make_and_model SET name = 'john' WHERE car_make = 'bmw' and car_model = 'hatchback' and id=1;
+# set a ttl 60 seconds for data, after 60s data will be null
+UPDATE employee_by_car_make_and_model USING TTL 60 SET name = 'john' WHERE car_make = 'bmw' and car_model = 'hatchback' and id=1;
+
+# add a column with set type to a table
+ALTER TABLE employee_by_car_make_and_model ADD phone_number set<text>;
+
+# update a set column
+UPDATE employee_by_car_make_and_model SET phone_number = phone_number + {'555'} where car_make = 'bmw' and car_model = 'hatchback' and id = 1;
+# remove the 555 from the list
+UPDATE employee_by_car_make_and_model SET phone_number = phone_number - {'555'} where car_make = 'bmw' and car_model = 'hatchback' and id = 1;
+# reset the set column to empty
+UPDATE employee_by_car_make_and_model SET phone_number = {} where car_make = 'bmw' and car_model = 'hatchback' and id = 1;
+
+# create index
+CREATE INDEX on employee_by_car_make_and_model (name);
+# by adding this name column, a select query with where clause on name could be executed without ALLOW FILTERING
+SELECT * from employee_by_car_make_and_model where name = 'bob';
+
+# uuid, cassandra has buildin function uuid() to generate a uuid (type is uuid).
+# so an insert statment with id could use it
+insert into employee_by_car_make_and_model(car_make, car_model, id, name) values('bmw', 'hatchback', uuid(), 'john snow');
+
+# timeuuid, use now() to generate it, it's a sha based on timestamp
+
+# counter type, a counter which can increase value or decrease value, counter type cannot mixed with any other column types in the same table
+CREATE TABLE purchases(uuid uuid PRIMARY KEY, customer_purchases counter)
+# update a customer purchase
+UPDATE purchases SET customer_purchases = customer_purchases + 1 WHERE uuid = 123tidjfke-fdklsajkx-lbkjkchl-kfjdks
+# insert a new customer into it
+UPDATE purchases SET customer_purchases = customer_purchases + 1 WHERE uuid = uuid()
+
+# export to csv
+# make sure primary key are all included, otherwise, when import this file back to cassandra, the key missing will be set to null
+COPY purchases TO '/tmp/purchases.txt' WITH DELIMITER = ',' AND HEADER = TRUE;
+
+
+# import from csv, 2 million row limit, use batch import if large, make sure primary key is all covered
+COPY TABLE table_name (col1, col2) FROM '/path/to/your/file' AND DELIMITER = ',' and HEADER = TRUE;
+
+# delete all rows in cassandra table
+truncate table1
+
+# =============END OF CQL=====================
+
