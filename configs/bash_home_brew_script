@@ -258,6 +258,13 @@ function update_host_ip_to_phone(){
   _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
 }
 
+function update_host_ip_to_phone_mac(){
+  echo "$(ifconfig |grep inet|grep 192|awk -v FS=' +' '{print $2}'|head -1)" > /tmp/host_ip
+  echo "$USER" > /tmp/host_username
+  _copy_to_my_phone_via_usb /tmp/host_ip '~/.config/misc'
+  _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
+}
+
 function update_host_info(){
   export host_ip="$(cat ~/.config/misc/host_ip)"
   export host_user="$(cat ~/.config/misc/host_username)"
