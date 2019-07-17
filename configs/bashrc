@@ -133,7 +133,7 @@ export ceacar_setting=~/projects/ceacar_settings
 export notes=$ceacar_setting/notes
 
 if [ -d $ceacar_setting/configs/local_configs ];then
-  for file_path_temp in $(ls $ceacar_setting/configs/local_configs/|grep bash_local); do
+  for file_path_temp in $(ls $ceacar_setting/configs/local_configs/|grep bash_local|grep -v gpg); do
     . $ceacar_setting/configs/local_configs/$(echo $file_path_temp | sed 's/@//g')
   done
 fi
