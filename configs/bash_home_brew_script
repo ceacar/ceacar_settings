@@ -214,11 +214,26 @@ function _copy_to_my_phone_via_usb(){
   scp -C -r -P $PHONE_PORT_USB "$path_from" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"$path_to"
 }
 
+function _copy_dir_to_my_phone_via_usb(){
+  local path_from=${1:?path_from empty}
+  local path_to=${2:?path_to empty}
+  scp -C -r -P $PHONE_PORT_USB "$path_from" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"$path_to"
+}
+
 function copy_to_my_phone_via_usb(){
   local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
   _copy_to_my_phone_via_usb $path_to_copy $path_to_copy
 }
 
+function copy_to_my_phone_sdcard_music_via_usb(){
+  local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
+  _copy_to_my_phone_via_usb $path_to_copy /sdcard/Music/
+}
+
+function copy_dir_to_my_phone_sdcard_music_via_usb(){
+  local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
+  _copy_dir_to_my_phone_via_usb $path_to_copy /sdcard/Music/
+}
 function copy_from_my_phone_via_usb(){
   local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
   scp -C -r -P $PHONE_PORT_USB $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:$path_to_copy ./
