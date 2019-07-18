@@ -259,7 +259,7 @@ function update_host_ip_to_phone(){
 }
 
 function update_host_ip_to_phone_mac(){
-  echo "$(ifconfig |grep inet|grep 192|awk -v FS=' +' '{print $2}'|head -1)" > /tmp/host_ip
+  echo "$(ifconfig |grep inet|grep '192\|10.10.40'|grep -v "192.168.99.1" | awk -v FS=' +' '{print $2}'|head -1)" > /tmp/host_ip
   echo "$USER" > /tmp/host_username
   _copy_to_my_phone_via_usb /tmp/host_ip '~/.config/misc'
   _copy_to_my_phone_via_usb /tmp/host_username '~/.config/misc'
