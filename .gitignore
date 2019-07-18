@@ -1,6 +1,6 @@
 configs/local_configs/*
 *.swp
-!bash_local_config.gpg
+!*.gpg
 
 # exception to the rule
 !configs/local_configs/.gitkeep 
