@@ -93,3 +93,7 @@ and then press u for lower case, U for upper case
 
 #close all tab except current one
 :tabonly
+
+
+# swap lower case and upper case
+select in visual mode and then press U for upper case and u for lower case

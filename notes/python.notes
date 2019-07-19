@@ -485,3 +485,11 @@ pandas_gen = pandas_res.iterrows() # this yields a generator
 for index, row in pandas_gen:
   print(row['column1'])
 
+
+# call parent's method from a child
+class Foo(Bar):
+    def baz(self, arg):
+        return super(Foo, self).baz(arg)
+
+# remove quotes from string
+'""""hello'.lstrip('"') = 'hello'

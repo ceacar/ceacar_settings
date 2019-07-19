@@ -3,11 +3,29 @@ SHOW CREATE TABLE myTable;
 
 
 
-export hive table to local file
+#export hive table to local file
 
 INSERT OVERWRITE LOCAL DIRECTORY '/tmp/temp.csv' ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 select * from user_jzile.pmp_sonob_ids_export limit 100;
+
+
+
+# export hive table in gzip to local file
+--extra options:
+--set mapred.output.compress=true;
+--set hive.exec.compress.output=true;
+--set mapred.output.compression.codec=org.apache.hadoop.io.compress.GzipCodec;
+--set io.compression.codecs=org.apache.hadoop.io.compress.GzipCodec;
+
+--must have otpions for compression
+set hive.exec.compress.output=true;
+set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.GzipCodec;
+
+--output to local /tmp/temp dir
+INSERT OVERWRITE LOCAL DIRECTORY '/tmp/temp' ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+select * from db1.tbl1;
 
 
 
