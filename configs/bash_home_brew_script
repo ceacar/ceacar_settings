@@ -289,3 +289,7 @@ function attach_my_dev_container(){
     docker exec -it $(docker ps |grep '9.9.999-DEV'|head -1|cut -d ' ' -f1) bash
   fi
 }
+
+function fix_mac_dock_stuck(){
+  killall Dock
+}
