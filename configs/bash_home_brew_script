@@ -216,7 +216,8 @@ function _copy_to_my_phone_via_usb(){
 
 function sync_my_phone_sd_music_to_local_mac_via_usb(){
   local music_dir=${1:?musci_dir empty}
-  scp -C -r -P $PHONE_PORT_USB $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"/data/data/com.termux/files/home/storage/sd_music/$music_dir" ~/Music/local_musics/sd_music/
+  # scp -C -r -P $PHONE_PORT_USB $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"/data/data/com.termux/files/home/storage/sd_music/$music_dir" ~/Music/local_musics/sd_music/
+  rsync --progress -avq -L -e "ssh -p $PHONE_PORT_USB" $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:"/data/data/com.termux/files/home/storage/sd_music/$music_dir" ~/Music/local_musics/sd_music/
 }
 
 function list_my_phone_sd_music_directory(){
