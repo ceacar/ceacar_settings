@@ -66,3 +66,7 @@ merge into customer_partitioned
 
 
 LOAD DATA INPATH '{hdfs_file_to_load}' INTO TABLE table1 partition(partitionname1=partitionvalue1)
+
+
+# output hive to a local file
+# hive -f /sql/temp.hql | grep -v "WARN" | gzip > /tmp/file1

@@ -293,3 +293,8 @@ function attach_my_dev_container(){
 function fix_mac_dock_stuck(){
   killall Dock
 }
+
+function git_diff_stash_at_index_n(){
+  local index=${1:?index cannot be empty}
+  git stash show -p stash@{$index}
+}

@@ -37,7 +37,6 @@ set smartcase
 "Plugin 'jnurmine/Zenburn'
 "Plugin 'altercation/vim-colors-solarized'
 
-
 " always uses spaces instead of tab characters
 "set expandtab
 
@@ -61,6 +60,9 @@ call vundle#begin()
 " let Vundle manage Plugin 'derekwyatt/vim-scala'
 " this plugin seems doesn't do anything
 " Plugin 'derekwyatt/vim-scala'
+
+"nerd commenter will automatically comment text, seems doesn't work
+"Plugin 'scrooloose/nerdcommenter'
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'

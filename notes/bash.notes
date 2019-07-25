@@ -167,4 +167,7 @@ Host 192.168.86.*
 ssh -A -tt $host_user@$host_ip ssh -tt -q -o ConnectTimeout=5 lga256 "source /home/xiazi/.bashrc\;export PATH=$LGA_ENV_PATH\; export HOST_AGGR_PATH=/home/xiazi/projects/pulsepoint/aggr\&\&uname\&\&cd /home/xiazi/projects/pulsepoint/aggr\&\&source docker_run_tools.sh \&\& docker_run_dev lga bash"
 
 
-
+# echo tab delimiter
+echo $'\t'
+# cut command with tab delimiter can be 
+cut -d $'\t' -f 2-

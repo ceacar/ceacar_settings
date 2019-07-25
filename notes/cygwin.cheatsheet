@@ -17,3 +17,5 @@ cygrunsrv -E sshd
 export PATH=~Library/Android/Sdk/platform-tools:$PATH
 #3. now you have adb.exe in cygwin path, seems this took care of the permissioning issue too
 
+# current setup
+termux ssh to windows cygwin and connect to pp

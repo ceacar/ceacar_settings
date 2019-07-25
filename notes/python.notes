@@ -486,6 +486,16 @@ for index, row in pandas_gen:
   print(row['column1'])
 
 
+# check if pandas empty
+df.empty
+
+# insert an array to be as a new column for pandas df
+# df.insert(2, "Age", [21, 23, 24, 21], True) <-- 2 is the column index, age is the colun name, last is the actual data
+
+
+# pandas new df example
+new_df = pandas.DataFrame([{"a":1,"b":2,"c":3},{"a":11,"b":22,"c":33}])
+
 # call parent's method from a child
 class Foo(Bar):
     def baz(self, arg):
@@ -493,3 +503,16 @@ class Foo(Bar):
 
 # remove quotes from string
 '""""hello'.lstrip('"') = 'hello'
+
+# read first few lines of a file
+from itertools import islice
+head = list(islice(f, 5))
+
+# decompress python stream
+d = zlib.decompressobj(16 + zlib.MAX_WBITS)
+file_content = ""
+with input_file.open(mode='r') as f:
+    for chunk in f:
+        file_content += d.decompress(chunk)
+return io.BytesIO(file_content)
+
