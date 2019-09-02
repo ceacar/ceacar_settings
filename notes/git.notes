@@ -133,3 +133,6 @@ git branch -a
 # cherry pick a range of commits, commit_sha_1, is the first commit you want, commit_sha_2 is the last commit you want
 ## ^ is saying starts from (not inclusive) the commit before the commit_sha_1
 git cherry-pick commit_sha_1^..commit_sha_2
+
+# delete branch
+git branch -D branch_name

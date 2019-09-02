@@ -423,7 +423,8 @@ Code	Meaning	Example
 
 
 #converts datestring to datetime with timezone
-datetime(*(time.strptime(date_string, format)[0:6]))
+datetime.strptime(date_string, format)[0:6]))
+time.strptime(date_string, format)[0:6]))
 
 
 #lru cache in functools
@@ -516,3 +517,44 @@ with input_file.open(mode='r') as f:
         file_content += d.decompress(chunk)
 return io.BytesIO(file_content)
 
+
+# sftp
+import paramiko
+transport = paramiko.Transport((host, port))
+transport.start_client()
+transport.auth_password(username, password)
+client = paramiko.SFTPClient.from_transport(transport)
+self.client.stat(remotepath)  # check if remote path exists
+self.client.open(remotepath)  # opens the file
+self.client.listdir(remotepath)  # list all files in a dir
+self.client.listdir_attr(remotepath)  # list attribute of a dir
+self.client.get(remote_path, local_path)  # download file to local_path
+
+# ipython debug
+# pip isntall ipdb # <--- ipython debugger
+# %pdb <---- this will turn on ipython automatic debug mode
+import ipdb; ipdb.set_trace()  # <--- this will enable ipython debug mode
+
+# get exception type and message
+a=Exception("123")
+type(a).__name__ # this only print exceptino type
+type(a).message # this only prints message
+
+# cannot decode 0x ascii error
+# this is normally caused by python implicit string conversion, below invoke encode from a string, but encode cannot encode string, it can only encode unicode string, so python has to decode the string to unicode first with decode() and this is why it blow up, because default decoder cannot decode chinese character
+"你好".encode('utf-8')
+# encode converts a unicode object to a string object. But here you have invoked it on a string object (because you don't have the u). So python has to convert the string to a unicode object first. So it does the equivalent of
+"你好".decode().encode('utf-8')
+# But the decode fails because the string isn't valid ascii. That's why you get a complaint about not being able to decode.
+
+
+
+
+# add leading zero
+#In Python 2 you can do:
+print "%02d" % (1,)
+#Basically % is like printf or sprintf.
+#For Python 3.+ the same behavior can be achieved with:
+print("{:02d}".format(1))
+#For Python 3.6+ the same behavior can be achieved with f-strings:
+print(f"{1:02d}")

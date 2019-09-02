@@ -55,4 +55,8 @@ WHERE keyspace_name = 'keyspace_name' AND table_name = 'table_name';
 #for current, select all tables;
 SELECT * FROM system_schema.columns  WHERE keyspace_name = 'users';
 
+# went into problems like SyntaxException: <Error from server: code=2000 [Syntax error in CQL query] message="line 1:74 no viable alternative at input ';' (...users.user where id = ["7b47fa46-c634-4f03-b340-b186cb69f5f]a";)">
+# cassandra uses single quote, so remove double quotes and add single quote
 
+# searching pattern in arraylist
+select * from users.user where segments contains 'NPI_DMD_289' ALLOW FILTERING;

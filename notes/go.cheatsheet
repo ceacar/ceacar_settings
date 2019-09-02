@@ -504,3 +504,45 @@ func main() {
 	t, _ := time.Parse(layout, input)
 
 }
+
+
+
+//golang net package
+import (
+    "net"
+)
+conn, err := net.Dial("tcp", "golang.org:80")
+if err != nil {
+	// handle error
+}
+fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
+status, err := bufio.NewReader(conn).ReadString('\n')
+
+//use net to create a server
+ln, err := net.Listen("tcp", ":8080")
+if err != nil {
+	// handle error
+}
+for {
+	conn, err := ln.Accept()
+	if err != nil {
+		// handle error
+	}
+	go handleConnection(conn)
+}
+// choose net dns resolve method, prefer go method since it only consumes a go routine
+export GODEBUG=netdns=go    # force pure Go resolver
+export GODEBUG=netdns=cgo   # force cgo resolver
+
+
+// buffered channel
+package main
+import "fmt"
+func main() {
+    // by specifying 2 for a channel made it a buffered channel
+    messages := make(chan string, 2)
+    messages <- "buffered"
+    messages <- "channel"
+    fmt.Println(<-messages)
+    fmt.Println(<-messages)
+}

@@ -64,9 +64,104 @@ merge into customer_partitioned
    all_updates.state, all_updates.signup);
 
 
-
+# load data into a partition
 LOAD DATA INPATH '{hdfs_file_to_load}' INTO TABLE table1 partition(partitionname1=partitionvalue1)
 
+# load data and then overwrite the table
+LOAD DATA INPATH 'hdfs_file_or_directory_path' [OVERWRITE] INTO TABLE tablename
+  [PARTITION (partcol1=val1, partcol2=val2 ...)]
 
 # output hive to a local file
 # hive -f /sql/temp.hql | grep -v "WARN" | gzip > /tmp/file1
+
+
+# copy a table schema in hive, duplicate a table, create table like
+CREATE TABLE db1.tbl1
+LIKE db2.tbl2
+
+
+# hive set variable
+hive> set CURRENT_DATE='2012-09-16';
+hive> select * from foo where day >= '${hiveconf:CURRENT_DATE}'
+# hql-cli set variable
+hive -hiveconf CURRENT_DATE='2012-09-16' -f test.hql
+set hivevar:tablename=mytable;
+hive> set tablename=newtable;
+hive> select * from ${tablename} -- uses 'newtable'
+
+# show hive partitions
+show partitions table1
+
+# loads field quoted csv file
+CREATE TABLE Table(A varchar(50),B varchar(50),C varchar(50))
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES 
+(
+    "separatorChar" = ",",
+    "quoteChar"     = "\""
+)  
+STORED AS TEXTFILE;
+
+
+# select from another table as a new partition of a table
+# seems this is wrong
+INSERT INTO TABLE xxx partiton ( xxx ) SELECT xxx;
+# below cmd works
+INSERT OVERWRITE TABLE xxx partition(day='2019-09-12') SELECT ...;
+
+# show partition of specific partition
+show partitions db1.tbl1 partition(day='2019-07-30')
+
+# ignore header
+tblproperties ("skip.header.line.count"="1");
+
+# get sha256 of a string
+reflect('org.apache.commons.codec.digest.DigestUtils', 'sha256Hex', column1)
+
+# aggregate multiple rows value into array
+select 
+    User, 
+    collect_set(Alias) as Alias
+from table
+group by User;
+
+# alter table to add more column
+ALTER TABLE new_table ADD COLUMNS (newCol1 int,newCol2 int);
+
+# hive select all but 1 column
+# Try to setup the below property
+set hive.support.quoted.identifiers=none;
+# Then select all columns except col_21:
+select `(col_21)?+.+` from <table_name>; 
+
+
+# join on multiple columns
+from a join b on (a.col1=b.col1 and a.col2=b.col2)
+
+# rlike in hive, multiple like clause or 
+and col1 RLIKE '^str1*|.*str2.*' ;
+
+# cast to int
+cast(str_column as int)
+
+# hive in
+col1 in (val1, val2)
+
+# hive wild card join, hive doesn't support wild card join, but we can use like to join two table in where clause
+
+# hive over partition by, this claus is to use display individual element together with some aggregated element
+# in below case, it is id,name,gender together with count(gender) from all student
+SELECT id, name, gender,
+COUNT(gender) OVER (PARTITION BY gender) AS Total_students,
+AVG(age) OVER (PARTITION BY gender) AS Average_Age,
+SUM(total_score) OVER (PARTITION BY gender) AS Total_Score
+FROM student
+
+
+# below is an example of over partition oby
+# id, group, starttime 3 columns, now we add a rank to it which ordered by timestamp and over partition by name(means group by name), so in each group there will always be a record have rank=1
+select * from (select id, group, starttime, rank() over(partition by name order by unix_timestamp(starttime, 'EEE, dd MMM yyyy hh:mm:ss z') desc) as rnk from hive_table) a where a.rnk=1;
+
+
+# drop a partition
+ALTER TABLE logs DROP IF EXISTS PARTITION(year = 2012, month = 12, day = 18);

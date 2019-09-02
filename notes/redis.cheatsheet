@@ -128,7 +128,10 @@ UNSUBSCRIBE [channel [channel ...]]          # stop listening for messages poste
 
 
 # Other Commands
-
+# show databases
+CONFIG GET databases
+1) "databases"
+2) "16
 
 KEYS pattern  # find all keys matching the given pattern
 

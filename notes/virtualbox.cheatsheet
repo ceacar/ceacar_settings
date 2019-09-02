@@ -1,0 +1,8 @@
+# cannot copy paste between host and image
+Before you can work with copy and paste, you have to install the VirtualBox guest additions. Once you start the virtual machine, click the Devices menu, and then select Insert Guest Additions CD image.
+
+# if above doesn't work
+# install below packages
+apt-get install build-essential virtualbox-guest-utils virtualbox-guest-x11 virtualbox-guest-dkms
+# then start the vbox client
+VBoxClient --clipboard

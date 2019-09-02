@@ -1,0 +1,7 @@
+hdfs dfs -ls
+	-cat 
+	-get hdfs_src dest
+	-put src hdfs_dest
+        -rm -r -f path # rm removes single file -r recursively remove -f will force the remove
+
+

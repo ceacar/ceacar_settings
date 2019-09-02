@@ -1,3 +1,7 @@
+# docker image repository for experiment
+docker push ceacar/exp:tagname
+
+
 #install docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -25,6 +29,10 @@ docker attach [CONTAINER_ID|CONTAINER_NAMES] #attched to terminal which is being
 docker exec -i -t [CONTAINER_ID|CONTAINER_NAMES] /bin/bash #open a new terminal in the CONTAINER specified
 docker run -it fbd-jenkins /bin/bash #run fbd-jenkins and open the interactive mode, if it is killed, container is killed
 docker run -rm -ti tag_name /bin/bash #automatically remove the container tag_name upon exit
+
+# build docker image from another path(cat to cache), this may cause some issue of path error during copying
+docker build --build-arg docker_build_path=$PWD -t $image_name - <$CONTAINER_PATH/$component/docker/dockerfile_$component
+
 
 
 
@@ -309,3 +317,23 @@ add either of below options into docker run cmd
 --cap-add sys_resource  # guess this will add a cap of ulimit as system resource limit
 --privileged # guess this gives permission for container to run restricted cmds
 
+# login into docker hub to access docker images registry
+docker login --username=ceacar #prompted with credential input
+# this will generate, sometimes it will have userpermission issue, then you have to chown it to run local username
+~/.docker/config.json
+# error message would looke like
+# WARNING: Error loading config file: /home/ceacar/.docker/config.json: stat /home/ceacar/.docker/config.json: permission denied
+# docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post http://%2Fvar%2Frun%2Fdocker.sock/v1.39/containers/create: dial unix /var/run/docker.sock: connect: permission denied.                                                              
+# See 'docker run --help'.
+
+# docker sudo issue add below cmd to add docker group to user's supplementary groups, so user could use that group
+sudo usermod -a -G docker $USER
+
+
+# restart docker machine on mac
+docker-machine restart default
+
+# docker-compose environment variable
+# use normal bash ${}
+# docker-compose pull latest image for a service
+# docker-compose -f yml_file_path pull service_name1

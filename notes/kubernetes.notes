@@ -4,3 +4,188 @@ kubectl get service
 kubectl delete -f ./yaml/
 kubectl delete pods pod_name
 kubectl delete service service_name
+# get a service yaml file
+kubectl get service -o yaml
+
+# get a shell of running container 
+kubectl exec -it shell-demo -- /bin/bash
+
+# monitoring the shell output of container
+kubectl attach shell-demo
+
+
+# a simple hello-node deployment
+kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+# list all resources in kubectl, pods, service, deployment
+kubectl get all
+
+# example output
+# NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+# service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   89m
+# 
+# 
+# NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+# deployment.apps/hello-node   0/1     1            0           16m
+# 
+# NAME                                    DESIRED   CURRENT   READY   AGE
+# replicaset.apps/hello-node-55b49fb9f8   1         1         0       16m
+
+# delete an deployment
+kubectl delete deployment.apps/hello-node
+
+
+
+# apply deplyment from yaml file
+# deployment.yml
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: kubernetes-tutorial-deployment
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: kubernetes-tutorial-deployment
+#   template:
+#     metadata:
+#       labels:
+#         app: kubernetes-tutorial-deployment
+#     spec:
+#       containers:
+#       - name: kubernetes-tutorial-application
+#         image: auth0blog/kubernetes-tutorial
+#         ports:
+#           - containerPort: 3000
+kubectl apply -f deployment.yaml
+
+
+# list all hidden services
+# if you can coredns-xxx is pending, it means you didn't deploy policy for pod networking, use kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml to deploy pod networking
+kubectl get pods -n kube-system
+
+# expose deployment
+kubectl expose deployment hello-node --type=LoadBalancer --port=8080
+
+# check the exposed service
+kubectl expose deployment hello-node --type=LoadBalancer --port=8080 # type=LoadBalancer means you want this expose to outside of cluster
+
+
+# about ingress, not sure how it works yet
+# use nginx ingress as the access controller to outside world
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+
+kubectl get ingress test-ingress
+
+
+# clean up deployment
+kubectl delete service hello-node
+kubectl delete deployment hello-node
+
+# login with credentials to dockerhub
+docker login --username=ceacar # will be prompt with follow up password
+
+
+# kubenetes error out on ubuntu restart
+# you may see:
+# ge@change-VirtualBox:~$ kubectl get nodes
+#The connection to the server 10.0.2.15:6443 was refused - did you specify the right host or port?
+
+# run below command to revive it
+sudo -i
+swapoff -a
+exit
+strace -eopenat kubectl version
+
+
+
+
+
+# sample kubernetes yaml file of a service
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2019-08-10T18:08:00Z"
+  name: kubernetes-tutorial-deployment
+  namespace: default
+  resourceVersion: "14765"
+  selfLink: /api/v1/namespaces/default/services/kubernetes-tutorial-deployment
+  uid: f0c42ec2-e91e-4362-baae-1dd83aec4e11
+spec:
+  clusterIP: 10.102.107.217
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 31574
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: kubernetes-tutorial-deployment
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+
+
+
+# kubernetes create secret
+kubectl create secret docker-registry <name_of_this_secrete> --docker-username=<your_username> --docker-password=<your_password> --docker-email=<your-email> -n <your-namespace>
+# load secret from file
+kubectl create secret generic regcred --from-file=.dockerconfigjson=<path/to/.docker/config.json> --type=kubernetes.io/dockerconfigjson
+
+
+# get log from a pod
+kubectl --v=8 logs airflow-deployment-d89bcf44d-5p4wh
+
+# copy file to kubernetes
+kubectl cp /tmp/foo <some-namespace>/<some-pod>:/tmp/bar
+
+
+
+# ============================POD=======================
+# refresh image of a pod, delete a pod to force it re pull new images
+kubectl delete pod airflow-deployment-d89bcf44d-5p4wh
+
+# select pods with filter(label)
+kubectl get pods -l environment=production,tier=frontend
+kubectl get pods -l 'environment in (production),tier in (frontend)'
+
+# check what port is the pod listening to
+kubectl get pods redis-master-765d459796-258hz --template='{{(index (index .spec.containers 0).ports 0).containerPort}}{{"\n"}}'
+
+
+
+
+
+
+# ==============================SERVICE========================
+# expose 8080 port to outisde 
+kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+# 
+kubectl expose deployment hostnames --port=80 --target-port=9376
+# bash cmd to get exposed port of a service
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+
+# end point looks like an ip you could reach
+kubectl get endpoints
+NAME                             ENDPOINTS              AGE
+airflow-deployment               20.244.1.9:31112       19m
+kubernetes                       192.168.149.129:6443   5d4h
+
+
+# =========================REPLICATE=========================
+# get replica set status
+kubectl get rs
+
+
+
+# =========================NETWORKING=======================
+# port forwarding kubernetes, consider kubernetes as a pc which has all the firewalls, and pods are just the application running inside the pc, if you want to access these application, you have to open a port to the application you want to access
+kubectl port-forward type/name your_host_port:port_of_the_type_with_the_name
+
+kubectl port-forward redis-master-765d459796-258hz 7000:6379
+kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
+kubectl port-forward deployment/redis-master 7000:6379
+kubectl port-forward rs/redis-master 7000:6379
+kubectl port-forward svc/redis-master 7000:6379

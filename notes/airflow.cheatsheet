@@ -138,3 +138,10 @@ max_active_runs_per_dag: This one's kinda alright, but since it seems to be just
 concurrency: Again, having a general name like this, coupled with the fact that concurrency is used for something different elsewhere makes this pretty confusing. I'd call this max_active_tasks.
 
 max_active_runs: This one sounds alright to me.
+
+# how to skip airflow task
+raise AirflowSkipException
+
+# airflow trigger rule, below means when non of above tasks failed, the DummyOperator will run
+# rules are: all_success and all_failed but not all_done, one_failed, one_success, none_failed, none_skipped and dummy.
+join = DummyOperator(task_id='join', dag=dag, trigger_rule='none_failed')

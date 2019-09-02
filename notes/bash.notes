@@ -33,6 +33,10 @@ su -l -s /bin/sh fbd -c 'pwd'
 #get dates
 date +%Y%m%d -d "-1 days"
 
+# get year of above date string
+dt=$(date +%Y%m%d -d "-1 days")
+year=${dt:0:2} # starting from 0th position and take two characters after the position
+
 #parallel syntax
 parallel --retries 5 -j $(nproc) --halt=2 --block $your_chunk_size --pipe $cmd
 #trap
@@ -171,3 +175,41 @@ ssh -A -tt $host_user@$host_ip ssh -tt -q -o ConnectTimeout=5 lga256 "source /ho
 echo $'\t'
 # cut command with tab delimiter can be 
 cut -d $'\t' -f 2-
+
+
+# ssh multiplexing, ading by adding 3 lines starting with Control*
+Host 192.168.1.*
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+  ControlPath ~/.ssh/cm-%r@%h:%p
+  ControlMaster auto # this line enables the multiplexing
+  ControlPersist 30m # this line will keep the connection alive for 30 minutes after idle
+
+
+
+# screen copy text 
+Enter scrollback mode using C-a [ or C-a ESC.
+Press the space bar to begin selecting text.
+Move the cursor using h,j,k,l,C-b,C-f or arrow keys/PGUP/PGDOWN.
+Hit the space bar again to copy the selected text.
+Hit ESC to exit scrollback mode.
+Press C-a ] to paste.
+
+
+# compare string equal
+if [ "$x" = "valid" ]; then
+  echo "x has the value 'valid'"
+fi
+
+# curl pipe to bash, curl to memory
+curl -vs google.com 2>&1 | less
+
+# multiple spaces deliminted 
+ps axu | grep jbos[s] | tr -s ' ' | cut -d' ' -f5
+
+# get last cmd pid
+$!
+
+# ifconfig not found, it is deprecated, use ip command
+ip -a c
+

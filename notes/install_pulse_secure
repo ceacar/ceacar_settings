@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+cd /tmp
+wget http://trial.pulsesecure.net/clients/ps-pulse-linux-9.0r2.0-b819-ubuntu-debian-64-bit-installer.deb
+# install two dependencies for pulse secure
+sudo apt-get install libwebkitgtk-1.0-0 libproxy1-plugin-webkit
+sudo dpkg -i ./ps-pulse-linux-9.0r2.0-b819-ubuntu-debian-64-bit-installer.deb

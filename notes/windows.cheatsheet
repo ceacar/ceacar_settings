@@ -1,0 +1,6 @@
+# install venv in windows
+python -m venv path
+# activate environment in windows
+. ./Scripts/activate
+
+
