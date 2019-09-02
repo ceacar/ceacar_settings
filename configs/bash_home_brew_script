@@ -2,11 +2,7 @@
 PHONE_URL_USB="localhost"
 PHONE_PORT_USB=8022
 PHONE_DEFAULT_USERNAME="u0_a213"
-TEMP_PATH=~/temp
-
-if [ ! -d "$TEMP_PATH" ];then
-  mkdir -p "$TEMP_PATH"
-fi
+TEMP_PATH=/tmp
 
 function cl() {
   cd "$@" && ls;
@@ -58,14 +54,29 @@ function error(){
   return 1
 }
 
+function __execute_cmd_on_host(){
+  [[ "$1" == "-h" ]] && { echo "$FUNCNAME [ip] [user_name]";return 1; }
+  local ip=${1:?ip not set in $FUNCNAME}
+  shift
+  local user_name=${1:?user_name not set in $FUNCNAME}
+  shift
+  local port=${1:-22}
+  shift
+  # ssh -q -o ConnectTimeout=2 $user_name@$ip $cmd
+  ssh -t -o ConnectTimeout=5 $user_name@$ip -p $port $@
+}
+
 function executeRemoteCmd(){
   [[ "$1" == "-h" ]] && { echo "$FUNCNAME [ip] [user_name]";return 1; }
   local ip=${1:?ip not set in $FUNCNAME}
-  local user_name=${2:?user_name not set in $FUNCNAME}
-  local cmd=${3:?cmd not set in $FUNCNAME}
-  # ssh -q -o ConnectTimeout=2 $user_name@$ip $cmd
-  ssh -i $HOME/projects/pulsepoint/pp_notes/id_rsa -o ConnectTimeout=2 $user_name@$ip $cmd
+  shift
+  local user_name=${1:?user_name not set in $FUNCNAME}
+  shift
+  local port=22
+  __execute_cmd_on_host $ip $user_name $port $@
 }
+
+
 
 function shipMyProjects(){
   local shared_dir_with_remote=${SHARED_DIR:?SHARED_DIR is not setup in $FUNCNAME}
@@ -276,8 +287,8 @@ function update_host_ip_to_phone_mac(){
 }
 
 function update_host_info(){
-  export host_ip="$(cat ~/.config/misc/host_ip)"
-  export host_user="$(cat ~/.config/misc/host_username)"
+  export host_ip="$(cat ~/.config/misc/host_ip|grep -v '^#')"
+  export host_user="$(cat ~/.config/misc/host_username|grep -v '^#')"
 }
 
 function backup_ubuntu_terminal_theme(){

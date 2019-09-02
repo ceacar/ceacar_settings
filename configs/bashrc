@@ -45,6 +45,7 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
     #mac is xterm-256color
     xterm-256color) color_prompt=yes;;
+    screen) export TERM=xterm-256color
 esac
 
 if [ -n "$force_color_prompt" ]; then
