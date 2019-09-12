@@ -1,7 +1,9 @@
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+# disable this guard so ssh can use this file
+# case $- in
+#   # this limits if it is non interactive ssh it would not set bashrc file
+#   *i*) ;;
+#     *) return;;
+# esac
 
 is_mac=false
 is_linux=false

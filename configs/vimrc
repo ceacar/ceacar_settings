@@ -1,5 +1,7 @@
 let g:go_version_warning = 0
 nnoremap cc i<space><esc>
+noremap Zz <c-w>_ \| <c-w>\|
+noremap Zo <c-w>=
 "noremap <Up> <NOP>
 "noremap <Down> <NOP>
 "noremap <Left> <NOP>
@@ -12,6 +14,13 @@ nnoremap cc i<space><esc>
 "highlight Comment ctermfg=darkgreen
 "highlight BadWhitespace ctermbg=red guibg=darkred
 "highlight highlight_id_cursor=darkgreen
+"highlight DiffChange term=bold ctermbg=225 guibg=LightMagenta guifg=Black
+"highlight DiffChange term=standout ctermfg=0 ctermbg=11 guifg=Black guibg=Yellow
+"highlight DiffChange guibg=Yellow
+"highlight SpellRare term=standout ctermfg=0 ctermbg=11 guifg=Black guibg=Yellow
+"highlight SpellRare guibg=Yellow
+"highlight ColorColumn term=standout ctermfg=0 ctermbg=11 guifg=Black guibg=Yellow
+"highlight ColorColumn guibg=Yellow
 " size of a hard tabstop
 "set tabstop=4
 "
@@ -272,3 +281,8 @@ nnoremap <C-m> :CtrlPTag<CR>
 
 ":tabnew :tag  funcname
 nnoremap <C-n> <C-w><C-]><C-w>T
+
+if &diff
+  " vimdiff 256 color has a diffchange color scheme which is not eye friendly
+  set t_Co=16
+endif

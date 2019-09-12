@@ -63,7 +63,9 @@ function __execute_cmd_on_host(){
   local port=${1:-22}
   shift
   # ssh -q -o ConnectTimeout=2 $user_name@$ip $cmd
-  ssh -t -o ConnectTimeout=5 $user_name@$ip -p $port $@
+
+  echo "ssh -tt -o ConnectTimeout=5 $user_name@$ip -p $port $@"
+  ssh -tt -o ConnectTimeout=5 $user_name@$ip -p $port $@
 }
 
 function executeRemoteCmd(){
@@ -293,6 +295,7 @@ function update_host_ip_to_phone_mac(){
 function update_host_info(){
   export host_ip="$(cat ~/.config/misc/host_ip|grep -v '^#')"
   export host_user="$(cat ~/.config/misc/host_username|grep -v '^#')"
+  export host_port="$(cat ~/.config/misc/host_port|grep -v '^#')"
 }
 
 function backup_ubuntu_terminal_theme(){
