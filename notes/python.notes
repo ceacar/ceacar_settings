@@ -558,3 +558,40 @@ print "%02d" % (1,)
 print("{:02d}".format(1))
 #For Python 3.6+ the same behavior can be achieved with f-strings:
 print(f"{1:02d}")
+
+# md5
+import hashlib
+m = hashlib.md5()
+m.update('any_string')
+# md5_str = m.digest()  # this output bytes
+md5_str = m.hexdigest() # this output string
+
+
+# upload s3 file using boto3
+import boto3
+s3 = boto3.resource('s3')
+def upload_file_to_S3(filename, key, bucket_name):
+    s3.Bucket(bucket_name).upload_file(filename, key)
+
+
+# __call__ difference with __init__,  call is instantiated when the instance of the class is called with ()
+class Foo:
+    def __call__(self, a, b, c):
+        # ...
+
+x = Foo()
+x(1, 2, 3) # __call__
+
+
+# abc meta creates abstract calss, subclass must implement abstract method
+from abc import ABC, abstractmethod
+ 
+class AbstractClassExample(ABC):
+ 
+    def __init__(self, value):
+        self.value = value
+        super().__init__()
+    
+    @abstractmethod
+    def do_something(self):
+        pass

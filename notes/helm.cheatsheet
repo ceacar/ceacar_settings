@@ -1,0 +1,32 @@
+# init and set upper limit of helm log to 20000
+helm init --history-max 20000
+# check if tiller pod is running 
+kubectl get pods --namespace kube-system
+# tainit the node if you find tiller pod pending in master
+kubectl taint node master-node node-role.kubernetes.io/master:NoSchedule-
+
+# tiller service account is also in kube-system
+kubectl create serviceaccount -n kube-system tiller
+
+
+# re init tiller
+helm init --upgrade --service-account tiller --history-max 200
+
+# debug the chart
+helm install --dry-run --debug ./mychart
+
+
+helm value replace format is like below
+{{ .Values.service.type }} <---- this means the value is in values.yaml under the service and then the type, this will become "ClusterIp"
+
+a related snippet of values.yaml
+service:
+  type: ClusterIP
+  port: 80
+
+# overwrite helm config
+helm install --dry-run --debug ./mychart --set service.internalPort=8080
+
+# helm lint will check yaml file for format error
+helm lint ./mychart
+

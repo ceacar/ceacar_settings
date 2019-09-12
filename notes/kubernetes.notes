@@ -63,6 +63,7 @@ kubectl apply -f deployment.yaml
 # list all hidden services
 # if you can coredns-xxx is pending, it means you didn't deploy policy for pod networking, use kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml to deploy pod networking
 kubectl get pods -n kube-system
+kubectl get pods --namespace kube-system
 
 # expose deployment
 kubectl expose deployment hello-node --type=LoadBalancer --port=8080
@@ -147,6 +148,8 @@ kubectl cp /tmp/foo <some-namespace>/<some-pod>:/tmp/bar
 # refresh image of a pod, delete a pod to force it re pull new images
 kubectl delete pod airflow-deployment-d89bcf44d-5p4wh
 
+kubectl delete pod airflow-deployment-d89bcf44d-5p4wh --now
+
 # select pods with filter(label)
 kubectl get pods -l environment=production,tier=frontend
 kubectl get pods -l 'environment in (production),tier in (frontend)'
@@ -189,3 +192,6 @@ kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
 kubectl port-forward deployment/redis-master 7000:6379
 kubectl port-forward rs/redis-master 7000:6379
 kubectl port-forward svc/redis-master 7000:6379
+
+# taint master node to allow pod running in it, if you have NoSchedule set up in master node, you may find tiller pod pending
+kubectl taint node master-node node-role.kubernetes.io/master:NoSchedule-

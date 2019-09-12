@@ -337,3 +337,6 @@ docker-machine restart default
 # use normal bash ${}
 # docker-compose pull latest image for a service
 # docker-compose -f yml_file_path pull service_name1
+
+# get docker id inside docker container
+head -1 /proc/self/cgroup|cut -d/ -f3

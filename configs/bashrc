@@ -18,6 +18,13 @@ case "${unameOut}" in
     *)          export is_unknown="UNKNOWN:${unameOut}"
 esac
 
+case $- in
+  # this limits if it is non interactive ssh it would not set bashrc file
+  *i*) ;;
+  #docker-machine cmd will affect ssh, so disable is_mac will prevent it from sourceing
+    *) is_mac=false;is_linux=true;;
+esac
+
 PROJECT_PATH=$HOME/projects
 
 function enable_python3_for_centos() {

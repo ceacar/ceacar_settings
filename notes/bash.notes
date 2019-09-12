@@ -213,3 +213,22 @@ $!
 # ifconfig not found, it is deprecated, use ip command
 ip -a c
 
+
+# print 00 .... 09
+0{0..9}
+
+
+# force 0 buffer for stdin stdout stderr
+# stdbuf -i0 -o0 -e0 <command>
+# i = stdin
+# o = stdout
+# e = stderr
+
+# restart sshd in mac
+# unload seems unnecesary for this case
+sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+# use this stop is more appropriate
+sudo launchctl stop com.openssh.sshd
+
+
