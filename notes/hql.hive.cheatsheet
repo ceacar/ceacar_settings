@@ -170,4 +170,17 @@ ALTER TABLE logs DROP IF EXISTS PARTITION(year = 2012, month = 12, day = 18);
 # change order of column in hive
 alter table db1.tbl1 change col1 col1 string after col3;
 
+# calculate percentage in hive
+SELECT t1.colB,
+  SUM( IF( colC == ‘y’, 1 , 0 ) )/ COUNT() 100 as pct
+  FROM tbl t1
+  GROUP BY t1.colB;
 
+# row_number() just like rank() will assign one extra column number into result set
+row_number() over (partition by userid, segmentid order by userid, segmentid) as rownumber
+
+# get create table statment
+SHOW CREATE TABLE myTable;
+
+
+#hive looks like only mounts data and when select adds partition key, so a data file can be copied around

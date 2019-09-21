@@ -136,3 +136,6 @@ git cherry-pick commit_sha_1^..commit_sha_2
 
 # delete branch
 git branch -D branch_name
+
+# git bracnh show
+git log --all --decorate --oneline --graph

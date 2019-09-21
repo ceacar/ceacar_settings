@@ -257,10 +257,18 @@ function copy_dir_to_my_phone_sdcard_music_via_usb(){
   local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
   _copy_dir_to_my_phone_via_usb $path_to_copy /sdcard/Music/
 }
+
 function copy_from_my_phone_via_usb(){
   local path_to_copy=${1:?path_to_copy empty in $FUNCNAME}
   scp -C -r -P $PHONE_PORT_USB $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:$path_to_copy ./
 }
+
+function sync_my_phone_music_dir_to_host_via_usb(){
+  local path_to_sync="/data/data/com.termux/files/home/storage/sd_music"
+  scp -C -r -P $PHONE_PORT_USB $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/Music/local_musics/sd_music
+rsync -e "ssh -q -P $PHONE_PORT_USB" -az $path_to_sync $PHONE_DEFAULT_USERNAME@$PHONE_URL_USB:~/Music/local_musics/sd_music
+}
+
 
 function ide_py2(){
   ctags -R .

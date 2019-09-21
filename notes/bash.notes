@@ -231,4 +231,13 @@ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 # use this stop is more appropriate
 sudo launchctl stop com.openssh.sshd
 
+# window is wrapping text correctly
+shopt checkwinsize
+#If you don't get
+#
+# checkwinsize    on
+# Then activate it with
+shopt -s checkwinsize
 
+# tsv to csv, tab to comma
+sed 's/[[:space:]]\+/,/g'

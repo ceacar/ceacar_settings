@@ -1,0 +1,3 @@
+adb shell ls /
+
+adb push local_path cellphone_path

@@ -595,3 +595,43 @@ class AbstractClassExample(ABC):
     @abstractmethod
     def do_something(self):
         pass
+# @property needs to be before abstractmethod
+class C(ABC):
+    @property
+    @abstractmethod
+    def my_abstract_property(self):
+
+
+# a simple implementation of abstrac class and abstract property
+# currently, termux python seems doesn't raise exception when one abstract method is not implemented, so better add raise NotImplemented error in abstractclass to make sure it works
+from abc import ABCMeta, abstractmethod, abstractproperty
+
+# in python3, use this line class A(object, metaclass=ABCMeta): and we don't need __metaclass__=ABCMeta
+class A(object):
+    __metaclass__ = ABCMeta
+    # abstractproperty force subclass to implement this
+    @abstractproperty
+    def q(self):
+        pass
+
+    @abstractmethod
+    def a(self):
+          pass
+
+    def b(self):
+        print("b")
+
+
+class B(A):
+    def a(self):
+        print("a")
+    def q(self):
+        return 'q'
+
+
+
+b = B()
+b.a()
+b.b()
+
+print(b.q())

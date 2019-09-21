@@ -1,0 +1,1 @@
+sed 's/ \{2,\}/,/g' # replace 2 or more spaces to comma
