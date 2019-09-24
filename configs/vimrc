@@ -148,6 +148,9 @@ nnoremap <F6> :set ic!<cr>
 nmap <F1> :set ignorecase! ignorecase?
 
 "Remove all trailing whitespace by pressing F5
+nnoremap <F7> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
+"Remove all trailing whitespace by pressing F5
 "either one below will work
 nnoremap <F4> :%s/ $//g<cr>
 "nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>

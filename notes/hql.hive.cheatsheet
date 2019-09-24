@@ -82,7 +82,7 @@ LIKE db2.tbl2
 
 # hive set variable
 hive> set CURRENT_DATE='2012-09-16';
-hive> select * from foo where day >= '${hiveconf:CURRENT_DATE}'
+hive> select * from foo where day >= ${hiveconf:CURRENT_DATE}
 # hql-cli set variable
 hive -hiveconf CURRENT_DATE='2012-09-16' -f test.hql
 set hivevar:tablename=mytable;
@@ -184,3 +184,8 @@ SHOW CREATE TABLE myTable;
 
 
 #hive looks like only mounts data and when select adds partition key, so a data file can be copied around
+
+
+
+# insert records
+insert into table tbl1(col1) values('col1_val');

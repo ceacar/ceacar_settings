@@ -340,3 +340,7 @@ function adb_push_to_samsung_phone_download(){
   file_name=$(basename $file_path)
   adb push $file_path /storage/self/primary/Download/$file_name
 }
+
+function adb_pull_music_from_samsung_sd_card_music(){
+  adb pull /storage/9C33-6BBD/Music/ /Users/xyu/Music/local_musics/sd_music/
+}
