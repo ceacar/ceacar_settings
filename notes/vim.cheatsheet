@@ -138,3 +138,6 @@ path  old-file  old-hex old-mode  new-file  new-hex new-mode
 ctrl-w + | Set current window width to N (default: widest possible).
 ctrl-w + _ Set current window height to N (default: highest possible).
 ctrl-w + = Make all windows (almost) equally high and wide.
+
+# unwrap lines
+set wrap!

@@ -241,3 +241,11 @@ shopt -s checkwinsize
 
 # tsv to csv, tab to comma
 sed 's/[[:space:]]\+/,/g'
+
+# grep non numerical, only match one
+echo $Str | grep '[^0-9]'
+# grep character at start of line
+grep "^[a-z|A-Z]"
+
+# get cpu counts
+nproc

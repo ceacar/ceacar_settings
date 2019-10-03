@@ -139,3 +139,6 @@ git branch -D branch_name
 
 # git bracnh show
 git log --all --decorate --oneline --graph
+
+# git checkout only a file to be the same as master branch1
+git checkout branch1 -- myplugin.js
