@@ -1,0 +1,2 @@
+# merge two tables, lookup column is A2, then look for sheet2 from B2 to B50, retrieve value at index 1, approximate_match is False
+=VLOOKUP($A2,Sheet2!$B$2:$B$50,1,FALSE)

@@ -144,11 +144,15 @@ print timeit.timeit(stmt = 'strcmp()',setup="from __main__ import strcmp", numbe
 #call bash script
 subprocess.check_output(["echo", "Hello World!"])
 'Hello World!\n'
-
+# or
 subprocess.check_output("exit 1", shell=True)
 Traceback (most recent call last):
    ...
 subprocess.CalledProcessError: Command 'exit 1' returned non-zero exit status 1
+
+# or 
+from subprocess import STDOUT, check_output
+output = check_output(cmd, stderr=STDOUT, timeout=seconds)
 
 #argparse -> an wrapper to parse sys.argv
 import argparse
@@ -530,6 +534,11 @@ self.client.listdir(remotepath)  # list all files in a dir
 self.client.listdir_attr(remotepath)  # list attribute of a dir
 self.client.get(remote_path, local_path)  # download file to local_path
 
+paramiko.sftp.readinto(buffer)  # fill the entire buffer with the file bytes
+
+
+progress = round(total_read_bytes / file_size, 4) * 100  # good example of file progress calculation
+
 # ipython debug
 # pip isntall ipdb # <--- ipython debugger
 # %pdb <---- this will turn on ipython automatic debug mode
@@ -542,7 +551,7 @@ type(a).message # this only prints message
 
 # cannot decode 0x ascii error
 # this is normally caused by python implicit string conversion, below invoke encode from a string, but encode cannot encode string, it can only encode unicode string, so python has to decode the string to unicode first with decode() and this is why it blow up, because default decoder cannot decode chinese character
-"你好".encode('utf-8')
+"你好".encode('utf-8')  # this blows up
 # encode converts a unicode object to a string object. But here you have invoked it on a string object (because you don't have the u). So python has to convert the string to a unicode object first. So it does the equivalent of
 "你好".decode().encode('utf-8')
 # But the decode fails because the string isn't valid ascii. That's why you get a complaint about not being able to decode.
@@ -635,3 +644,193 @@ b.a()
 b.b()
 
 print(b.q())
+
+
+
+# multiprocessing
+import multiprocessing
+print("Number of cpu : ", multiprocessing.cpu_count())
+
+# Process will create a process waiting to run
+p = Process(target=self.run_func, args=(name,))
+# this runs the process
+p.start()
+# join must be called for process to end
+p.join(self.query_timeout)
+if p.is_alive():
+    p.terminate()
+    getlogger().error("Timed out waiting for {}s for query {}".format(str(self.query_timeout), self.query()))
+
+self.mark_done()
+
+# multiprocessing queue
+from multiprocessing import Queue
+
+colors = ['red', 'green', 'blue', 'black']
+cnt = 1
+# instantiating a queue object
+queue = Queue()
+print('pushing items to queue:')
+for color in colors:
+    print('item no: ', cnt, ' ', color)
+    queue.put(color)
+    cnt += 1
+
+print('\npopping items from queue:')
+cnt = 0
+while not queue.empty():
+    print('item no: ', cnt, ' ', queue.get())
+    cnt += 1
+
+
+# =============multiprocess code example
+from multiprocessing import Lock, Process, Queue, current_process
+import time
+import queue # imported for using queue.Empty exception
+
+
+def do_job(tasks_to_accomplish, tasks_that_are_done):
+    while True:
+        try:
+            '''
+                try to get task from the queue. get_nowait() function will 
+                raise queue.Empty exception if the queue is empty. 
+                queue(False) function would do the same task also.
+            '''
+            task = tasks_to_accomplish.get_nowait()
+        except queue.Empty:
+
+            break
+        else:
+            '''
+                if no exception has been raised, add the task completion 
+                message to task_that_are_done queue
+            '''
+            print(task)
+            tasks_that_are_done.put(task + ' is done by ' + current_process().name)
+            time.sleep(.5)
+    return True
+
+
+def main():
+    number_of_task = 10
+    number_of_processes = 4
+    tasks_to_accomplish = Queue()
+    tasks_that_are_done = Queue()
+    processes = []
+
+    for i in range(number_of_task):
+        tasks_to_accomplish.put("Task no " + str(i))
+
+    # creating processes
+    for w in range(number_of_processes):
+        p = Process(target=do_job, args=(tasks_to_accomplish, tasks_that_are_done))
+        processes.append(p)
+        p.start()
+
+    # completing process
+    for p in processes:
+        p.join()
+
+    # print the output
+    while not tasks_that_are_done.empty():
+        print(tasks_that_are_done.get())
+
+    return True
+
+
+if __name__ == '__main__':
+    main()
+
+
+# ===========end of multiprocess code example
+
+# multiprocessing pool
+from multiprocessing import Pool
+
+import time
+
+work = (["A", 5], ["B", 2], ["C", 1], ["D", 3])
+
+
+def work_log(work_data):
+    print(" Process %s waiting %s seconds" % (work_data[0], work_data[1]))
+    time.sleep(int(work_data[1]))
+    print(" Process %s Finished." % work_data[0])
+
+
+def pool_handler():
+    p = Pool(2)
+    p.map(work_log, work)
+
+
+if __name__ == '__main__':
+
+# multiprocessing checking timeout and if timeout, kill all subprocesses
+TIMEOUT = 5 
+start = time.time()
+while time.time() - start <= TIMEOUT:
+    if any(p.is_alive() for p in procs):
+        time.sleep(.1)  # Just to avoid hogging the CPU
+    else:
+        # All the processes are done, break now.
+        break
+else:
+    # We only enter this if we didn't 'break' above.
+    print("timed out, killing all processes")
+    for p in procs:
+        p.terminate()
+        p.join()
+
+
+# returns a contextlib to close a file after with statement
+with contextlib.closing(connect("user", "host", "port", None)) as sftp:
+    do_something
+
+# memory profiler
+# pip install -U memory_profiler
+@profile  # use this to add profile to your function
+
+
+# feature introduced in python 3.0 as a pointer to an object, let's say a string, so when view = memoryview(s), view[1:3] will not do extra copying of string
+memoryview
+below is an exmaple of minimum memory needed read and write process
+@profile
+def read_random():
+    with open("/dev/urandom", "rb") as source:
+        content = source.read(1024 * 10000)
+        content_to_write = memoryview(content)[1024:]
+    print("Content length: %d, content to write length %d" %
+          (len(content), len(content_to_write)))
+    with open("/dev/null", "wb") as target:
+        target.write(content_to_write)
+
+if __name__ == '__main__':
+    read_random()
+
+# use memoryview in socket send traffic
+import socket
+s = socket.socket(…)
+s.connect(…)
+# Build a bytes object with more than 100 millions times the letter `a`
+data = b"a" * (1024 * 100000)
+mv = memoryview(data)
+while mv:
+    sent = s.send(mv)
+    # Build a new memoryview object pointing to the data which remains to be sent
+    mv = mv[sent:]
+
+
+# reuse buffer, in this case, we have buffer that could be used to read over and over again, if we want to speed up things we can add memory view to it to improve it
+>>> ba = bytearray(8)
+>>> ba
+bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00')
+>>> with open("/dev/urandom", "rb") as source:
+...     source.readinto(ba)
+... 
+8
+>>> ba
+bytearray(b'`m.z\x8d\x0fp\xa1')
+
+# time a function in python
+time.time()

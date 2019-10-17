@@ -60,3 +60,7 @@ SELECT * FROM system_schema.columns  WHERE keyspace_name = 'users';
 
 # searching pattern in arraylist
 select * from users.user where segments contains 'NPI_DMD_289' ALLOW FILTERING;
+
+# create index on a col
+CREATE CUSTOM INDEX  partition_idx ON users.db1 (col1) USING 'org.apache.cassandra.index.sasi.SASIIndex';
+

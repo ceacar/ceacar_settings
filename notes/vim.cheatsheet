@@ -141,3 +141,11 @@ ctrl-w + = Make all windows (almost) equally high and wide.
 
 # unwrap lines
 set wrap!
+
+# send current pane to new tab
+# Ctrl-W Shift-T
+
+# delete spaces in the end of line
+:%s/\s\+$//e
+# remove empty line
+:g/^$/d

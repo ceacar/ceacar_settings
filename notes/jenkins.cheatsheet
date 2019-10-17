@@ -1,3 +1,9 @@
+# download link http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+# use java -jar jenkins.war --httpPort=8080 to run the webserver
+# follow the web page instruction
+
+
+
 #jenkins main page -> credentials -> global key xxxx --> add domain xxx ;
 #you should be able to see adding key
 
@@ -12,3 +18,96 @@ http://blog.pu-gh.com/2014/05/11/scripting-jenkins-configuration/
 
 #jenkins file structure
 https://wiki.jenkins.io/plugins/servlet/mobile#content/view/753705
+
+
+
+
+
+# jenkins pipe line example
+pipeline { 
+    agent any 
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') { 
+            steps { 
+                sh 'make' 
+            }
+        }
+        stage('Test'){
+            steps {
+                sh 'make check'
+                junit 'reports/**/*.xml' 
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'make publish'
+            }
+        }
+    }
+}
+
+# variables in pipeline
+def username = 'Jenkins'
+echo 'Hello Mr. ${username}'
+echo "I said, Hello Mr. ${username}"
+
+# check environmental variable on browser
+${YOUR_JENKINS_URL}/pipeline-syntax/globals#env
+
+
+# setting environment variable in pipeline file
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent any
+    environment { 
+        CC = 'clang'
+    }
+    stages {
+        stage('Example') {
+            environment { 
+                DEBUG_FLAGS = '-g'
+            }
+            steps {
+                sh 'printenv'
+            }
+        }
+    }
+}
+
+
+# dynamically setup environmental variable
+pipeline {
+    agent any 
+    environment {
+        // Using returnStdout
+        CC = """${sh(
+                returnStdout: true,
+                script: 'echo "clang"'
+            )}""" 
+        // Using returnStatus
+        EXIT_STATUS = """${sh(
+                returnStatus: true,
+                script: 'exit 1'
+            )}"""
+    }
+    stages {
+        stage('Example') {
+            environment {
+                DEBUG_FLAGS = '-g'
+            }
+            steps {
+                sh 'printenv'
+            }
+        }
+    }
+}
+
+
+# jenkins credentials
+environment {
+      AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+      AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+}

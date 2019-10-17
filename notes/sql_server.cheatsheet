@@ -62,3 +62,10 @@ exec sp_columns tbl1;
 --sql server join on null columns will always ended up not equal, so if you are joining two null columns, you will find it gets evaluated as not equals everytime
 --so we use isnull to combat it
 isnull(col1, replace_value_like_0)
+
+
+--update multiple columns
+UPDATE table1 
+SET a = t2.a, b = t2.b, .......
+FROM table2 t2
+WHERE table1.id = t2.id

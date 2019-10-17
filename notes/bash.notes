@@ -249,3 +249,21 @@ grep "^[a-z|A-Z]"
 
 # get cpu counts
 nproc
+
+
+# linux history lookup previous/next
+ctrl+r
+#use ctrl + p to select previous
+
+
+# tee stderr and stdout to different files
+command > >(tee -a stdout.log) 2> >(tee -a stderr.log >&2)
+# Let's split it up and explain:
+> >(..)
+# >(...) (process substitution) creates a FIFO and lets tee listen on it. Then, it uses > (file redirection) to redirect the STDOUT of command to the FIFO that your first tee is listening on.
+#Same thing for the second:
+2> >(tee -a stderr.log >&2)
+
+# tee with grep
+#!/bin/bash
+ssh "$@" | tee >(grep -e '.*\@.*\:.*\$.*' --color=never >> test.log)

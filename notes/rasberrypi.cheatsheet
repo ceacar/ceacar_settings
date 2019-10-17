@@ -1,0 +1,6 @@
+# add group for rasberry
+sudo usermod -aG docker pi
+
+
+# java docker image for rasberry pi
+docker pull hypriot/rpi-java

@@ -229,3 +229,6 @@ writing query in hive like this:
  SELECT COUNT(*) FROM ( SELECT DISTINCT id FROM ... ) t;
 
  This will result in 2 map+reduce jobs instead of one, but performance gain will be substantial.
+
+ # show tables in a database
+ show tables in db1

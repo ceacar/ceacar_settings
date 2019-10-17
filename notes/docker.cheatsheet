@@ -340,3 +340,11 @@ docker-machine restart default
 
 # get docker id inside docker container
 head -1 /proc/self/cgroup|cut -d/ -f3
+
+# new install docker
+curl -sSL https://get.docker.com | sh
+apt-get update
+# allow apt-get use https
+sudo apt-get install apt-transport-https \
+                       ca-certificates \
+                       software-properties-common
