@@ -170,5 +170,5 @@ if $is_mac;then
   docker_startup_mac
 fi
 
-source $HOME/anaconda/etc/profile.d/conda.sh
-export PATH=$PATH:$HOME/anaconda/bin
+#source $HOME/anaconda/etc/profile.d/conda.sh
+#export PATH=$PATH:$HOME/anaconda/bin
