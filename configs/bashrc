@@ -163,6 +163,11 @@ if $is_linux;then
   if [ -z "$SSH_AUTH_SOCK" ] ; then
     # mute this since scp will need it stay quiet to work
     source_ssh_agent >/dev/null 2>&1
+  else
+    # if no agent in process, we create one
+    ps aux |grep ssh-agent|grep -v "grep" >/dev/null || regen_ssh_agent
+    # source ssh-agent if the SSH_AUTH_SOCK is not in ~/.ssh_agent_socket
+    cat ~/.ssh_agent_socket| grep  $SSH_AUTH_SOCK >/dev/null || source_ssh_agent
   fi
 fi
 
