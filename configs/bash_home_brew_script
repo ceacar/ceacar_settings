@@ -344,3 +344,40 @@ function adb_push_to_samsung_phone_download(){
 function adb_pull_music_from_samsung_sd_card_music(){
   adb pull /storage/9C33-6BBD/Music/ /Users/xyu/Music/local_musics/sd_music/
 }
+
+function show_ips(){
+  ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' 
+}
+
+function spaces_to_comma(){
+  sed 's/[[:space:]]\+/,/g'
+}
+
+function multiple_spaces_to_one_space(){
+  sed 's/  */ /g'
+}
+
+function list_aws_dir(){
+  set -xv
+  # repo is the url with s3://
+  repo=${1:?repo cannot be empty}
+  # profile_appendix would look like --profile=userabc
+  profile_appendix=${2-}
+  echo >&2 "if a directory doesn't have file in it, it will not appear in result"
+  aws s3 ls $repo --profile=$profile_appendix --recursive # |sed 's/  */,/g'|cut -d ',' -f 4-|rev|cut -d '/' -f 2- |rev |sort -u
+  set +xv
+}
+
+# auto complete for ssh cmds
+_ssh() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts=$(grep '^Host' ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | grep -v '[?*]' | cut -d ' ' -f 2-)
+
+    COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+    return 0
+}
+complete -F _ssh ssh

@@ -242,6 +242,10 @@ colorscheme xedit
 highlight Comment ctermfg=darkgreen
 
 "highlight Comment guifg=darkgreen
+
+" fix the inability to see when highlighting words
+highlight Visual term=bold,reverse cterm=bold,reverse gui=bold,reverse guifg=Black
+
 highlight BadWhitespace ctermbg=red guibg=darkred
 
 
@@ -268,7 +272,7 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_pylint_post_args="--max-line-length=120"
 

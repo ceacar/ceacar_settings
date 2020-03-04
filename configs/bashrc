@@ -144,6 +144,7 @@ export notes=$ceacar_setting/notes
 
 if [ -d $ceacar_setting/configs/local_configs ];then
   for file_path_temp in $(ls $ceacar_setting/configs/local_configs/|grep bash_local|grep -v gpg); do
+    # remove the symbollink annotation of file listing and then source the file
     . $ceacar_setting/configs/local_configs/$(echo $file_path_temp | sed 's/@//g')
   done
 fi
