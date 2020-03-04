@@ -343,5 +343,14 @@ COPY TABLE table_name (col1, col2) FROM '/path/to/your/file' AND DELIMITER = ','
 # delete all rows in cassandra table
 truncate table1
 
+# select if element in array
+select * from users.user where segments contains 'AA_1825';
+
+# limit output result
+PER PARTITION LIMIT 2;
+LIMIT 2;
+
+# an example
+select count(*) from users.user where segments contains 'AA_1825' ALLOW FILTERING;
 # =============END OF CQL=====================
 

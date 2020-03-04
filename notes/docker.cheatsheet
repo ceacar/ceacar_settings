@@ -1,3 +1,8 @@
+
+# run ubuntu docker image
+docker run -it ubuntu bash
+
+
 # docker image repository for experiment
 docker push ceacar/exp:tagname
 
@@ -60,6 +65,8 @@ docker rm $(docker ps -a -q)
 docker rmi $(docker images -f "dangling=true" -q)
 # remove container by name
 docker rm $(docker ps -a | grep $docker_name |awk -v FS='   +' '{print $6}')
+# remove all resources that not using
+docker system prune -a
 
 
 
@@ -348,3 +355,24 @@ apt-get update
 sudo apt-get install apt-transport-https \
                        ca-certificates \
                        software-properties-common
+
+
+# create sudo user 
+RUN useradd -ms /bin/bash ceacar
+RUN usermod -aG wheel username
+RUN echo "user1" | passwd --stdin user1 
+
+
+# docker compose hangs at attaching to
+# add below options to for each service(after image)
+tty: true
+stdin_open: true
+
+# docker port mapping
+docker -p CONTAINER_INTERNAL_PORT:DOCKER_HOST_PORT
+docker -p 38888:10000 -it image1 bash # this would map container's 10000 port to 38888
+
+
+# docker compose expose port, you have to expose the port to another services(pay attention here, it exposes port for service not container), add below emssage to image
+expose:
+  - "6379"

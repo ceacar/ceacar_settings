@@ -104,6 +104,8 @@ nc.traditional -l "38003" -c "nc.tradditional 172.19.0.16 8080" #nc listens to t
 
 nc -l port1 | nc host port # this will listen to port1 then write the content it heard through the port 1 to the port of the host 
 
+# port scanning
+netcat -z -v domain.com 1-1000
 
 
 #ssh tunneling notes
@@ -147,6 +149,8 @@ curl --header "Content-Type: application/json" \
 
 #xargs, it need to use -I then variable name "var1" to pass it to function echo to use var1
 echo 123|xargs -I var1 echo var1
+#xargs only takes in 1 cmd and parameters, so we can use bash -c or sh -c to stuff entire pipeline cmd into it
+find . -type d -name "*log*" | xargs -I {} sh -c "echo {}; ls -la {} | tail -2"
 
 #check definition of a function, print a function definiton
 type function_name
@@ -239,8 +243,15 @@ shopt checkwinsize
 # Then activate it with
 shopt -s checkwinsize
 
+# use below ps1 to fix the issue of terminal command display issue
+PS1='\e[01;32m\u:\e[01;34m\w\e[0m\$ '
+# or use current ps1
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
+
 # tsv to csv, tab to comma
 sed 's/[[:space:]]\+/,/g'
+# multiple spaces to one space
+sed 's/  */ /g'
 
 # grep non numerical, only match one
 echo $Str | grep '[^0-9]'
@@ -267,3 +278,39 @@ command > >(tee -a stdout.log) 2> >(tee -a stderr.log >&2)
 # tee with grep
 #!/bin/bash
 ssh "$@" | tee >(grep -e '.*\@.*\:.*\$.*' --color=never >> test.log)
+
+# exit script without closing existing shell
+[ $PS1 ] && return || exit;
+# OR
+(exit 33)
+# OR
+[ "$BASH_SOURCE" == "$0" ] &&
+    echo "This file is meant to be sourced, not executed" && 
+        exit 30
+
+return 88
+
+# hex string to bytes and then send to netcat
+echo '0006303030304e43' | xxd -r -p | nc -l localhost 8181
+
+# list process and port
+sudo netstat -tulpn
+
+dig +short www.google.com # this cmd will give u ip of domain
+
+
+# show timezone
+timedatectl | grep "Time zone"
+# check pid of a process
+pgrep process_name
+
+# inotifywait to watch for files changes
+inotifywait -e modify -e access ./ && echo "1234" # this will monitor access and modify
+
+
+# Binary file (standard input) matches error for grep
+# grep content as text
+grep -a pattern1
+
+# uncheck a committed deleted file
+git reset -- file_name

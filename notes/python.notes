@@ -129,6 +129,9 @@ c = {key: value for (key, value) in (a.items() + b.items())}
 #loads json string to json
 obj = json.loads(json_string) 
 
+# write json to file
+json.dump(data, file_obj_to_write)
+
 
 
 #python timeit example
@@ -200,6 +203,13 @@ this_function_name = sys._getframe().f_code.co_name
 #python equivalent of pwd, current directory
 import os
 cwd = os.getcwd()
+# create new path, >python 3.5
+pathlib.Path("./scrap_cache").mkdir(parents=True, exist_ok=True)
+
+# check file empty
+os.stat(file_path).st_size == 0
+
+
 
 #pdb debugging tip
 #lunch another python interactive shell within pdb
@@ -429,6 +439,9 @@ Code	Meaning	Example
 #converts datestring to datetime with timezone
 datetime.strptime(date_string, format)[0:6]))
 time.strptime(date_string, format)[0:6]))
+
+# converts datetime obj to str
+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
 #lru cache in functools
@@ -834,3 +847,140 @@ bytearray(b'`m.z\x8d\x0fp\xa1')
 
 # time a function in python
 time.time()
+
+# fillna replace the na with 'Unknown' string
+lambda _: _.fillna('Unknown', inplace=True)
+
+
+# hex to string in python3
+In [9]: import binascii
+
+In [10]: binascii.unhexlify('7061756c')
+Out[10]: b'paul'
+
+In [11]:
+
+# hex to string in python 2
+'7061756c'.decode('hex')
+
+# datetime subtract a few days
+from datetime import datetime, timedelta
+d = datetime.today() - timedelta(days=days_to_subtract)
+
+# disable py.test warning
+py.test --disable-pytest-warnings test_file_path
+
+# any list item in a list
+any(x in a for x in b)
+
+# really long line string in python
+a = (
+'a'
+'b'
+'c'
+)  # this will get you 'abc'
+
+
+# cast from string to bytes
+bytes('0aff', 'utf-8') # this utf-8 tells python should treat this '0a' as one byte and 'ff' as one byte, not treat '0aff' as two bytes that repeasents as 1 character in utf-16
+
+# raw input is what user inputs, python3 renamed it to input
+input = raw_input('$ ')  # a input box showing $ 
+
+# reload module in python2 it is called reload
+reload(module_name)
+# python3
+from importlib import reload
+
+# convert hex to int
+s = '000a'
+i = int(s, 16)  # result is 10
+
+# hex to bytes
+bytearray.fromhex('030f')  # this will produces bytes
+
+# bytes to hex
+bytedata1.hex()
+
+# unpack bytes
+# struct.unpack_from
+# < means littleendian while > means bigendian, i means integer
+struct.unpack_from('<i', bytearray1)  # integer requires 4 bytes
+
+
+# string to hex
+hex(ord("a"))  # string "a" needs to convert to ord(int) first, then converts to hex
+
+# padding string
+'hi'.ljust(10, 'p')  # it would return 'hi--------'
+
+# requests streaming example
+import requests
+import json
+r = requests.get('https://httpbin.org/stream/20', stream=True)
+
+if r.encoding is None:
+    r.encoding = 'utf-8'
+
+for line in r.iter_lines(decode_unicode=True):  # iter_lines can run without decode, can add chunk_size = big_number_here to speed up
+    if line:
+        print(json.loads(line))  # requests have already splits the lines for you, and it stripped new line character
+
+# load json from file
+with open(full_file_path, 'r') as f:
+  json.load(f)
+
+
+
+# bitwise operation
+# x << y Returns x with the bits shifted to the left by y places (and new bits on the right-hand-side are zeros). This is the same as multiplying x by 2**y.
+# x >> yReturns x with the bits shifted to the right by y places. This is the same as //'ing x by 2**y.
+# x & y Does a "bitwise and". Each bit of the output is 1 if the corresponding bit of x AND of y is 1, otherwise it's 0.
+# x | y Does a "bitwise or". Each bit of the output is 0 if the corresponding bit of x AND of y is 0, otherwise it's 1.
+# ~ xReturns the complement of x - the number you get by switching each 1 for a 0 and each 0 for a 1. This is the same as -x - 1.
+# x ^ yDoes a "bitwise exclusive or". Each bit of the output is the same as the corresponding bit in x if that bit in y is 0, and it's the complement of the bit in x if that bit in y is 1.
+
+
+# add timezone
+dt.replace(tzinfo=pytz.timezone('America/New_York')) 
+
+# get local timezone from system
+from tzlocal import get_localzone
+
+
+
+# print curly brace in python format string
+In [6]: a = '{}={{{}}}'.format('123', '234')
+In [7]: a
+Out[7]: '123={234}'
+
+
+# pdb some function key shows as characters
+pip install gnureadline
+
+# microsecond format
+'%Y-%m-%d %H:%M:%S.%f'
+
+# runs a simple file http server
+python -m SimpleHTTPServer
+
+
+download_path, _ = urllib.request.urlretrieve(url, file_abs_path, self.download_progress)
+
+def download_progress(self, count, blockSize, totalSize):
+  percent = int(count * blockSize * 100 / totalSize)
+  sys.stdout.write("\r" + "...%d%%" % percent)
+  sys.stdout.flush()
+
+# find module path
+import requests
+print(requests.__file__)
+
+# get first row of dataframe
+df.iloc[0]
+
+# dataframe to json or to dict
+df.to_dict()
+
+# dataframe to json string
+df.to_json()

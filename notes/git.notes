@@ -70,6 +70,9 @@ git rebase --onto newBase oldBase feature/branch
 #regret/revert a not pushed git rebase
 git reset --hard ORIG_HEAD
 
+#uncommit last commit
+git reset --soft HEAD^
+
 
 #git always asks for passphrase/password
 #this works for mac
@@ -142,3 +145,29 @@ git log --all --decorate --oneline --graph
 
 # git checkout only a file to be the same as master branch1
 git checkout branch1 -- myplugin.js
+
+# git access token
+
+# git webhook
+# webhook with jenkins
+https://foo:password@jenkins.example.com/github-webhook/
+
+# use this cmd to set new origin, some times you may see you cannot push due to origin is wrong
+git remote set-url origin git@github.com:ceacar/ceacar_settings.git
+
+
+
+# set up private git server
+# The first step is installing git on your private server.
+sudo apt-get install git                 # On Ubuntu/Debian Systems
+# Next, we have to create a new user on the server so that we can host our repositories under that particular user account.
+sudo useradd git                         # Add user "git"
+passwd git                               # Setting password for "git" user
+# type in password
+# Now,  switch to the newly created user account and create an empty repository using the following command.
+su git                                 # Switch to "git" user
+# This create an empty git repository under “/home/git/new_project.git”. 
+git init --bare new_project.git          # Create an empty Git repository
+# add repos public key to ssh keys
+# Local Repository Configurations
+git clone ssh://git@git_server_hostname:/home/git/new_project.git

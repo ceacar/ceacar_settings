@@ -195,3 +195,9 @@ kubectl port-forward svc/redis-master 7000:6379
 
 # taint master node to allow pod running in it, if you have NoSchedule set up in master node, you may find tiller pod pending
 kubectl taint node master-node node-role.kubernetes.io/master:NoSchedule-
+
+
+# kubectl use config file to access cluster
+kubectl --kubeconfig ~/.kube/some_config_file -n namespace1
+
+

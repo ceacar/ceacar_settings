@@ -42,22 +42,22 @@ INSERT INTO TABLE1(
 );
 
 
---describe table
-EXEC sp_help tablename
 
 --insert into tables from another db table content
 INSERT INTO db1.schema1.table_a (col1a)
 SELECT col1b
 FROM db2.schema2.table_b;
 
-
 --copy a table from one place to another
-select * into db1.schema1.table1 from db2.schema2.table2;
+SELECT * INTO db1.schema1.table1 FROM db2.schema2.table2;
 
+-- show table information
+EXEC sp_help tablename  # this doesn't work
+       Name Owner        Type        Created_datetime
+0  AdvPixel   dbo  user table 2013-09-16 11:12:38.140
 
 --describe table
 exec sp_columns tbl1;
-
 
 --sql server join on null columns will always ended up not equal, so if you are joining two null columns, you will find it gets evaluated as not equals everytime
 --so we use isnull to combat it
@@ -69,3 +69,35 @@ UPDATE table1
 SET a = t2.a, b = t2.b, .......
 FROM table2 t2
 WHERE table1.id = t2.id
+
+-- select all values from tbl1.col1 except those values exists in tbl2.col1
+select col1 from tbl1
+except
+select col1 from tbl2
+
+
+
+--python connect
+--  from sqlalchemy import create_engine, exc
+--
+--  def get_sql_client():
+--      connection_url = 'mssql+pymssql://[username]:[pswd]@[url]:[port]/dbname1'  # Configure
+--      engine = create_engine(connection_url)
+--      return engine.connect()
+--
+--  get_sql_client().execute('select 1')
+
+
+--do nothing in tsql 
+declare @a int , @B int, @C int
+
+-- list all stored procedure
+SELECT * 
+FROM DatabaseName.INFORMATION_SCHEMA.ROUTINES
+WHERE ROUTINE_TYPE = 'PROCEDURE'
+
+-- check stored procedure code
+SELECT definition
+FROM sys.sql_modules
+WHERE object_id = OBJECT_ID('dbo.p_myscript123')
+

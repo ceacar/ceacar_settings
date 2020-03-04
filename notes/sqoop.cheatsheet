@@ -110,3 +110,80 @@ sqoop merge
 sqoop eval
 --query
 ```
+
+
+# documentation of arguement below
+Argument	Description
+--as-avrodatafile	Imports data to Avro Data Files
+--as-sequencefile	Imports data to SequenceFiles
+--as-textfile	Imports data as plain text (default)
+--as-parquetfile	Imports data to Parquet Files
+--delete-target-dir	Delete the import target directory if it exists
+-m,--num-mappers <n>	Use n map tasks to import in parallel
+--target-dir <dir>	HDFS destination dir
+--warehouse-dir <dir>	HDFS parent for table destination
+-z,--compress	Enable compression
+--compression-codec <c>	Use Hadoop codec (default gzip)
+
+# sqoop list all tables
+sqoop list-tables (generic-args) (list-tables-args)
+
+
+# sqoop hive arguments
+Argument	Description
+--hive-home <dir>	Override $HIVE_HOME
+--hive-import	Import tables into Hive (Uses Hive’s default delimiters if none are set.)
+--hive-overwrite	Overwrite existing data in the Hive table.
+--create-hive-table	If set, then the job will fail if the target hive
+table exits. By default this property is false.
+--hive-table <table-name>	Sets the table name to use when importing to Hive.
+--hive-drop-import-delims	Drops \n, \r, and \01 from string fields when importing to Hive.
+--hive-delims-replacement	Replace \n, \r, and \01 from string fields with user defined string when importing to Hive.
+--hive-partition-key	Name of a hive field to partition are sharded on
+--hive-partition-value <v>	String-value that serves as partition key for this imported into hive in this job.
+--map-column-hive <map>	Override default mapping from SQL type to Hive type for configured columns.
+
+
+
+postgresql:
+--direct # this argument bypass the jdbc to speed up load process, this can only work with mysql and postgresql
+
+
+# "sqoop import-all-tables" arguments
+--connect <jdbc-uri>	Specify JDBC connect string
+--connection-manager <class-name>	Specify connection manager class to use
+--driver <class-name>	Manually specify JDBC driver class to use
+--hadoop-mapred-home <dir>	Override $HADOOP_MAPRED_HOME
+--help	Print usage instructions
+--password-file	Set path for a file containing the authentication password
+-P	Read password from console
+--password <password>	Set authentication password
+--username <username>	Set authentication username
+--verbose	Print more information while working
+--connection-param-file <filename>	Optional properties file that provides connection parameters
+--relaxed-isolation	Set connection transaction isolation to read uncommitted for the mappers.
+
+
+# example cmd of sqoop
+sqoop import-all-tables --hcatalog-home /usr/hdp/current/hive-webhcat --hcatalog-database FleetManagement_Common --create-hcatalog-table --hcatalog-storage-stanza "stored as orcfile" --connect 'jdbc:sqlserver://<IP>;database=FleetManagement' --username --password -- --schema Common
+
+
+# another example of import all tables
+sqoop import-all-tables -m 1 \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username=retail_dba \
+--password=itversity \
+--hive-import \
+--hive-home /apps/hive/warehouse \
+--hive-overwrite \
+--hive-database grv_sqoop_import \
+--create-hive-table \
+--compress \
+--compression-codec org.apache.hadoop.io.compress.SnappyCodec \
+--outdir java_files
+
+
+
+# partitions for a table
+(...) --hcatalog-table <your_table_name> --hcatalog-partition-keys year,month,day
+ --hcatalog-partition-values 2016,07,01

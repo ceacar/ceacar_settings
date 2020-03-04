@@ -1,0 +1,15 @@
+# 1 byte is 8 bits;
+a byte could use decimal(base) of hexadecimal(16 base)
+
+hexadecimal:  bytes 0xFF means 255 in decimal 
+
+# difference of utf-8 utf-16 utf-32:
+utf-8 uses one byte to represent a characters, lets say 41 which is one byte, utf-8 translates to A
+
+# bytes representation
+# this is wrong
+\x is used for literal numbers. "0x" is used inside strings to represent a character
+0x61 is 'a'
+\x01 is 1
+# \x41 is hex of 65
+int.from_bytes(b'\x41', byteorder='big')

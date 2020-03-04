@@ -5,3 +5,4 @@ hadoop dfs -cat file_url
 -mkdir -p
 
 
+hdfs dfs -fs hdfs://url1:port1/ -ls /user/hive

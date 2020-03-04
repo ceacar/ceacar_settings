@@ -5,3 +5,8 @@ hdfs dfs -ls
         -rm -r -f path # rm removes single file -r recursively remove -f will force the remove
 
 
+# show hdfs in gb size
+hdfs dfs -du dir_url | awk '/^[0-9]+/ { print int($1/(1024**3)) " [GB]\t" $2 }'
+
+# copy recursive of a folder to another
+hdfs dfs -cp dir1/* dir2/

@@ -1,3 +1,11 @@
+CREATE [TEMPORARY] [EXTERNAL] TABLE [IF NOT EXISTS] [db_name.] table_name
+
+[(col_name data_type [COMMENT col_comment], ...)]
+[COMMENT table_comment]
+[ROW FORMAT row_format]
+[STORED AS file_format]
+
+
 #show create table statement
 SHOW CREATE TABLE myTable;
 
@@ -126,8 +134,21 @@ select
 from table
 group by User;
 
-# alter table to add more column
+# alter table to add more column, add column
 ALTER TABLE new_table ADD COLUMNS (newCol1 int,newCol2 int);
+# change an already partitions table to add column, this will apply to all partitions
+ALTER TABLE default.test_table ADD columns (column1 string,column2 string) CASCADE;
+
+# add column in the middle of columns
+
+    # In your case, first add the column user_id to the table with below command:
+    ALTER TABLE table_name ADD COLUMNS (user_id BIGINT);
+    # Now to make user_id column as the first column in your table use change column with FIRST clause:
+    ALTER TABLE table_name CHANGE COLUMN user_id user_id BIGINT first; # This will move the user_id column to the first position.
+
+    # Similarly you can use After instead of first if you want to move the specified column after any other column. Like say, I want to move dob column after user_id column. Then my command would be:
+    ALTER TABLE table_name CHANGE COLUMN dob dob date AFTER user_id; #this one only change the future partitions;
+    ALTER TABLE table_name CHANGE COLUMN dob dob date AFTER user_id CASCADE; # this looks like to add a null column at the end and then add a null value after the user_id for old data, so a table migration is needed
 
 # hive select all but 1 column
 # Try to setup the below property
@@ -232,3 +253,102 @@ writing query in hive like this:
 
  # show tables in a database
  show tables in db1
+
+ # trim string
+ TRIM(" 1 ")  # this will return 1 which is free of spaces
+
+
+# show describe statement in more details like location of the table
+describe formatted table1
+describe extended table1  # this shows more detail
+
+
+
+
+# static partitioning vs dynamic partitioning
+# basically dynamic partitioning enables you to load data without specifying partition column value
+# in static partitioning we need to specify the partition column value in each and every LOAD statement.
+# suppose we are having partition on column country for table t1(userid, name,occupation, country), so each time we need to provide country value
+hive>LOAD DATA INPATH '/hdfs path of the file' INTO TABLE t1 PARTITION(country="US")
+hive>LOAD DATA INPATH '/hdfs path of the file' INTO TABLE t1 PARTITION(country="UK")
+
+# dynamic partition allow us not to specify partition column value each time. the approach we follows is as below:
+# create a non-partitioned table t2 and insert data into it.
+# now create a table t1 partitioned on intended column(say country).
+# load data in t1 from t2 as below:
+hive.exec.dynamic.partition=true
+hive.exec.dynamic.partition.mode=nostrict
+> INSERT INTO TABLE t2 PARTITION(country) SELECT * from T1;
+# make sure that partitioned column is always the last one in non partitioned table(as we are having country column in t2)
+
+
+# Allow snapshots on a directory
+hdfs dfsadmin –allowSnapshot <path>
+# Reset a snapshottable directory
+hdfs dfsadmin –disallowSnapshot <path> 
+
+# Create/delete/rename snapshots
+hdfs dfs -createSnapshot <path> [<snapshotName>]
+hdfs dfs –deleteSnapshot <path> <snapshotName>
+hdfs dfs –renameSnapshot <path> <oldName> <newName>
+# Get snapshottable directory listing
+hdfs lsSnapshottableDir
+# Get snapshots difference report
+hdfs snapshotDiff <path> <from> <to>
+
+
+# All regular commands and APIs can be used against snapshot path
+/<snapshottableDir>/.snapshot/<snapshotName>/foo/bar
+# List all the files in a snapshot
+ls /test/.snapshot/s4
+# List all the snapshots under that path
+ls <path>/.snapshot 
+
+# drop partition and destroy data
+ALTER TABLE {database}.{table} DROP PARTITION {partition_spec} PURGE
+
+-- list tables in a database
+show tables in dbname1;
+
+-- show location of a partition 
+show table extended like 'tbl_name' partition (dt='20131023');
+
+# hive if else
+CASE
+  WHEN (condition1) THEN result1
+  WHEN (condition2) THEN result2
+  WHEN (condition3) THEN result3 
+  WHEN (condition4) THEN result4
+  ELSE result_default 
+END AS attribute_name
+
+
+ALTER TABLE REPLACE COLUMNS(col1 col1_type,...); # this will change column in a table
+
+
+-- insert record in hive hive table
+INSERT INTO TABLE foo
+SELECT '12', 'xyz'
+FROM t
+LIMIT 1;
+
+
+-- coalesce, this function provider a situition when we only want to take first non null value of a few columns, or we want put a default value for a column when it is null
+COALESCE(field1, field2, … , fieldn)
+
+-- disable compression
+set session gridhive.compression_codec='NONE';
+
+
+CREATE TABLE imps_part (
+    id  INT,
+    user_id    String,
+    user_lang      STRING,
+    user_device        STRING,
+    time_stamp     String,
+    url    String
+)
+PARTITIONED BY (date STRING, country String)
+row format delimited 
+fields terminated by ',' 
+stored as textfile;

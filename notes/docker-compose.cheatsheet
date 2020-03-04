@@ -1,0 +1,15 @@
+
+# overwrite command
+command: CMD_YOU_WANT_TO_RUN
+
+# rename container in docker-compose file
+container_name: NAME_YOU_WANT
+
+# overwrite command
+command: /bin/bash -c "sleep 9999999"
+
+# overwrite entrypoint
+entrypoint: /bin/bash
+
+# set up environment variable
+ENV PYTHONPATH "${PYTHONPATH}:/your/custom/path"

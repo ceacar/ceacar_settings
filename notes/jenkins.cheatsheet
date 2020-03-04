@@ -111,3 +111,89 @@ environment {
       AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
       AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 }
+
+
+# dsl job <-- dsl actually creates a job from the dsl script and then the subjob would run. so try to check the sub job it generated
+# below example would generated a job named subjob1 and it would pull changes from git every minute and then echo out the message
+job('subjob1') {
+    scm {
+        git('git@github.com:ceacar/SDGO-server.git')
+    }
+    triggers {
+        scm('H/1 * * * *')
+    }
+    steps {
+        shell('echo "new commit deteched"')
+    }
+}
+~
+# dsl from git
+# In the seed job configuration screen:
+# Clone the git project into workspace in the Source Code Management section.
+# Add a Process Job DSLs build step, select the Look on Filesystem option and enter jobs/.groovy* in the DSL Scripts field.
+
+# dsl git
+git {
+// Adds a branch to push to a remote repository.
+branch(String targetRepo, String name)
+// Adds the force option to git push.
+forcePush(boolean forcePush = true)
+// Adds a note to push to a remote repository.
+note(String targetRepo, String message) {}
+// Pushes merges back to the origin specified in the pre-build merge options.
+pushMerge(boolean pushMerge = true)
+// Only pushes to remotes if the build succeeds.
+pushOnlyIfSuccess(boolean pushOnlyIfSuccess = true)
+// Adds a tag to push to a remote repository.
+tag(String targetRepo, String name) {}
+}
+
+# bitbucket trigger
+job{
+    configure { project ->
+        project / 'triggers' << 'com.cloudbees.jenkins.plugins.BitBucketTrigger'{
+            spec ''
+        }
+  }
+}
+
+# github plugin has an issue, it only accepts access token
+
+# first dsl job sdgo
+job('sdgo_build') {
+    scm {
+      git{
+        remote{
+          github('ceacar/SDGO-server', 'ssh')
+          credentials('pi')
+         }
+      }
+    }
+    publishers {
+      git{
+        pushOnlyIfSuccess()
+        branch('origin', 'master')
+      }
+    }
+  
+      triggers {
+        githubPush()
+    }
+  
+  /*
+triggers {
+        scm('H/1 * * * *')
+    }
+*/
+    steps {
+        shell('echo "new commit deteched"')
+      	shell('./build_all.sh')
+      	shell('git config --global user.email "alex.yonder@yahoo.com"')
+      	shell('git config --global user.name "ceacar"')
+        shell('git add ./output/*')
+      	shell('git commit -m "jenkins build"')
+      
+      
+      	//commitMessage('jenkin_build')
+    }
+}

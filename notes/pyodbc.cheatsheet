@@ -1,0 +1,54 @@
+
+
+# a working example of pyodbc
+import sys
+from contextlib import contextmanager
+from urlparse import urlparse
+from pyodbc import connect
+from random import shuffle
+
+from kazoo.client import KazooClient
+from luigi.configuration import get_config
+from impala.util import as_pandas
+import pandas
+
+@contextmanager
+def dbclient(connect_string):
+    """Provides db cursor using pyodbc."""
+
+    conn = connect(connect_string)
+    cursor = conn.cursor()
+    try:
+        yield cursor
+    finally:
+        conn.close()
+
+
+def pyodbc_connect(datacenter, database=None):
+    data = db_connections[datacenter]
+    return "DRIVER=FreeTDS;SERVER={db_server};port={port};DATABASE={database};UID={uid};PWD={pwd};TDS_Version=7.3".format(
+        db_server=data['server'],
+        port=data['port'],
+        database=database if database else data['database'],
+        uid=data["user"],
+        pwd=data["password"],
+    )
+with dbclient(pyodbc_connect(dc, self.database)) as cursor:
+    print('Running query {}'.format(query))
+    res = cursor.execute(query)
+    print('rowcount is {}'.format(res.rowcount))
+	cursor.commit()
+
+
+# this runs the query
+cursor.execute()
+# this returns the row count, if 4 means 4 queries changed the data, this includes update, insert these statements
+# -1 means 1 queries doesn't change the data, like 'SELECT' or other queries
+res.rowcount
+
+# python encode decode relation
+bytes <- unicode <- string
+
+# unicode.encode() into string
+a = '$ 0 \xe2\x80\x93 $ 14,999'
+a.encode('utf-8')

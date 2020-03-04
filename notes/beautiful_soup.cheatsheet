@@ -1,0 +1,10 @@
+req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+webpage = urlopen(req).read()
+# Creating a BeautifulSoup object of the html page for easy extraction of data.
+soup = BeautifulSoup(webpage, 'html.parser')
+
+# soup find all href
+soup.find_all('a', href=True):
+
+# find a div with class name is character-count-truncated
+soup.findAll('div', attrs={'class': 'character-count-truncated'}):

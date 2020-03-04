@@ -1,0 +1,9 @@
+break main
+
+si // one step
+ni // next step, doesn't care output
+info registers // shows the where the code is
+
+run arg1 arg2 // restart gdb with arg1 and arg2
+
+continue //continue to run until it hits another break point

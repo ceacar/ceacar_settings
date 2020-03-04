@@ -139,6 +139,28 @@ ctrl-w + | Set current window width to N (default: widest possible).
 ctrl-w + _ Set current window height to N (default: highest possible).
 ctrl-w + = Make all windows (almost) equally high and wide.
 
+# move vim window
+Ctrl W gives you the "windows command mode", allowing the following modifiers:
+
+Ctrl W + R - To rotate windows up/left.
+
+Ctrl W + r - To rotate windows down/right.
+
+You can also use the "windows command mode" with navigation keys to change a window's position:
+
+Ctrl W + L - Move the current window to the "far right"
+
+Ctrl W + H - Move the current window to the "far left"
+
+Ctrl W + J - Move the current window to the "very bottom"
+
+Ctrl W + K - Move the current window to the "very top"
+
+# resize vim pane
+:resize 150  # put current pane size 150(max possible size is 180) height of monitor
+:vertical resize 150  # put current pane 150 percent width of monitor
+
+
 # unwrap lines
 set wrap!
 
@@ -148,4 +170,29 @@ set wrap!
 # delete spaces in the end of line
 :%s/\s\+$//e
 # remove empty line
+:v/\S/d
+# not sure why below line doesn't work well
 :g/^$/d
+
+
+# recording
+q+anykey of 0-9a-zA-z # to start recording, let's say we press q+1
+q # press q again to stop recording
+@+ anykey_that_you_just_typed_above_in_recording # @+1 will replay the any operation you have done during recording
+# this only record per vim instance
+
+
+# join two lines without space
+gJ
+
+:set foldmethod=syntax # the folds will be specified from the syntax definitions.
+:set foldmethod=indent # to have the indentation define the folds.
+
+# You can close all folds with
+zM
+#If you have nested folds and you want to fold level by level
+zm 
+# To open all folds use
+zR
+# To open one level fold
+zr

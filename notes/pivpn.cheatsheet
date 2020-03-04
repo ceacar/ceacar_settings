@@ -1,1 +1,3 @@
 sudo pivpn add # adds user to vpn
+
+24.164.131.53:45568 ssh

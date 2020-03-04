@@ -16,3 +16,40 @@ class Parent():
 
 #tell luigi to use local scheduler, so it doesn't talk to remote scheudler
 --local-scheduler
+
+# force luigi to send out a email test notificatin
+luigi TestNotificationsTask --local-scheduler --email-force-send
+
+# runs a luigi central scheduler
+luigid --background --pidfile <PATH_TO_PIDFILE> --logdir <PATH_TO_LOGDIR> --state-path <PATH_TO_STATEFILE>
+
+
+
+# luigi config file location( does not need to pass argument when firing luigi scheduler)
+1. /etc/luigi/luigi.cfg
+2. luigi.cfg (or its legacy name client.cfg) in your current working directory
+3. LUIGI_CONFIG_PATH environment variable
+
+
+
+# All luigi event types:
+DEPENDENCY_DISCOVERED= 'event.core.dependency.discovered'
+DEPENDENCY_MISSING= 'event.core.dependency.missing'
+DEPENDENCY_PRESENT= 'event.core.dependency.present'
+BROKEN_TASK= 'event.core.task.broken'
+START= 'event.core.start'
+PROGRESS= 'event.core.progress'
+This event can be fired by the task itself while running. The purpose is for the task to report progress, metadata or any generic info so that event handler listening for this can keep track of the progress of running task.
+
+FAILURE= 'event.core.failure'
+SUCCESS= 'event.core.success'
+PROCESSING_TIME= 'event.core.processing_time'
+TIMEOUT= 'event.core.timeout'
+PROCESS_FAILURE= 'event.core.process_failure'
+
+
+
+luigi.worker.TaskProcess is base class
+ContextManagedTaskProcess inheirts luigi.worker.TaskProcess
+
+worker class would use dfs algorithm to add dependencies and then convert task to ContextManagedTaskProcess instances and call its start

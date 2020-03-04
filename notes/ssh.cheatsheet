@@ -1,0 +1,8 @@
+# ssh config file location
+sudo vim /etc/ssh/sshd_config 
+# disable password ssh login
+PasswordAuthentication no
+# restart ssh
+sudo /etc/init.d/ssh restart
+
+

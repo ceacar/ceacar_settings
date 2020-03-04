@@ -1,0 +1,73 @@
+
+# utf-16 decoding
+# gzip file data begins with \x1f\x8b\x08
+import io
+import gzip
+
+# this raises IOError because `buf` is incomplete. It may work if you supply the complete buf
+buf = b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\xed:\xf9w\xdaH\xd2?\xcf\xbc'
+with gzip.GzipFile(fileobj=io.BytesIO(buf)) as f:
+    content = f.read()
+        print(content.decode('utf-16'))
+
+
+# utf-8 byte length detection
+unc ::IsUTF8(unc *cpt)
+{
+    if (!cpt)
+        return 0;
+
+    if ((*cpt & 0xF8) == 0xF0) { // start of 4-byte sequence
+        if (((*(cpt + 1) & 0xC0) == 0x80)
+         && ((*(cpt + 2) & 0xC0) == 0x80)
+         && ((*(cpt + 3) & 0xC0) == 0x80))
+            return 4;
+    }
+    else if ((*cpt & 0xF0) == 0xE0) { // start of 3-byte sequence
+        if (((*(cpt + 1) & 0xC0) == 0x80)
+         && ((*(cpt + 2) & 0xC0) == 0x80))
+            return 3;
+    }
+    else if ((*cpt & 0xE0) == 0xC0) { // start of 2-byte sequence
+        if ((*(cpt + 1) & 0xC0) == 0x80)
+            return 2;
+    }
+    return 0;
+}
+
+
+
+# little endian
+assume 4 bytes UNIX
+little endian would store as NU XI
+big endian would store as UNIX
+
+
+
+# utf 16 byte distribution map
+Scalar Value UTF-16
+xxxxxxxxxxxxxxxx(2bytes) 	 xxxxxxxxxxxxxxxx  
+000uuuuuxxxxxxxxxxxxxxxx(4bytes) 110110wwwwxxxxxx 110111xxxxxxxxxx
+
+# utf 8 byte distribution map
+Scalar Value First Byte Second Byte Third Byte Fourth Byte(below x,y,z,u is all bit, 0 or 1)
+00000000 0xxxxxxx 					0xxxxxxx
+00000yyy yyxxxxxx 				110yyyyy 10xxxxxx
+zzzzyyyy yyxxxxxx 			1110zzzz 10yyyyyy 10xxxxxx
+000uuuuu zzzzyyyy yyxxxxxx 	11110uuu 10uuzzzz 10yyyyyy 10xxxxxx
+
+
+BOM
+00 00 FE FF	UTF-32, big-endian
+FF FE 00 00	UTF-32, little-endian
+FE FF	UTF-16, big-endian
+FF FE	UTF-16, little-endian
+EF BB BF	UTF-8
+
+
+# BOM example
+Byte Index:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+------------------------------------------------------------
+ASCII:       45 78 61 6d 70 6c 65
+UTF-16BE:    FE FF 00 45 00 78 00 61 00 6d 00 70 00 6c 00 65
+UTF-16LE:    FF FE 45 00 78 00 61 00 6d 00 70 00 6c 00 65 00

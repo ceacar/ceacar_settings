@@ -185,3 +185,14 @@ foreach(func)
 Runs a function func on each element of the dataset. This is usually, done for side effects such as updating an Accumulator or interacting with external storage systems.
 
 Note − modifying variables other than Accumulators outside of the foreach() may result in undefined behavior. See Understanding closures for more details.
+
+
+
+
+# spark streaming
+
+scala> val ints = Stream.from(0)
+# ints: scala.collection.immutable.Stream[Int] = Stream(0, ?) 
+scala> val fibs = (ints.scanLeft((0, 1)){ case ((previous, current), index) =>  (current, (previous + current))})
+# fibs: scala.collection.immutable.Stream[(Int, Int)] = Stream((0,1), ?)
+scala> fibs.take(8).print (0,1), (1,1), (1,2), (2,3), (3,5), (5,8), (8,13), (13,21), empty

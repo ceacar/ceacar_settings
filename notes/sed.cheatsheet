@@ -1,1 +1,11 @@
+# replace multiple spaces
 sed 's/ \{2,\}/,/g' # replace 2 or more spaces to comma
+
+# tsv to csv, tab to comma, replace multiple spaces
+sed 's/[[:space:]]\+/,/g'
+
+# only replace first occurence of match
+sed 's/pattern1/pattern2/1'
+
+# only replace first occurence of match for the whole pipe
+sed -e '0,/pattern1/ s/pattern1/pattern2/'

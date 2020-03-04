@@ -1,1 +1,12 @@
 --only-show-errors: this tag for aws cmd will have only emit progress bar and only print error if there is some
+
+# list all size of aws
+aws s3 ls mybucket --recursive --summarize --human-readable
+
+
+aws s3 cp s3://my_bucket_location/ ~/my_r_location/ --recursive --exclude '*' --include '^trans_\\d+' --region us-east-1
+# aws regex
+*: Matches everything
+?: Matches any single character
+[sequence]: Matches any character in sequence
+[!sequence]: Matches any character not in sequence
