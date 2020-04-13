@@ -261,7 +261,7 @@ writing query in hive like this:
 # show describe statement in more details like location of the table
 describe formatted table1
 describe extended table1  # this shows more detail
-
+DESCRIBE FORMATTED [db_name.]table_name column_name PARTITION (partition_spec);
 
 
 

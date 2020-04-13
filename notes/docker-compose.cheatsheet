@@ -13,3 +13,11 @@ entrypoint: /bin/bash
 
 # set up environment variable
 ENV PYTHONPATH "${PYTHONPATH}:/your/custom/path"
+
+# add user
+useradd -ms /bin/bash newuser
+# act as user
+USER newuser
+RUN mkdir -p /home/newuser
+# current work directory
+WORKDIR /home/newuser

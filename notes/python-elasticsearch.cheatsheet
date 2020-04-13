@@ -1,0 +1,48 @@
+es = elasticsearch.Elasticsearch([{'host': '10.201.3.206', 'port': 9200}])
+es.ping()
+
+# check if index exists
+es_object.indices.exists(index_name)
+
+# create an index
+settings = {
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 0
+    },
+    "mappings": {
+        "members": {
+            "dynamic": "strict",
+            "properties": {
+                "title": {
+                    "type": "text"
+                },
+                "submitter": {
+                    "type": "text"
+                },
+                "description": {
+                    "type": "text"
+                },
+                "calories": {
+                    "type": "integer"
+                },
+            }
+        }
+    }
+}
+
+es_object.indices.create(index=index_name, ignore=400, body=settings)
+
+
+
+# search an index
+def search(es_object, index_name, search):
+    res = es_object.search(index=index_name, body=search)
+It is pretty basic. You pass index and search criteria in it. Let’s try some queries.
+if __name__ == '__main__':
+  es = connect_elasticsearch()
+    if es is not None:
+        # search_object = {'query': {'match': {'calories': '102'}}}
+        search_object = {'query': {'match_all': {}}}
+	res = es.search(index="test-index", body={"query": {"match_all": {}}})
+        search(es, 'recipes', json.dumps(search_object))

@@ -1,0 +1,5 @@
+# remove text without removing background
+1. use magic wand to select text after zoomed in
+2. select -> expand -> type "3" in pixels boxes
+3. edit -> fill -> select "content awareness"
+# now you should see this text is remove without removing background

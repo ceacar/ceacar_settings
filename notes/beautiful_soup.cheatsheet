@@ -4,7 +4,7 @@ webpage = urlopen(req).read()
 soup = BeautifulSoup(webpage, 'html.parser')
 
 # soup find all href
-soup.find_all('a', href=True):
+soup.find_all('a', href=True)
 
 # find a div with class name is character-count-truncated
-soup.findAll('div', attrs={'class': 'character-count-truncated'}):
+soup.findAll('div', attrs={'class': 'character-count-truncated'})

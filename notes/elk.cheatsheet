@@ -20,7 +20,27 @@ node:
   name: ${prompt.text}
 
 
+curl -X<VERB> '<PROTOCOL>://<HOST>:<PORT>/<PATH>?<QUERY_STRING>' -d '<BODY>'
+# <VERB>
+# The appropriate HTTP method or verb. For example, GET, POST, PUT, HEAD, or DELETE.
+# <PROTOCOL>
+# Either http or https. Use the latter if you have an HTTPS proxy in front of Elasticsearch or you use Elasticsearch security features to encrypt HTTP communications.
+# <HOST>
+# The hostname of any node in your Elasticsearch cluster. Alternatively, use localhost for a node on your local machine.
+# <PORT>
+# The port running the Elasticsearch HTTP service, which defaults to 9200.
+# <PATH>
+# The API endpoint, which can contain multiple components, such as _cluster/stats or _nodes/stats/jvm.
+# <QUERY_STRING>
+# Any optional query-string parameters. For example, ?pretty will pretty-print the JSON response to make it easier to read.
+# <BODY>
+# A JSON-encoded request body (if necessary).
 
+
+# check elasticsearch health
+curl -XGET 'elasticsearch_test:9200/_cat/health?v'
+# epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+# 1583444152 21:35:52  docker-cluster yellow          1         1      4   4    0    0        1             0                  -                 80.0%
 
 #check elk health
 curl -XGET 'localhost:9200/_cat/master?help&pretty'
@@ -268,3 +288,14 @@ curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/js
 #metricbeat, sends cpu info and possbile everything lese
 #packetbeat, logs every network traffic
 #filebeat
+
+
+
+# elk search all documents in a index
+curl -XGET http://www.example.com:9200/myIndexName/_search?pretty=true&q=*:*
+
+# use below to search first 100 records
+curl localhost:9200/logstash-2020.03.05-000001/_search/?size=1000&pretty=1
+
+
+

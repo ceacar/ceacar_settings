@@ -1,3 +1,5 @@
 vim $PREFIX/etc/apt/sources.list  # to add thirdparty repository
 vim $PREFIX/etc/apt/sources.list.d/unstable.list  # to add unstable thirdparty repository
 TMPDIR holds the temporary path
+
+color scheme: atilierdune dark

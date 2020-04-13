@@ -196,3 +196,9 @@ zm
 zR
 # To open one level fold
 zr
+
+
+# duplicate current pane to open vertically
+ctrl-w + s
+# duplicate current pane to open horizontally
+ctrl-w + v

@@ -1,0 +1,18 @@
+1.download pot player
+https://potplayer.daum.net/
+2.download madvr
+http://madvr.com/
+unzip to location u want, then adminrun install.bat
+3.copy anime 4k
+https://github-production-release-asset-2e65be.s3.amazonaws.com/202234517/c38ec000-be34-11e9-9f58-8cef4620c6a3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20200407%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200407T221538Z&X-Amz-Expires=300&X-Amz-Signature=ed89d598e04151fce6170f54e6d6e751243f5a62d21c30c0b1ad59d3aa373391&X-Amz-SignedHeaders=host&actor_id=8781744&response-content-disposition=attachment%3B%20filename%3DAnime4K_HLSL.zip&response-content-type=application%2Foctet-stream
+
+or this page
+https://github.com/bloc97/Anime4K/releases
+look for at bottom HLSL/GLSL(v0.9 Beta)
+
+
+4. setup in pot playerhttps://blog.csdn.net/hwoehn/article/details/102070395
+
+5. add svp pro support
+https://www.youtube.com/watch?v=mAZ-Y7CC2uE
+

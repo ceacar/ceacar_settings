@@ -1,0 +1,20 @@
+# make elastic search content searchable
+go to management pane on the bottom left of kibana and create an index
+# search text
+go to dicover and then select one of index to start search with typing "*" into the search bar
+
+# search in message field of Quick brown fox
+message:"Quick brown fox"
+
+# search multiple fields with and operator, can use "or" as well
+response:200 and extension:php
+
+# can put and or into field search
+response:(200 or 404)
+tags:(success and info and security)
+# can invert a condition
+response:200 and not (extension:php or extension:css) 
+# can equal, greater than, of less than
+bytes > 1000
+# can search entire field
+response:*

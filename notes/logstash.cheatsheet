@@ -1,0 +1,102 @@
+# logstash config file example(this loads a file in /var/log/http.log:
+input {
+  file {
+    path => "/var/log/http.log"
+  }
+}
+filter {
+  grok {
+    match => { "message" => "%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration}" }
+  }
+}
+
+# another example of parsing log
+55.3.244.1 GET /index.html 15824 0.043
+%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration}
+
+
+
+# First, you can use the Oniguruma syntax for named capture which will let you match a piece of text and save it as a field:
+
+(?<field_name>the pattern here)
+# For example, postfix logs have a queue id that is an 10 or 11-character hexadecimal value. I can capture that easily like this:
+(?<queue_id>[0-9A-F]{10,11})
+
+
+
+
+
+# logstash config to parse a stdin message to json obj, then send it to kafka
+input { stdin { } }
+
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+
+output {
+  kafka { 
+    bootstrap_servers => "kafka"
+    codec => json{}
+    topic_id =>  "my-topic"
+  }
+}
+
+
+
+
+
+# Example case
+
+#The goal I want to accomplish with a grok filter is to break down the logline into the following fields: timestamp, log level, class, and then the rest of the message.
+2016-07-11T23:56:42.000+00:00 INFO [MySecretApp.com.Transaction.Manager]:Starting transaction for session -464410bf-37bf-475a-afc0-498e0199f008
+#The following grok pattern will do the job:
+grok {
+   match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:log-level} \[%{DATA:class}\]:%{GREEDYDATA:message}" }
+}
+#result:
+{
+     "message" => "Starting transaction for session -464410bf-37bf-475a-afc0-498e0199f008",
+     "timestamp" => "2016-07-11T23:56:42.000+00:00",
+     "log-level" => "INFO",
+     "class" => "MySecretApp.com.Transaction.Manager"
+}
+
+# convert type using mutate
+#only supports below types
+#integer:
+#strings are parsed; comma-separators are supported (e.g., the string "1,000" produces an integer with value of one thousand); when strings have decimal parts, they are truncated.
+#floats and decimals are truncated (e.g., 3.99 becomes 3, -2.7 becomes -2)
+#boolean true and boolean false are converted to 1 and 0 respectively
+#integer_eu:
+#same as integer, except string values support dot-separators and comma-decimals (e.g., "1.000" produces an integer with value of one thousand)
+#float:
+#integers are converted to floats
+#strings are parsed; comma-separators and dot-decimals are supported (e.g., "1,000.5" produces an integer with value of one thousand and one half)
+#boolean true and boolean false are converted to 1.0 and 0.0 respectively
+#float_eu:
+#same as float, except string values support dot-separators and comma-decimals (e.g., "1.000,5" produces an integer with value of one thousand and one half)
+#string:
+#all values are stringified and encoded with UTF-8
+#boolean:
+#integer 0 is converted to boolean false
+#integer 1 is converted to boolean true
+#float 0.0 is converted to boolean false
+#float 1.0 is converted to boolean true
+#strings "true", "t", "yes", "y", "1"`and `"1.0" are converted to boolean true
+#strings "false", "f", "no", "n", "0" and "0.0" are converted to boolean false
+#empty strings are converted to boolean false
+#all other values pass straight through without conversion and log a warning message
+#for arrays each value gets processed separately using rules above
+    filter {
+      mutate {
+        convert => {
+          "fieldname" => "integer"
+          "booleanfield" => "boolean"
+        }
+      }
+    }

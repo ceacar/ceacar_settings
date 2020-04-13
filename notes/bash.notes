@@ -90,6 +90,8 @@ curl --form "fileupload=@my-file.txt;filename=desired-filename.txt" --form param
 curl --data '' https://example.com/resource.cgi
 curl -X POST https://example.com/resource.cgi
 curl --request POST https://example.com/resource.cgi
+# curl and post data from file
+curl -XPUT http://lga-grid256.contextweb.prod:9200/test_index-H "Content-Type: application/json" -d @/data/data/com.termux/files/home/temp/elk.new_index.template.json
 
 
 #operators
@@ -306,6 +308,7 @@ pgrep process_name
 
 # inotifywait to watch for files changes
 inotifywait -e modify -e access ./ && echo "1234" # this will monitor access and modify
+# close_write is for write event
 
 
 # Binary file (standard input) matches error for grep
@@ -314,3 +317,9 @@ grep -a pattern1
 
 # uncheck a committed deleted file
 git reset -- file_name
+
+# add user
+adduser username1
+
+# which creates a home directory for the user and ensures that bash is the default shell.
+useradd -ms /bin/bash newuser
