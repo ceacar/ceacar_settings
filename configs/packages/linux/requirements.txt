@@ -1,3 +1,4 @@
+ipython
 virtualenv
 pip
 flake8

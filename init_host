@@ -5,5 +5,5 @@ source init_lib
 #need to check if mac can do it
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; (exit 33) ; fi
 
-initialize_host 2>&1 | tee $PWD/initilization_host.log
+initialize_host $@ 2>&1 | tee $PWD/initilization_host.log
 #install_conda

@@ -3,7 +3,7 @@
 # set -xv
 export PS1="$PS1"
 # set -fueo pipefail
-user_name=${1:-$(whoami)}
+user_name=${1:?user_name has to be defined}
 is_linux=false
 is_mac=false
 #is_cygwin=false
@@ -116,8 +116,6 @@ function install_linux_essential_packages(){
   echo "installing linux essential packages"
   apt-get update
   install_packages_from_file $linux_package_path/requirements.apt "apt-get -y install"
-  install_packages_from_file $linux_package_path/requirements.txt "pip install --ignore-installed"
-  install_packages_from_file $linux_package_path/requirements.txt3 "pip3 install --ignore-installed"
 }
 
 function install_conda(){
@@ -165,17 +163,18 @@ function config_vim(){
   #make ycm_core
 
   echo "configuring vim"
-  sudo -u $user_name ls $root_path/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git $root_path/.vim/bundle/Vundle.vim
+  ls $root_path/.vim/bundle/Vundle.vim 2>/dev/null || git clone https://github.com/VundleVim/Vundle.vim.git $root_path/.vim/bundle/Vundle.vim
   #change permission of the directory so vim could install everything when other user need it
 
   #install for vim
-  sudo -u $user_name vim -c 'PluginInstall' -c 'qa!'
+  vim -c 'PluginInstall' -c 'qa!'
 
-  sudo -u $user_name ls ~/.vim/bundle/YouCompleteMe >/dev/null|| git clone https://github.com/Valloric/YouCompleteMe.git $root_path/.vim/bundle/YouCompleteMe
+  ls ~/.vim/bundle/YouCompleteMe >/dev/null|| git clone https://github.com/Valloric/YouCompleteMe.git $root_path/.vim/bundle/YouCompleteMe
 
-  chown -R $user_name: ~/.vim
+  # chown -R $user_name: ~/.vim
   #compile you completeme
   cd $root_path/.vim/bundle/YouCompleteMe
+  git submodule update --init --recursive
 
   # add more support if needed for YouCompleteMe
   # C# support: install Mono and add --cs-completer when calling install.py.
@@ -184,11 +183,13 @@ function config_vim(){
   # Rust support: add --rust-completer when calling install.py.
   # If your Python interpreter is older than 2.7.9, you will also need rustup in your PATH.
   # Java support: install JDK8 (version 8 required) and add --java-completer when calling install.py.
-  sudo -u $user_name ./install.py --clang-completer --go-completer --java-completer
+  ./install.py --clang-completer --go-completer --java-completer
 
   #overwrite the default vim to vim.nox
   #ln -snf $(which vim.nox) /usr/local/bin/vim
   #chmod -R 755 ~/.vim
+
+  cd - 
 }
 
 function set_git_config(){
@@ -198,7 +199,7 @@ function set_git_config(){
   #git username
   sudo -u $user_name $config_path/git_username
   #install git auto completion script
-  sudo -u $user_name curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+  sudo -u $user_name curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o $root_path/.git-completion.bash
 }
 
 function reinstall_vim(){
@@ -225,29 +226,35 @@ function reinstall_vim(){
 function setup_python_venv(){
   echo "creating python venv"
   sudo -u $user_name pip >/dev/null 2>/dev/null || easy_install pip >$log_file 2>&1
-  sudo -u $user_name virtualenv >/dev/null 2>/dev/null || pip install virtualenv >$log_file 2>&1
-  sudo -u $user_name virtualenv $python_venv_locations/my_python_venv >$log_file 2>&1
-  sudo -u $user_name virtualenv -p $(which python3) $python_venv_locations/my_python_venv3 >$log_file 2>&1
+  # sudo -u $user_name virtualenv >/dev/null 2>/dev/null || pip install virtualenv >$log_file 2>&1
+  echo "running -> sudo -u $user_name virtualenv $python_venv_locations/my_python_venv >$log_file 2>&1"
+  sudo -u $user_name virtualenv $python_venv_locations/my_python_venv >$log_file
+  echo "running -> sudo -u $user_name virtualenv -p $(which python3) $python_venv_locations/my_python_venv3 >$log_file"
+  sudo -u $user_name virtualenv -p $(which python3) $python_venv_locations/my_python_venv3 >$log_file
+
+  chmod 755 -R $python_venv_locations/my_python_venv 
+  chmod 755 -R $python_venv_locations/my_python_venv3
   echo "installing packages for venv"
   source $python_venv_locations/my_python_venv/bin/activate
   install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
   install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
   deactivate
-  chown -R $user_name: $python_venv_locations/
+  # chown -R $user_name: $python_venv_locations/
 
   source $python_venv_locations/my_python_venv3/bin/activate
   install_packages_from_file $venv_package_path/requirements.txt "pip install --ignore-installed"
   install_packages_from_file $venv_package_path/requirements.txt3 "pip install --ignore-installed"
   deactivate
-  chown -R $user_name: $python_venv_locations/
+  # chown -R $user_name: $python_venv_locations/
 }
 
 function config_ipython(){
   echo "configuring ipython"
   #create ipython profile dir in $root_path/.ipython
+  sourcepython3
   ipython profile create
   #adding auto reload enable by default to ipython
-  echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']\nc.InteractiveShellApp.exec_lines.append('print("Warning: disable autoreload in ipython_config.py to improve performance.")')" >> $root_path/.ipython/profile_default/ipython_config.py
+  echo -e "c.InteractiveShellApp.extensions = ['autoreload']\nc.InteractiveShellApp.exec_lines = ['%autoreload 2']" >> $root_path/.ipython/profile_default/ipython_config.py
 }
 
 function prepare_vim_color_scheme(){
@@ -280,6 +287,21 @@ function set_up_tmux_tpm_plugin(){
   ~/.tmux/plugins/tpm/scripts/install_plugins.sh
 }
 
+
+function run_user_init(){
+  # does not need sudo here
+  setup_python_venv
+  config_ipython
+  prepare_vim_color_scheme
+  # install_conda
+  #this config_vim is install you complete me, may fail
+  config_vim
+
+  # config ipython to keep history
+  config_ipython_history
+  cd -
+}
+
 function initialize_host(){
   #enable python3 for centos
   #enable_python3_for_centos
@@ -308,18 +330,18 @@ function initialize_host(){
   clone_git_repos
 
   if $is_linux;then
-    reinstall_vim
+    # reinstall_vim
     echo "vim reinstalled"
   fi
 
-  #setup_python_venv
-  config_ipython
-  prepare_vim_color_scheme
-  install_conda
-  #this config_vim is install you complete me, may fail
-  config_vim
+  echo "run \"source init_lib $user_name && run_user_init\" without sudo"
+  # setup_python_venv
+  # config_ipython
+  # prepare_vim_color_scheme
+  # # install_conda
+  # #this config_vim is install you complete me, may fail
+  # config_vim
 
-  # config ipython to keep history
-  config_ipython_history
-  cd -
+  # # config ipython to keep history
+  # config_ipython_history
 }

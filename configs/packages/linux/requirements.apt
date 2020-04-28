@@ -1,8 +1,8 @@
 #some usual tools
-ipython
 tmux
 vim
 htop
+curl
 #some essential dev env
 libncurses5-dev
 libncursesw5-dev
@@ -18,8 +18,8 @@ libxslt-dev
 tmux
 #you complete me prerequisite
 libncurses5-dev
-libgnome2-dev
-libgnomeui-dev
+# libgnome2-dev
+# libgnomeui-dev
 libgtk2.0-dev
 libatk1.0-dev
 libbonoboui2-dev
@@ -36,3 +36,6 @@ libperl-dev
 git
 # for ifconfig to work, ubuntu18.04 doesn't have it in stock
 net-tools
+
+# for golang vim support, we have to install golang first
+golang-go
