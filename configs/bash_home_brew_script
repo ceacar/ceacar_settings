@@ -311,7 +311,7 @@ function backup_ubuntu_terminal_theme(){
   dconf dump /org/gnome/desktop/wm/keybindings/ > $ceacar_setting/configs/ubuntu_terminal/key_binding.dconf
 }
 
-function reload_ubuntu_terminal_theme(){
+function restore_ubuntu_terminal_theme(){
   dconf load /org/gnome/terminal/legacy/profiles:/ < $ceacar_setting/configs/ubuntu_terminal/work_profile.dconf
   dconf load /org/gnome/desktop/wm/keybindings/ < $ceacar_setting/configs/ubuntu_terminal/key_binding.dconf
 }
