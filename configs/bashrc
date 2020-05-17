@@ -8,6 +8,7 @@
 is_mac=false
 is_linux=false
 is_cygwin=false
+is_pi="$(whoami | grep '^pi$')"
 
 
 unameOut="$(uname -s)"
@@ -179,5 +180,12 @@ if $is_mac;then
   docker_startup_mac
 fi
 
-source $HOME/anaconda/etc/profile.d/conda.sh
-export PATH=$PATH:$HOME/anaconda/bin
+if [ "$is_pi" = "pi" ];then
+  has_ssh="$(ps aux |grep -v '/usr/bin\|grep'|grep ssh-agent)"
+  if [ -z "$has_ssh" ];then
+    regen_ssh_agent
+  fi
+fi
+
+# source $HOME/anaconda/etc/profile.d/conda.sh
+# export PATH=$PATH:$HOME/anaconda/bin
