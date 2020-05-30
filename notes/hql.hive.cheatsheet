@@ -261,7 +261,7 @@ writing query in hive like this:
 # show describe statement in more details like location of the table
 describe formatted table1
 describe extended table1  # this shows more detail
-DESCRIBE FORMATTED [db_name.]table_name column_name PARTITION (partition_spec);
+describe formatted [db_name.]table_name column_name partition (partition_spec);
 
 
 
@@ -352,3 +352,39 @@ PARTITIONED BY (date STRING, country String)
 row format delimited 
 fields terminated by ',' 
 stored as textfile;
+
+
+-- add partition to table with specific location
+
+2
+3
+ALTER TABLE <Table_Name> ADD 
+[IF NOT EXISTS] PARTITION 
+<partition_spec> LOCATION 'hdfs_path_of_directory'
+
+
+
+-- hive in exists can be rewritten to semi join
+SELECT a.key, a.value
+  FROM a
+  WHERE a.key in
+   (SELECT b.key
+    FROM B);
+--can be rewritten to:
+ SELECT a.key, a.val
+ FROM a LEFT SEMI JOIN b on (a.key = b.key)
+
+-- when in subquery the field should have table name with it like this c.state
+where
+     lower(c.state) in (
+   select state from onboard.states
+)
+
+
+-- hash a hive row
+reflect('org.apache.commons.codec.digest.DigestUtils', 'sha256Hex', col1)
+-- substr
+substr(b.provider_business_mailing_address_postal_code, 1, 5)
+
+--strright substitute
+substr(work_zip, length(work_zip)+1 -4, 4)

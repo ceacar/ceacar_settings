@@ -4,15 +4,13 @@ es.ping()
 # check if index exists
 es_object.indices.exists(index_name)
 
-# create an index
+# create an index, this members dynamic seems not work
 settings = {
     "settings": {
         "number_of_shards": 1,
         "number_of_replicas": 0
     },
     "mappings": {
-        "members": {
-            "dynamic": "strict",
             "properties": {
                 "title": {
                     "type": "text"
@@ -27,7 +25,6 @@ settings = {
                     "type": "integer"
                 },
             }
-        }
     }
 }
 

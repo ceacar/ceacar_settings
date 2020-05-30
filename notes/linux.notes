@@ -58,3 +58,28 @@ ctrl + alt + f3
 
 # shutdown immediately
 shutdown -r now
+
+# reinstall python any version
+wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz
+# At the time of writing this article, the latest release is 3.7.4.
+# Once the download is complete, extract the gzipped tarball:
+tar -xf Python-3.7.4.tgz
+# Next, navigate to the Python source directory and run the configure script which will perform a number of checks to make sure all of the dependencies on your system are present:
+cd Python-3.7.4
+./configure --enable-optimizations
+# The --enable-optimizations option will optimize the Python binary by running multiple tests. This makes the build process slower.
+# Start the Python build process using make:
+make -j 8
+# For faster build time, modify the -j flag according to your processor. If you do not know the number of cores your processor, you can find it by typing nproc. The system used in this guide has 8 cores, so we are using the -j8 flag.
+# When the build is done, install the Python binaries by running the following command:
+sudo make altinstall
+
+
+#python3.7 has pkg resource issue
+wget https://bootstrap.pypa.io/ez_setup.py -O - | python
+
+
+
+
+# set root password
+sudo passwd root

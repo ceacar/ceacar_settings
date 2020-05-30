@@ -1,0 +1,20 @@
+
+# generate ssh key pairs / ssh-keygen is missing
+# esxi hide it in this path
+/usr/lib/vmware/openssh/bin/ssh-keygen
+
+# ssh authorized_keys location
+/etc/ssh/keys-<username>/authorized_keys
+
+# disgnostic message
+dmesg
+
+# how to get deviceid, use below cmd set to chain the information together by the pci number something like 0000:34:....
+lspci
+lspci -p
+
+
+# rocketu 1144d usb controller via pcie not working for windows
+# the issue is actually the vm uses vefi instead of tradditional bios, there is a known bug would stop the usb controller from passing into the vm. so change it to bios would solve the issue. but a system reinstall is needed since partition format is different (GPT is for UFEI, as MBR for BIOS)
+# so better get another windows host to create in bios mode, then install as a new, after done, stole that vmdisk and attach to current one.
+

@@ -849,7 +849,7 @@ bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00')
 >>> ba
 bytearray(b'`m.z\x8d\x0fp\xa1')
 
-# time a function in python
+# time a function in python, unix time
 time.time()
 
 # fillna replace the na with 'Unknown' string
@@ -1050,3 +1050,59 @@ for key in sorted(mydict.keys()):
 print ('Sort by items:')
 for key, value in sorted(mydict.items(), key=lambda item: (item[1], item[0])):
     print ("%s: %s" % (key, value))
+
+
+# parse python time with Z or T
+import dateutil
+dateutil.parser.isoparse('2008-09-03T20:56:35.450686Z')
+
+# touch file
+from pathlib import Path
+Path('path/to/file.txt').touch()
+
+# or
+open(x, 'a').close()
+
+# parse url
+# from urlparse import urlparse
+parsed = urlparse.urlparse(url)
+return os.path.basename(parsed.path)
+
+# log with string substitute
+log.info("what is %s", thing_name)
+
+# base64 encode decode
+def encode_base64(message:str):
+    message_bytes = message.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    return base64_bytes.decode()
+
+
+def decode_base64(message:str):
+    message_bytes = bytes(message, 'ascii')
+    return base64.b64decode(message_bytes)
+
+
+# subprocess doesn't recognize () -- bash process substitution
+import subprocess
+cmd1="cat <(echo 123)"
+process=subprocess.Popen(cmd1,shell=True,stdout=subprocess.PIPE, executable="/bin/bash")  # the key here is to add executable to be bash
+result=process.communicate()
+print result
+
+# boolean list and
+# and operation
+test_list = [True, True, False, True, False] 
+res = all(test_list) 
+# or operation
+test_list = [True, True, False, True, False] 
+res = any(test_list) 
+
+
+
+# random int
+import random
+random.randint(from,to)
+
+# import a module from a string path
+pkgutil.get_data(module1.sub_module1,"resource_path")

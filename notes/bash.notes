@@ -323,3 +323,17 @@ adduser username1
 
 # which creates a home directory for the user and ensures that bash is the default shell.
 useradd -ms /bin/bash newuser
+
+# date with timezone, this will output date in the timezone we need
+export TZ=":US/Eastern"
+date
+
+# script path
+SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+# or 
+SCRIPT=`realpath $0` SCRIPTPATH=`dirname $SCRIPT`
+
+
+# list all files in a directory
+# install tree using apt install tree
+tree -l

@@ -1,0 +1,10 @@
+level1name:
+  level2name1: val1
+  level2name2: val2
+# above will be a 2 level dictionary, a space after key is a must
+
+leve1listname:
+  -list_item1
+  -list_item2
+
+# above will be a list under the name of level1listname

@@ -1,0 +1,10 @@
+# sudo without typing password everytime in ubuntu
+sudo -i to create an interactive repo for root
+
+# annoying program problem detected
+# disable the reprot
+# 1. delete crash report
+rm -rf /var/crash/*
+# 2. disable the detection
+vim /etc/default/apport
+# change enable=0

@@ -236,4 +236,9 @@ v # this currently configured in tmux as a view mode like vim so you can select 
 w or b or hjkl # this is same vim keyset to navigate between text
 y # this copies text, same as in vim
 
+# error open terminal failed: missing or unsuitable terminal: xterm-256color
+export TERM=xterm
+#or
+export TERM=screen
+then try attavch to tmux
 

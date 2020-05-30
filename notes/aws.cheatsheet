@@ -10,3 +10,6 @@ aws s3 cp s3://my_bucket_location/ ~/my_r_location/ --recursive --exclude '*' --
 ?: Matches any single character
 [sequence]: Matches any character in sequence
 [!sequence]: Matches any character not in sequence
+
+# aws cli with id and key, we can setup env vars for aws cmd to work
+AWS_ACCESS_KEY_ID="AKIA.." AWS_SECRET_ACCESS_KEY="7zw4..." aws s3 ls s3://repo/path/filename

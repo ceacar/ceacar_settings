@@ -1,0 +1,7 @@
+100 esxi
+103 ubuntu
+104 pi
+106 windows 10 amd-fx
+108 ubuntu_1804
+187 dns
+

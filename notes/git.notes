@@ -169,5 +169,5 @@ su git                                 # Switch to "git" user
 # This create an empty git repository under “/home/git/new_project.git”. 
 git init --bare new_project.git          # Create an empty Git repository
 # add repos public key to ssh keys
-# Local Repository Configurations
+# Local Repository Configurations , the git folders are in the git 's directory
 git clone ssh://git@git_server_hostname:/home/git/new_project.git

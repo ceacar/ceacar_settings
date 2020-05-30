@@ -164,4 +164,7 @@ inms[nms.name.notnull()]
 # pandas filter rows on multiple condition, with example of "and" and "or"
 apts[apts.price.notnull() & apts.livingArea.notnull() | False]
 
-
+# select a few columns from pandas df
+new = old[['A', 'C', 'D']].copy()
+# or use alternative filter function
+new = old.filter(['A','B','D'], axis=1)

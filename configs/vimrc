@@ -117,11 +117,6 @@ hi Folded ctermbg=242
 " Enable folding with the spacebar
 nnoremap <space> za
 
-" F2 to toggle the paste and inv paste
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
-set showmode
-
 " F3 to toggle relative line number on and off
 function! NumberToggle()
   "echo &relativenumber
@@ -135,25 +130,34 @@ endfunc
 
 
 
-nnoremap <F3> :call NumberToggle()<cr>
 
 " disabled this, since this will cause termux vim to toggle number line after
 " :w
 " set invnumber nornu
 
-"nnoremap <F11> :edit!<cr>
-nnoremap <F5> :set invnumber nornu<cr>
+" vim functions
 " toggle ignore case
-nnoremap <F6> :set ic!<cr>
+"nnoremap <F6> :set ic!<cr>
 nmap <F1> :set ignorecase! ignorecase?
-
-"Remove all trailing whitespace by pressing F5
-nnoremap <F7> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-
+" F2 to toggle the paste and inv paste
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
+" display number on vim for lines
+nnoremap <F3> :call NumberToggle()<cr>
 "Remove all trailing whitespace by pressing F5
 "either one below will work
-nnoremap <F4> :%s/ $//g<cr>
+nnoremap <F4> :%s/\ $//g<cr>
+"nnoremap <F11> :edit!<cr>
+nnoremap <F5> :set invnumber nornu<cr>
+"nnoremap <F11> :edit!<cr>
+nnoremap <F6> :%s/\t/\ \ \ \ /g<cr>
+"Remove all trailing whitespace by pressing F5
+nnoremap <F7> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 "nnoremap <F8> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
+
+
 
 " enable vim auto reload vimrc config
 " augroup myvimrchooks

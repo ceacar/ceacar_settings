@@ -368,6 +368,11 @@ function list_aws_dir(){
   set +xv
 }
 
+function git_clone_diy(){
+  project_name=${1:?repo name cannot be empty}
+  git clone ssh://git@rasberrypi4:/home/git/${project_name}.git
+}
+
 # auto complete for ssh cmds
 _ssh() 
 {
